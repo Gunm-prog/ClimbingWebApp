@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" >
+    <title>User List Spring Boot web application - Thymeleaf</title>
+</head>
+<body>
+<h1 align="center">My user list</h1>
+<br/>
+<table border="1" cellpadding="10">
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Pseudo</th>
+        <th>Password</th>
+    </tr>
+
+    <tr th:each="user: ${users}">
+        <td th:text="${user.name}">Name</td>
+        <td th:text="${user.email}">Email</td>
+        <td th:text="${user.pseudo}">Pseudo</td>
+        <td th:text="${user.password}">Password</td>
+    </tr>
+</table>
+</body>
+</html>
