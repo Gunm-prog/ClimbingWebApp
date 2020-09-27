@@ -15,6 +15,8 @@ public interface SpotRepository extends JpaRepository<Spot, Long> {
     @Override
     Optional<Spot> findById(Long id);
 
+    void update(Spot spot);
 
     void deleteById(Long id);
+
 }
