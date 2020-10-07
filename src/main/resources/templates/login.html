@@ -5,16 +5,17 @@
     <title>Login Page</title>
 </head>
 <body>
-<h1>Login Form</h1>
+<h1>Log In</h1>
 
 <form th:action="@{/login}" th:object="${User}" method="post">
-      <label for="name">Name</label>
-      <input type="text" id="name" name="name" autofocus>
+      <label for="email">Email</label>
+      <input type="text" id="email" name="email" autofocus>
 
       <label for="password">Password</label>
       <input type="text" id="password" name="password" />
       <br/>
     <input type="submit" value="Log In" />
+    <a href="/login" th:href="@{/userAccount}"/></a>
 </form>
 </body>
 

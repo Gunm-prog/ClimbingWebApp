@@ -1,6 +1,7 @@
 package com.emilie.ClimbingWebApp.domain;
 
 
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +24,8 @@ public class Topo implements Serializable {
     private String author;
     @Column(name="date_of_publishing")
     private String dateOfPublishing;
+    @Column(name="available")
+    private Boolean available;
 
 
     @OneToMany(targetEntity=ReservationTopo.class, mappedBy="topo")
@@ -39,6 +42,7 @@ public class Topo implements Serializable {
         this.scanTitle(sc);
         this.scanAuthor( sc );
         this.scanDateOfPublishing(sc);
+        this.scanAvailable(sc);
     }
 
     public Topo(){
@@ -74,6 +78,9 @@ public class Topo implements Serializable {
     public void setDateOfPublishing(String dateOfPublishing) {
         this.dateOfPublishing=dateOfPublishing;
     }
+
+    public Boolean getAvailable(){ return available;}
+    public void setAvailable(Boolean available){ this.available=available;}
 
     public List<ReservationTopo> getReservationTopos() {
         return reservationTopos;
@@ -117,6 +124,12 @@ public class Topo implements Serializable {
         this.setDateOfPublishing( inputDateOfPublishing );
     }
 
+    public void scanAvailable(Scanner sc){
+        System.out.println("topoAvailability:");
+        Boolean inputAvailable =Boolean.valueOf( sc.nextLine() );
+        this.setAvailable( inputAvailable );
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -127,13 +140,14 @@ public class Topo implements Serializable {
                 Objects.equals( title, topo.title ) &&
                 Objects.equals( author, topo.author ) &&
                 Objects.equals( dateOfPublishing, topo.dateOfPublishing ) &&
+                Objects.equals( available, topo.available) &&
                 Objects.equals( reservationTopos, topo.reservationTopos ) &&
                 Objects.equals( spots, topo.spots );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, title, author, dateOfPublishing, reservationTopos, spots );
+        return Objects.hash( id, title, author, dateOfPublishing, available, reservationTopos, spots );
     }
 
     @Override
@@ -143,6 +157,7 @@ public class Topo implements Serializable {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", dateOfPublishing='" + dateOfPublishing + '\'' +
+                ", available= '" + available + '\'' +
                 ", reservationTopos=" + reservationTopos +
                 ", spots=" + spots +
                 '}';

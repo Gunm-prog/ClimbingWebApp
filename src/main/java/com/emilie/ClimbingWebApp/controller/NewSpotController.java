@@ -8,13 +8,12 @@ import com.emilie.ClimbingWebApp.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
-@SessionAttributes("name, description, userMemberInSessionId")
 public class NewSpotController {
 
     @Autowired
@@ -27,21 +26,19 @@ public class NewSpotController {
     VoieRepository voieRepository;
     @Autowired
     LongueurRepository longueurRepository;
-    private Spot spot;
+    //private Spot spot;
 
 
-    @RequestMapping(path="newspot/{id}")//(path="spotdetails/{id}")
-    @GetMapping
-    public String newspot(@PathVariable("id") Long id, Model model/*, HttpSession session*/) { //public String spotdetails...
+
+
+    //@RequestMapping(path="newspot/{id}")//(path="spotdetails/{id}")
+    @GetMapping("spotDetails/{id}")
+    public String spotDetails(@PathVariable("id") Long id, ModelMap model/*, HttpSession session*/) { //public String spotdetails...
 
         Optional<Spot> spot=spotRepository.findById( id );
         model.addAttribute( "spot", spot.get() );
-        Optional<Secteur> secteur = secteurRepository.findById( id );
-        model.addAttribute( "secteur", secteur.get() );
-        Optional<Voie> voie =voieRepository.findById( id );
-        model.addAttribute( "voie", voie.get() );
-        Optional<Longueur> longueur=longueurRepository.findById( id );
-        model.addAttribute( "longueur", longueur.get());
+        model.addAttribute( "secteur", spot.get().getSecteurs() );
+
         return "newspot";
     }
 
@@ -51,16 +48,46 @@ public class NewSpotController {
         return "newspot";
     }
 
+    
     @PostMapping("/newspot")
     public String saveSpot(@ModelAttribute Spot spot, Model model) {
 
         model.addAttribute( "spot", spot );
         spotRepository.save( spot );
 
-        return "newspot";
+        return "spotDetails";
     }
 
-    @RequestMapping(path="/updateSpot")
+    @PostMapping(path="/saveSecteur")
+    public String saveSecteur(@ModelAttribute Secteur secteur, Model model){
+        model.addAttribute( "secteur", secteur );
+        secteurRepository.save(secteur);
+        return "secteur";
+    }
+
+    @PostMapping(path="/saveVoie")
+    public String saveVoie(@ModelAttribute Voie voie, Model model){
+        model.addAttribute( "voie", voie );
+        voieRepository.save(voie);
+        return "voie";
+    }
+
+    @PostMapping(path="/saveLongueur")
+    public String saveLongueur(@ModelAttribute Longueur longueur, Model model){
+        model.addAttribute( "longueur", longueur );
+        longueurRepository.save(longueur);
+        return "longueur";
+    }
+
+
+
+
+
+
+
+
+
+   /* @RequestMapping(path="/updateSpot")
     @GetMapping
     public String updateSpot(Model model) {
         model.addAttribute( "spot", spot );
@@ -73,15 +100,15 @@ public class NewSpotController {
         model.addAttribute( "spot", spot );
         spotRepository.update( spot );
         return "updateSpot";
-    }
+    }*/
 
-    @RequestMapping("/deleteSpot")
+   /* @RequestMapping("/deleteSpot")
     @GetMapping
     public String deleteSpot(Model model){
         model.addAttribute( "spot", spot );
         spotRepository.delete(spot);
         return "deleteSpot";
-    }
+    }*/
 
 
 

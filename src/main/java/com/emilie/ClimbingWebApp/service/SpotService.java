@@ -20,9 +20,9 @@ public class SpotService {
         spotRepository.save(spot);
     }
 
-    public void update(Spot spot){
+    /*public void update(Spot spot){
         spotRepository.update(spot);
-    }
+    }*/
 
     public List<Spot> listAll(){
         return (List<Spot>) spotRepository.findAll();

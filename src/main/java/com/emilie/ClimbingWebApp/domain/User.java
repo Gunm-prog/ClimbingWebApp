@@ -1,5 +1,6 @@
 package com.emilie.ClimbingWebApp.domain;
 
+import javax.management.relation.Role;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -38,6 +39,7 @@ import java.util.*;
             this.scanPseudo(sc);
             this.scanPassword(sc);
         }
+
 
         public User(String name, String email, String pseudo, String password) {
         }
@@ -90,12 +92,19 @@ import java.util.*;
             this.setPassword(inputPassword);
         }
 
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             User user=(User) o;
-            return Objects.equals( Id, user.Id );
+            return Objects.equals( Id, user.Id ) &&
+                    Objects.equals( name, user.name ) &&
+                    Objects.equals( email, user.email ) &&
+                    Objects.equals( pseudo, user.pseudo ) &&
+                    Objects.equals( password, user.password ) &&
+                    Objects.equals( commentaire, user.commentaire ) &&
+                    Objects.equals( spot, user.spot );
         }
 
         @Override

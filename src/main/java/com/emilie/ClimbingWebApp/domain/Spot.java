@@ -92,14 +92,14 @@ public class Spot implements Serializable {
     public void setUser(User user) {
         this.user=user;
     }
-    /*public User getUser (){ return user;}
-    public void setUser(User user){ this.user=user;}*/
 
-  /*  public Commentaire getCommentaire(){ return commentaire;}
-    public void setCommentaire(Commentaire commentaire){this.commentaire=commentaire;}*/
-    public Secteur getSecteur(){return (Secteur) secteurs;}
+    public List<Secteur> getSecteurs() {
+        return secteurs;
+    }
 
-    public void setSecteur(Secteur secteur) {this.secteurs=(List<Secteur>) secteur;}
+    public void setSecteurs(List<Secteur> secteurs) {
+        this.secteurs=secteurs;
+    }
 
     public Topo getTopo(){return topo;}
 
