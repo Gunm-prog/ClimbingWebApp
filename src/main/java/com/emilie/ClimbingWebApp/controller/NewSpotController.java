@@ -1,9 +1,6 @@
 package com.emilie.ClimbingWebApp.controller;
 
-import com.emilie.ClimbingWebApp.domain.Longueur;
-import com.emilie.ClimbingWebApp.domain.Secteur;
-import com.emilie.ClimbingWebApp.domain.Spot;
-import com.emilie.ClimbingWebApp.domain.Voie;
+import com.emilie.ClimbingWebApp.domain.*;
 import com.emilie.ClimbingWebApp.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 @Controller
@@ -39,7 +37,7 @@ public class NewSpotController {
         model.addAttribute( "spot", spot.get() );
         model.addAttribute( "secteur", spot.get().getSecteurs() );
 
-        return "newspot";
+        return "spotDetails";
     }
 
     @RequestMapping(path="/newspot")
@@ -48,13 +46,17 @@ public class NewSpotController {
         return "newspot";
     }
 
-    
-    @PostMapping("/newspot")
-    public String saveSpot(@ModelAttribute Spot spot, Model model) {
 
+    @PostMapping("/newspot")
+    public String showSpotDetails(@ModelAttribute Spot spot, Model model, HttpSession httpSession) {
+
+        String email = (String)httpSession.getAttribute( "email" );
+        Optional<User> userConnected = userRepository.findByEmail( email );
+        spot.setUser( userConnected.get() );  //liaison utilisateur connecté au spot
         model.addAttribute( "spot", spot );
         spotRepository.save( spot );
 
+       // return "redirect:/newspot";
         return "spotDetails";
     }
 
