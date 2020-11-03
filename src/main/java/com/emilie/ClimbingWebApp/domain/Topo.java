@@ -3,7 +3,6 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +11,7 @@ import java.util.Scanner;
 
 @Entity
 @Table(name="topo")
-public class Topo implements Serializable {
+public class Topo  {
 
     @javax.persistence.Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -24,8 +23,8 @@ public class Topo implements Serializable {
     private String author;
     @Column(name="date_of_publishing")
     private String dateOfPublishing;
-    @Column(name="available")
-    private Boolean available;
+    @Column(name="availability")
+    private Boolean availability;
 
 
     @OneToMany(targetEntity=ReservationTopo.class, mappedBy="topo")
@@ -33,6 +32,10 @@ public class Topo implements Serializable {
 
     @OneToMany(targetEntity=Spot.class, mappedBy="topo", fetch=FetchType.EAGER)
     private List<Spot> spots = new ArrayList<>();
+
+    @ManyToOne(targetEntity=User.class)
+    @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
+    private User user;
 
    /* @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="user_id", referencedColumnName="id")
@@ -79,8 +82,8 @@ public class Topo implements Serializable {
         this.dateOfPublishing=dateOfPublishing;
     }
 
-    public Boolean getAvailable(){ return available;}
-    public void setAvailable(Boolean available){ this.available=available;}
+    public Boolean getAvailable(){ return availability;}
+    public void setAvailable(Boolean available){ this.availability=availability;}
 
     public List<ReservationTopo> getReservationTopos() {
         return reservationTopos;
@@ -90,13 +93,16 @@ public class Topo implements Serializable {
         this.reservationTopos=reservationTopos;
     }
 
-    public List<Spot> getSpots() {
+    public List<Spot> getSpot() {
         return spots;
     }
 
     public void setSpots(List<Spot> spots) {
         this.spots=spots;
     }
+
+    public  List<User> getUser() {return (List<User>) user;}
+    public void setUser(List<User> user) {this.user=(User) user;}
 
   /*  public User getUser() {
         return user;
@@ -140,14 +146,15 @@ public class Topo implements Serializable {
                 Objects.equals( title, topo.title ) &&
                 Objects.equals( author, topo.author ) &&
                 Objects.equals( dateOfPublishing, topo.dateOfPublishing ) &&
-                Objects.equals( available, topo.available) &&
+                Objects.equals( availability, topo.availability) &&
                 Objects.equals( reservationTopos, topo.reservationTopos ) &&
-                Objects.equals( spots, topo.spots );
+                Objects.equals( spots, topo.spots )&&
+                Objects.equals( user, topo.user );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, title, author, dateOfPublishing, available, reservationTopos, spots );
+        return Objects.hash( id, title, author, dateOfPublishing, availability, reservationTopos, spots, user );
     }
 
     @Override
@@ -157,7 +164,7 @@ public class Topo implements Serializable {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", dateOfPublishing='" + dateOfPublishing + '\'' +
-                ", available= '" + available + '\'' +
+                ", availability= '" + availability + '\'' +
                 ", reservationTopos=" + reservationTopos +
                 ", spots=" + spots +
                 '}';

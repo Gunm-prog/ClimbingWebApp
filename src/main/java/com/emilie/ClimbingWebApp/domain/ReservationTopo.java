@@ -1,15 +1,12 @@
 package com.emilie.ClimbingWebApp.domain;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Scanner;
 
 @Entity
 @Table(name="reservation_topo")
-public class ReservationTopo implements Serializable {
+public class ReservationTopo  {
 
     @javax.persistence.Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

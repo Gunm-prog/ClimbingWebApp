@@ -4,14 +4,13 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
 @Entity
 @Table(name="secteur")//spécification nom table forcé
-public class Secteur implements Serializable {
+public class Secteur  {
 
     @Id
     //norme
@@ -26,6 +25,10 @@ public class Secteur implements Serializable {
     @ManyToOne(targetEntity=Spot.class)
     @JoinColumn(name="spot_id", referencedColumnName="id"/*, insertable=false, updatable=false*/)
     private Spot spot;
+
+    @ManyToOne(targetEntity=User.class)
+    @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
+    private User user;
 
     public Secteur(Scanner sc, String description) {
         this.description=description;
@@ -50,6 +53,14 @@ public class Secteur implements Serializable {
 
     public void setName(String name) {
         this.name=name;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user=user;
     }
 
     public List<Spot> getSpot(){return (List<Spot>) spot;}
@@ -78,12 +89,13 @@ public class Secteur implements Serializable {
         return Objects.equals( id, secteur.id ) &&
                 Objects.equals( name, secteur.name ) &&
                 Objects.equals( description, secteur.description ) &&
+                Objects.equals( user, secteur.user )&&
                 Objects.equals( spot, secteur.spot );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, name, description, spot );
+        return Objects.hash( id, name, description, user, spot );
     }
 
     @Override
@@ -92,7 +104,6 @@ public class Secteur implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", spot=" + spot +
                 '}';
     }
 }

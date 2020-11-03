@@ -1,10 +1,7 @@
 package com.emilie.ClimbingWebApp.domain;
 
 
-import org.apache.catalina.LifecycleState;
-
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -25,6 +22,10 @@ public class Voie {
     @ManyToOne
     @JoinColumn(name="secteur_id")
     private Secteur secteur;
+
+    @ManyToOne(targetEntity=User.class)
+    @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
+    private User user;
 
     public Voie(Scanner sc){this.scanName(sc);}
 
@@ -67,10 +68,13 @@ public class Voie {
     public Secteur getSecteur() {
         return secteur;
     }
-
     public void setSecteur(Secteur secteur) {
         this.secteur=secteur;
     }
+
+    public User getUser(){return user;}
+    public void setUser(User user){this.user=user;}
+
     private void scanName(Scanner sc) {
         System.out.println("voieName: ");
         String inputName= sc.nextLine();
@@ -88,12 +92,13 @@ public class Voie {
                 nombre == voie.nombre &&
                 Objects.equals( id, voie.id ) &&
                 Objects.equals( name, voie.name ) &&
-                Objects.equals( secteur, voie.secteur );
+                Objects.equals( secteur, voie.secteur )&&
+                Objects.equals( user, voie.user );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, name, hauteur, nombre, secteur );
+        return Objects.hash( id, name, hauteur, nombre, secteur, user );
     }
 
     @Override

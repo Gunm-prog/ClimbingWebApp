@@ -2,13 +2,12 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 import java.util.Scanner;
 
 @Entity
 @Table(name="longueur")//spécification nom table forcé
-public class Longueur implements Serializable {
+public class Longueur  {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -24,6 +23,12 @@ public class Longueur implements Serializable {
     @ManyToOne(targetEntity=Voie.class)
     @JoinColumn(name="voie_id", referencedColumnName="id")
     private Voie voie;
+
+    @ManyToOne(targetEntity=User.class)
+    @JoinColumn(name="user_id", referencedColumnName="id")
+    private User user;
+
+
 
     public Longueur(Scanner sc){this.scanId(sc);}
 
@@ -70,6 +75,9 @@ public class Longueur implements Serializable {
         this.voie=voie;
     }
 
+    public User getUser(){return user;}
+    public void setUser(User user){this.user=user;}
+
   private void scanId(Scanner sc){
         System.out.println("longueurId: ");
         Long inputId=Long.valueOf( sc.nextLine() );
@@ -85,12 +93,13 @@ public class Longueur implements Serializable {
                 Objects.equals( id, longueur.id ) &&
                 Objects.equals( points, longueur.points ) &&
                 Objects.equals( quotation, longueur.quotation ) &&
-                Objects.equals( voie, longueur.voie );
+                Objects.equals( voie, longueur.voie )&&
+                Objects.equals( user, longueur.user );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, distance, points, quotation, voie );
+        return Objects.hash( id, distance, points, quotation, voie, user);
     }
 
     @Override

@@ -50,13 +50,17 @@ public class SignUpController {
     public String showUserAccount(@ModelAttribute User user, Model model, HttpSession httpSession) {
 
         
-      model.addAttribute( "user", user );
-        Optional<User> userFound = this.userRepository.findByEmail( user.getEmail() );
-        if(userFound.isPresent()){
-            User present = userFound.get();
+      //model.addAttribute( "user", user );
+        Optional<User> dataFound = this.userRepository.findByEmail( user.getEmail() );
+        if(dataFound.isPresent()){
+            User present = dataFound.get();
             if (present.getPassword().equals(user.getPassword())){
-                httpSession.setAttribute( "email", user.getEmail() );
-                httpSession.setAttribute( "name", user.getName() );
+                user.setId(present.getId());
+                user.setName( present.getName() );
+                user.setEmail( present.getEmail() );
+                user.setPseudo( present.getPseudo() );
+              //  model.addAttribute( "user", user );
+                httpSession.setAttribute( "email", user.getEmail());
                 return "userAccount";
             }
             return "login";

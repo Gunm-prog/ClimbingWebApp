@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import javax.servlet.http.HttpSession;
-import java.util.Optional;
 
 @Controller
 //@RequestMapping("/user")
@@ -21,29 +20,33 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping(path="/userAccount")
-    public String getUserAccount(@PathVariable("id") Long id , Model model, HttpSession httpSession, User user) {
-        model.addAttribute( "user", user );
-        String email=(String) httpSession.getAttribute( "email" );
+    public String getUserAccount(@PathVariable("id") Long id , Model model, HttpSession httpSession) {
+        //model.addAttribute( "user", user );
+       // String email=(String) httpSession.getAttribute( "email" );
+        //String name=(String) httpSession.getAttribute( "name" );
+        User user = (User) httpSession.getAttribute( "user" );
 
-
-
-        if (email != null) {
-            Optional<User> userConnected=this.userRepository.findByEmail( user.getEmail() );
-            if (userConnected.isPresent()){
-            User present=userConnected.get();//ajout if present
-            if (present.getPassword().equals( user.getPassword() )) {
-                this.userRepository.findByPassword( user.getPassword() );
-                // httpSession.getAttribute( "email", user.getEmail() );// non
-                model.addAttribute( "email", email );
-
+        if(user.getEmail() != null) {
+         //   Optional<User> userConnected=this.userRepository.findByEmail( user.getEmail() );
+          //  if (userConnected.isPresent()){
+          //  User present=userConnected.get();//ajout if present
+          //  if (present.getPassword().equals( user.getPassword() )) {
+              //  this.userRepository.findByPassword( user.getPassword() );
+              //  httpSession.getAttribute( "email", email);// non
+              //  user.setName( name );
+                model.addAttribute( "user", user );
+             //   model.addAttribute( "email", user.getEmail() );
+             //   model.addAttribute( "name", user.getName() );
 
 
                 //TODO ajout de tous les attributs de l'utilisateur pour les afficher
                 return "userAccount";
             }
-            }
-        }
+          //  }
+      //  }
 
-        return "redirect:/login";
+       // return "redirect:/login";
+        return "login";
     }
 }
+//todo rendre les utilisateurs uniques

@@ -2,12 +2,12 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Scanner;
 
 
 @Entity
-public class Commentaire implements Serializable {
+public class Commentaire {
+
     @Id//norme
     @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
     @Column(name = "id")

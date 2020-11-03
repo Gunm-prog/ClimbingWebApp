@@ -2,13 +2,16 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Scanner;
 
 
 @Entity
 @Table(name="spot")//spécification nom table forcé
-public class Spot implements Serializable {
+public class Spot  {
+
     //private Scanner sc = new Scanner (System.in);
     @Id
     //norme
@@ -20,16 +23,16 @@ public class Spot implements Serializable {
     @Column(name="description_spot")
     private String description;
 
-  /*  @ManyToOne(cascade=CascadeType.ALL)
+   /*@ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name= "user_id")//, nullable=false)
     private User user;*/
 
-    @ManyToOne(targetEntity=User.class)
-    @JoinColumn(name="user_id", referencedColumnName="id"/*, insertable=false, updatable=false*/)
+   @ManyToOne(targetEntity=User.class)
+    @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
     private User user;
 
     @OneToMany(targetEntity=Secteur.class, mappedBy="spot", fetch=FetchType.EAGER)
-    private List<Secteur> secteurs = new ArrayList<>();
+    private List<Secteur> secteur = new ArrayList<>();
 
    @ManyToOne(targetEntity=Topo.class)
    @JoinColumn(name="topo_id", referencedColumnName="id")
@@ -93,12 +96,12 @@ public class Spot implements Serializable {
         this.user=user;
     }
 
-    public List<Secteur> getSecteurs() {
-        return secteurs;
+    public List<Secteur> getSecteur() {
+        return secteur;
     }
 
-    public void setSecteurs(List<Secteur> secteurs) {
-        this.secteurs=secteurs;
+    public void setSecteur(List<Secteur> secteur) {
+        this.secteur=secteur;
     }
 
     public Topo getTopo(){return topo;}
@@ -125,14 +128,14 @@ public class Spot implements Serializable {
                 Objects.equals( name, spot.name ) &&
                 Objects.equals( description, spot.description ) &&
                 Objects.equals( user, spot.user ) &&
-                Objects.equals( secteurs, spot.secteurs ) &&
+                Objects.equals( secteur, spot.secteur ) &&
                 Objects.equals( topo, spot.topo ) &&
                 Objects.equals( commentaires, spot.commentaires );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, name, description, user, secteurs, topo, commentaires );
+        return Objects.hash( id, name, description, user, secteur, topo, commentaires );
     }
 
     @Override
@@ -141,10 +144,6 @@ public class Spot implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", user=" + user +
-                ", secteurs=" + secteurs +
-                ", topos=" + topo +
-                ", commentaires=" + commentaires +
-                '}';
+                ", user=" + user;
     }
 }
