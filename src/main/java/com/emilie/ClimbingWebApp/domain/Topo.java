@@ -23,8 +23,8 @@ public class Topo  {
     private String author;
     @Column(name="date_of_publishing")
     private String dateOfPublishing;
-    @Column(name="availability")
-    private Boolean availability;
+   // @Column(name="availability")
+    //private Boolean availability;
 
 
     @OneToMany(targetEntity=ReservationTopo.class, mappedBy="topo")
@@ -45,7 +45,7 @@ public class Topo  {
         this.scanTitle(sc);
         this.scanAuthor( sc );
         this.scanDateOfPublishing(sc);
-        this.scanAvailable(sc);
+       // this.scanAvailable(sc);
     }
 
     public Topo(){
@@ -71,6 +71,22 @@ public class Topo  {
         return author;
     }
 
+    public void setTitle(String title) {
+        this.title=title;
+    }
+
+   /* public Boolean getAvailability() {
+        return availability;
+    }
+
+    public void setAvailability(Boolean availability) {
+        this.availability=availability;
+    }*/
+
+    public List<Spot> getSpots() {
+        return spots;
+    }
+
     public void setAuthor(String author){
         this.author=author;
     }
@@ -82,8 +98,8 @@ public class Topo  {
         this.dateOfPublishing=dateOfPublishing;
     }
 
-    public Boolean getAvailable(){ return availability;}
-    public void setAvailable(Boolean available){ this.availability=availability;}
+   /* public Boolean getAvailable(){ return availability;}
+    public void setAvailable(Boolean available){ this.availability=availability;}*/
 
     public List<ReservationTopo> getReservationTopos() {
         return reservationTopos;
@@ -101,16 +117,15 @@ public class Topo  {
         this.spots=spots;
     }
 
-    public  List<User> getUser() {return (List<User>) user;}
-    public void setUser(List<User> user) {this.user=(User) user;}
 
-  /*  public User getUser() {
+
+   public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user=user;
-    }*/
+    }
 
     public void scanTitle(Scanner sc){
         System.out.println("topoTitle: ");
@@ -130,11 +145,11 @@ public class Topo  {
         this.setDateOfPublishing( inputDateOfPublishing );
     }
 
-    public void scanAvailable(Scanner sc){
+   /* public void scanAvailable(Scanner sc){
         System.out.println("topoAvailability:");
         Boolean inputAvailable =Boolean.valueOf( sc.nextLine() );
         this.setAvailable( inputAvailable );
-    }
+    }*/
 
 
     @Override
@@ -146,7 +161,7 @@ public class Topo  {
                 Objects.equals( title, topo.title ) &&
                 Objects.equals( author, topo.author ) &&
                 Objects.equals( dateOfPublishing, topo.dateOfPublishing ) &&
-                Objects.equals( availability, topo.availability) &&
+              //  Objects.equals( availability, topo.availability) &&
                 Objects.equals( reservationTopos, topo.reservationTopos ) &&
                 Objects.equals( spots, topo.spots )&&
                 Objects.equals( user, topo.user );
@@ -154,7 +169,7 @@ public class Topo  {
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, title, author, dateOfPublishing, availability, reservationTopos, spots, user );
+        return Objects.hash( id, title, author, dateOfPublishing/* availability*/, reservationTopos, spots, user );
     }
 
     @Override
@@ -164,7 +179,7 @@ public class Topo  {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", dateOfPublishing='" + dateOfPublishing + '\'' +
-                ", availability= '" + availability + '\'' +
+                //", availability= '" + availability + '\'' +
                 ", reservationTopos=" + reservationTopos +
                 ", spots=" + spots +
                 '}';

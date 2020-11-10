@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -53,7 +52,7 @@ public class TopoController {
                 //recup du user présent dans la session
 
                 User user= userRepository.findByEmail( (String)httpSession.getAttribute( "email" ) ).get();
-                topo.setUser( (List<User>) user );//lie l'user au topo
+                topo.setUser(  user );//lie l'user au topo
                 System.out.println(topo);
                 this.topoRepository.save(topo);
                 return "redirect:/topoDetails/" + topo.getId(); //redirection qui fonctionne mais sans l'id à transmettre (il faut changer le path de la méthode GetMapping ci-dessus)

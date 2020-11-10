@@ -28,9 +28,13 @@
                         <td th:text="${topo.title}">Title</td>
                         <td th:text="${topo.author}">Author</td>
                         <td th:text="${topo.dateOfPublishing}">Date of Publishing</td>
-                        <td th:text="${topo.availability}">Availability</td>
+
                     </tr>
                 </table>
+                <form action="#" th:action="@{'/{id}/add/reservation' (id=${topo.id})}" th:object="${Topo}"
+                      method="POST">
+                    <p><input type="submit" value="Voulez-vous réserver ce topo?"/></p>
+                </form>
                 <div class="form-group">
                     <label class="form-check-label">
                         <input type="checkbox" required="required"> I accept the <a href="#">Terms of Use</a> &amp; <a href="#">Privacy Policy</a>

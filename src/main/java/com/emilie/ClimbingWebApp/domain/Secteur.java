@@ -4,6 +4,7 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
@@ -25,6 +26,9 @@ public class Secteur  {
     @ManyToOne(targetEntity=Spot.class)
     @JoinColumn(name="spot_id", referencedColumnName="id"/*, insertable=false, updatable=false*/)
     private Spot spot;
+
+    @OneToMany(targetEntity=Voie.class, mappedBy="secteur")
+    private List<Voie> voie = new ArrayList<>();
 
     @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
@@ -63,8 +67,21 @@ public class Secteur  {
         this.user=user;
     }
 
-    public List<Spot> getSpot(){return (List<Spot>) spot;}
-    public void setSpot(List<Spot> spot){this.spot=(Spot) spot;}
+    public Spot getSpot() {
+        return spot;
+    }
+
+    public void setSpot(Spot spot) {
+        this.spot=spot;
+    }
+
+    public List<Voie> getVoie() {
+        return voie;
+    }
+
+    public void setVoie(List<Voie> voie) {
+        this.voie=voie;
+    }
 
     public void scanName(Scanner sc){
         System.out.println ("secteurName: ");
@@ -90,12 +107,13 @@ public class Secteur  {
                 Objects.equals( name, secteur.name ) &&
                 Objects.equals( description, secteur.description ) &&
                 Objects.equals( user, secteur.user )&&
-                Objects.equals( spot, secteur.spot );
+                Objects.equals( spot, secteur.spot )&&
+                Objects.equals( voie, secteur.voie );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, name, description, user, spot );
+        return Objects.hash( id, name, description, user, spot, voie);
     }
 
     @Override

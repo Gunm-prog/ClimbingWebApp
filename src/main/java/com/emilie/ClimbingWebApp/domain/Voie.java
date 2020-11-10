@@ -68,6 +68,7 @@ public class Voie {
     public Secteur getSecteur() {
         return secteur;
     }
+
     public void setSecteur(Secteur secteur) {
         this.secteur=secteur;
     }
