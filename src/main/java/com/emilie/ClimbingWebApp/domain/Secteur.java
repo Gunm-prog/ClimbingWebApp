@@ -11,14 +11,14 @@ import java.util.Scanner;
 
 @Entity
 @Table(name="secteur")//spécification nom table forcé
-public class Secteur  {
+public class Secteur {
 
     @Id
     //norme
     @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
     @Column(name="id")
     private Long id;
-    @Column(name="Nom_secteur")
+    @Column(name="nom_secteur")
     private String name;
     @Column(name="description")
     private String description;
@@ -34,6 +34,7 @@ public class Secteur  {
     @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
     private User user;
 
+
     public Secteur(Scanner sc, String description) {
         this.description=description;
         this.scanName(sc);
@@ -44,7 +45,7 @@ public class Secteur  {
     }
 
     public Long getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(Long id) {
@@ -52,19 +53,11 @@ public class Secteur  {
     }
 
     public String getName() {
-        return this.name;
+        return name;
     }
 
     public void setName(String name) {
         this.name=name;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user=user;
     }
 
     public Spot getSpot() {
@@ -81,6 +74,14 @@ public class Secteur  {
 
     public void setVoie(List<Voie> voie) {
         this.voie=voie;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user=user;
     }
 
     public void scanName(Scanner sc){

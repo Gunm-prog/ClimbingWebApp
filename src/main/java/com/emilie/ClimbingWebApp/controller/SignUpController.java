@@ -36,6 +36,7 @@ public class SignUpController {
 
         //sauvegarde de l'utilisateur dans la table User
         model.addAttribute( "user", user );
+        user.setRole( "member");
         userRepository.save( user );
 
         return "signup-success";
@@ -48,8 +49,6 @@ public class SignUpController {
 
     @PostMapping(path="/login")
     public String showUserAccount(@ModelAttribute User user, Model model, HttpSession httpSession) {
-
-        
       //model.addAttribute( "user", user );
         Optional<User> dataFound = this.userRepository.findByEmail( user.getEmail() );
         if(dataFound.isPresent()){
@@ -61,6 +60,7 @@ public class SignUpController {
                 user.setPseudo( present.getPseudo() );
               //  model.addAttribute( "user", user );
                 httpSession.setAttribute( "email", user.getEmail());
+                httpSession.setAttribute( "currentUserId", present.getId() );
                 return "userAccount";
             }
             return "login";
@@ -69,26 +69,6 @@ public class SignUpController {
         return "login";
    }
 
-    }
+}
 
 
-    /*@GetMapping(path="/homeNotSignedIn")
-    public String homeNotSignedIn(){
-        return "login";
-    }
-    @PostMapping(path="homeNotSignedIn")
-    public String showLogin(@ModelAttribute User user, Model model){
-        model.addAttribute( "user", user );
-        userRepository.save(user);
-        return "login";
-    }*/
-
-   /* @GetMapping("/logout")
-    public String logOutPage(HttpServletRequest, HttpServletResponse response) {
-        Authentification auth=SecurityContextHolder.getContext().getAuthentification();
-        if (auth != null) {
-            new SecurityContextLogoutHandler().logout( request, response, auth );
-        }
-        return "redirect:/login?lougout";
-    }
-*/

@@ -16,6 +16,8 @@ public class Commentaire {
     private String name;
     @Column (name= "content")
     private String content;
+    @Column(name="date")
+    private String date;
     @ManyToOne()
     @JoinColumn(name= "user_id", nullable=false)
     private User user;
@@ -57,6 +59,14 @@ public class Commentaire {
         this.content=content;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date=date;
+    }
+
     public User getUser() {
         return user;
     }
@@ -81,6 +91,12 @@ public class Commentaire {
         this.setContent(inputContent);
     }
 
+    public void scanDate(Scanner sc){
+        System.out.println("Date: ");
+        String inputDate = sc.nextLine();
+        this.setDate( inputDate );
+    }
+
 
     @Override
     public String toString() {
@@ -88,6 +104,7 @@ public class Commentaire {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", content='" + content + '\'' +
+                ", date='" + date + '\'' +
                 ", user=" + user +
                 '}';
     }

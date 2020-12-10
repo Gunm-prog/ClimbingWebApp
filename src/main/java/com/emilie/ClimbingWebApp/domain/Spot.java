@@ -10,9 +10,8 @@ import java.util.Scanner;
 
 @Entity
 @Table(name="spot")//spécification nom table forcé
-public class Spot  {
+public class Spot{
 
-    //private Scanner sc = new Scanner (System.in);
     @Id
     //norme
     @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
@@ -31,7 +30,7 @@ public class Spot  {
     @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
     private User user;
 
-    @OneToMany(targetEntity=Secteur.class, mappedBy="spot", fetch=FetchType.EAGER)
+    @OneToMany(targetEntity=Secteur.class, mappedBy="spot"/*, fetch=FetchType.EAGER*/)
     private List<Secteur> secteur = new ArrayList<>();
 
    @ManyToOne(targetEntity=Topo.class)

@@ -2,6 +2,7 @@ package com.emilie.ClimbingWebApp.controller;
 
 
 import com.emilie.ClimbingWebApp.domain.User;
+import com.emilie.ClimbingWebApp.repositories.SpotRepository;
 import com.emilie.ClimbingWebApp.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,12 +17,19 @@ class HomeController{
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    SpotRepository spotRepository;
+
     @RequestMapping(path="/homeNotSignedIn")
     @GetMapping
     String index(@ModelAttribute User user) {
 
         return "homeNotSignedIn";
     }
+
+
+
+
 
     @PostMapping("/signup")
     public String getSignUp(@ModelAttribute User user, Model model){

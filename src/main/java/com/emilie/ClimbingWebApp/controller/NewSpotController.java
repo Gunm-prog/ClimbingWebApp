@@ -1,9 +1,6 @@
 package com.emilie.ClimbingWebApp.controller;
 
-import com.emilie.ClimbingWebApp.domain.Commentaire;
-import com.emilie.ClimbingWebApp.domain.Secteur;
-import com.emilie.ClimbingWebApp.domain.Spot;
-import com.emilie.ClimbingWebApp.domain.User;
+import com.emilie.ClimbingWebApp.domain.*;
 import com.emilie.ClimbingWebApp.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +29,8 @@ public class NewSpotController {
     LongueurRepository longueurRepository;
     @Autowired
     CommentaireRepository commentaireRepository;
+    @Autowired
+    TopoRepository topoRepository;
     // private SpotService commentaireRepository;
     //private Spot spot
 
@@ -47,13 +46,18 @@ public class NewSpotController {
         Optional<Spot> spot=this.spotRepository.findById( id );
         List<Commentaire> commentaire=this.commentaireRepository.findBySpot( spot.get() );
         System.out.println( commentaire );
+        List<Secteur>secteurs=this.secteurRepository.findBySpot(spot.get());
         //et on place ce spot dans la session
         //httpSession.setAttribute( "spot", spot );
         model.addAttribute( "spot", spot.get() );
         model.addAttribute( "commentaire", commentaire);
+        model.addAttribute( "secteurs", secteurs);
         //on redirige ensuite vers la page qui doit afficher ce spot
         return "spot/spotDetails";
     }
+
+
+
 
     @GetMapping(path="/spot/{id}/add/secteur")
     public String addSecteur(@PathVariable("id")Long id, HttpSession httpSession, Model model){
@@ -69,6 +73,7 @@ public class NewSpotController {
         return "redirect:/secteurDetails/" +secteur.getId();
 
     }
+
     @GetMapping(path="/spot/{id}/add/commentaire")
     public String addCommentaire(@PathVariable("id")Long id, HttpSession httpSession, Model model){
         return "commentaire";
@@ -83,6 +88,19 @@ public class NewSpotController {
         commentaire=this.commentaireRepository.save(commentaire);
         return "redirect:/spotDetails/" +spot.getId();
 
+    }
+    @GetMapping(path="/spot/{id}/add/topo")
+    public String addTopo(@PathVariable("id") Long id, HttpSession httpSession, Model model){
+        return "topo";
+    }
+    @PostMapping("/spot/{id}/add/topo")
+    public String saveTopo(@ModelAttribute("topo") Topo topo, @PathVariable("id")Long id, User user, HttpSession httpSession, Model model){
+        Optional<User> user1=this.userRepository.findById( id );
+        topo.setUser( user1.get() );
+        user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
+        topo.setUser( user );
+        topo=this.topoRepository.save(topo);
+        return "redirect:/topoDetails/" + topo.getId();
     }
   /* @GetMapping("/commentaireDetails/{id}")
     public String showCommentaireDetails(@PathVariable("id") Long id, HttpSession httpSession, Model model){
@@ -125,13 +143,20 @@ public class NewSpotController {
         return "login";//si pas connecté, redirection page de login
     }
 
+    @GetMapping(path="/spot/spotList")
+    public String getHomeNotSignedIn( Model model) {
+        //grace a l'id dans le path, en recupere en bdd le spot par son id
+        List<Spot> spot=this.spotRepository.findAll();
+        System.out.println( spot );
+        //et on place ce spot dans la session
+        //httpSession.setAttribute( "spot", spot );
+        model.addAttribute( "spot", spot );
+
+        //on redirige ensuite vers la page qui doit afficher ce spot
+        return "spot/spotList";
+    }
 
 
-   /* @GetMapping(path="/commentaireDetails/{id}")
-    public String showCommentaire(@)*/
-
-
-/*
    @GetMapping("/updateForm")
     public String showupdateSpotForm(@ModelAttribute("spot") Spot spot, HttpSession httpSession, Model model) {
         if (httpSession.getAttribute( "email" ) != null) {
@@ -142,8 +167,6 @@ public class NewSpotController {
         return "redirect:/spotDetails/" + spot.getId();
     }
 
-    @PostMapping("/updateSpotDetails")
-    public String updateSpotDetails(@)*/
 
 }
 

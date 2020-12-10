@@ -1,33 +1,42 @@
 package com.emilie.ClimbingWebApp.domain;
 
 import javax.persistence.*;
-import java.util.Objects;
-import java.util.Scanner;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="reservation_topo")
-public class ReservationTopo  {
+public class ReservationTopo {
 
     @javax.persistence.Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-    @Column(name="name")
-    private String name;
-    @Column(name="borrowed")
-    private boolean borrowed;
-    @Column(name="reservation")
-    private boolean reservation;
-    @Column(name="date_emprunt")
-    private String dateEmprunt;
-    @Column(name="date_retour")
-    private String dateRetour;
 
+    @Column(name="date_reservation")
+    private LocalDateTime dateReservation;
+
+    @Column(name="reservation_status")
+    private Boolean reservationStatus;
+
+
+   /* @OneToMany (targetEntity=Topo.class, mappedBy="reservation_topo", fetch=FetchType.EAGER)
+   // @JoinColumn(name="topo_id", referencedColumnName="id")
+    private List<Topo>topo=new ArrayList<>();*/
+
+    //private List<User>user=new ArrayList<>();
     @ManyToOne(targetEntity=Topo.class)
-    @JoinColumn(name="topo_id", referencedColumnName="id")
+    @JoinColumn(name="topo_id")
     private Topo topo;
 
-    public ReservationTopo(Scanner sc){this.scanName(sc);}
+    @ManyToOne(targetEntity=User.class)
+    @JoinColumn(name="user_id")
+    private User user;
+
+
+
+
+
+
 
     public ReservationTopo() {
 
@@ -37,28 +46,28 @@ public class ReservationTopo  {
 
     public void setId(Long id) { this.id=id; }
 
-    public String getName() { return name; }
-
-    public void setName(String name) { this.name=name; }
-
-    public boolean isBorrowed() { return borrowed; }
-
-    public void setBorrowed(boolean borrowed) { this.borrowed=borrowed; }
-
-    public boolean isReservation() { return reservation; }
-
-    public void setReservation(boolean reservation) { this.reservation=reservation; }
-
-    public String getDateEmprunt() { return dateEmprunt; }
-
-    public void setDateEmprunt(String dateEmprunt) { this.dateEmprunt=dateEmprunt; }
-
-    public String getDateRetour() {
-        return dateRetour;
+    public LocalDateTime getDateReservation() {
+        return dateReservation;
     }
 
-    public void setDateRetour(String dateRetour) {
-        this.dateRetour=dateRetour;
+    public void setDateReservation(LocalDateTime dateReservation) {
+        this.dateReservation=dateReservation;
+    }
+
+    public Boolean getReservationStatus() {
+        return reservationStatus;
+    }
+
+    public void setReservationStatus(Boolean reservationStatus) {
+        this.reservationStatus=reservationStatus;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user=user;
     }
 
     public Topo getTopo() {
@@ -68,41 +77,33 @@ public class ReservationTopo  {
     public void setTopo(Topo topo) {
         this.topo=topo;
     }
-    private void scanName(Scanner sc){
-        System.out.println("reservationTopoName:");
-        String inputName= sc.nextLine();
-        this.setName(inputName);
-    }
 
-    @Override
+
+   /* @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ReservationTopo that=(ReservationTopo) o;
-        return borrowed == that.borrowed &&
-                reservation == that.reservation &&
-                Objects.equals( id, that.id ) &&
-                Objects.equals( name, that.name ) &&
-                Objects.equals( dateEmprunt, that.dateEmprunt ) &&
-                Objects.equals( dateRetour, that.dateRetour ) &&
-                Objects.equals( topo, that.topo );
+        return Objects.equals( id, that.id ) &&
+                Objects.equals( dateReservation, that.dateReservation ) &&
+                Objects.equals( reservationStatus, that.reservationStatus ) &&
+                Objects.equals( topo, that.topo ) &&
+                Objects.equals( user, that.user );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, name, borrowed, reservation, dateEmprunt, dateRetour, topo );
+        return Objects.hash( id, dateReservation, reservationStatus, topo, user );
     }
 
     @Override
     public String toString() {
         return "ReservationTopo{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", borrowed=" + borrowed +
-                ", reservation=" + reservation +
-                ", dateEmprunt=" + dateEmprunt +
-                ", dateRetour=" + dateRetour +
+                ", dateReservation=" + dateReservation +
+                ", reservationStatus=" + reservationStatus +
                 ", topo=" + topo +
+                ", user=" + user +
                 '}';
-    }
+    }*/
 }

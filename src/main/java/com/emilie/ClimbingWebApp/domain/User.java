@@ -5,12 +5,14 @@ import java.util.*;
 
     @Entity
     @Table(name="User")//spécification nom table forcé
-    public class User  {
+    public class User {
+
 
         @javax.persistence.Id//norme
         @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
+      //  private static final long serialVersionUID=1L;
         @Column (name="id")
-        private Long Id;
+        private Long id;
         @Column (name="name")
         private String name;
         @Column (unique=true, name="email") //todo à vérifier
@@ -19,24 +21,30 @@ import java.util.*;
         private String pseudo;
         @Column (name="password")
         private String password;
+        @Column (name="role")
+        private String role;
 
-        @OneToMany(targetEntity=Commentaire.class, mappedBy="user", fetch=FetchType.EAGER)
+
+        @OneToMany(targetEntity=ReservationTopo.class, mappedBy="user")
+        private List<ReservationTopo> reservationTopos=new ArrayList<>();
+
+        @OneToMany(targetEntity=Commentaire.class, mappedBy="user")
         private Set<Commentaire> commentaire;
 
         @OneToMany(targetEntity=Spot.class, mappedBy="user")
         private List<Spot> spot = new ArrayList<>();
 
-        @OneToMany(targetEntity=Secteur.class, mappedBy="user")
+      /*  @OneToMany(targetEntity=Secteur.class, mappedBy="user")
         private List<Secteur> secteur= new ArrayList<>();
 
         @OneToMany(targetEntity=Voie.class, mappedBy="user")
         private List<Voie> voie = new ArrayList<>();
 
         @OneToMany(targetEntity=Longueur.class, mappedBy="user")
-        private List<Longueur> longueur = new ArrayList<>();
+        private List<Longueur> longueur = new ArrayList<>();*/
 
         @OneToMany(targetEntity=Topo.class, mappedBy="user")
-        private List<Topo> topo = new ArrayList<>();
+        private List<Topo> topo= new ArrayList<>();
 
 
         public User(){
@@ -54,8 +62,20 @@ import java.util.*;
         public User(String name, String email, String pseudo, String password) {
         }
 
-        public Long getId(){return Id;}
-        public void setId(Long id){this.Id=id;}
+        public List<ReservationTopo> getReservationTopos() {
+            return reservationTopos;
+        }
+
+        public void setReservationTopos(List<ReservationTopo> reservationTopos) {
+            this.reservationTopos=reservationTopos;
+        }
+
+        public void setTopo(List<Topo> topo) {
+            this.topo=topo;
+        }
+
+        public Long getId(){return id;}
+        public void setId(Long id){this.id=id;}
 
         public String getName(){return name;}
         public void setName(String name){this.name=name; }
@@ -72,18 +92,29 @@ import java.util.*;
         public List<Spot> getSpot(){return spot;}
         public void setSpot(List<Spot> spot){this.spot=spot;}
 
-        public List<Secteur> getSecteur(){return secteur;}
-        public void setSecteur(List<Secteur> secteur) {this.secteur=secteur;}
+        public Set<Commentaire> getCommentaire() {
+            return commentaire;
+        }
 
-        public List<Voie> getVoie(){return voie;}
-        public void setVoie(List<Voie> voie){this.voie=voie;}
+        public void setCommentaire(Set<Commentaire> commentaire) {
+            this.commentaire=commentaire;
+        }
 
-        public Set<Commentaire> getCommentaire(){return commentaire;}
-        public void setCommentaire(Set<Commentaire> commentaire){this.commentaire=commentaire;}
+        public List<Topo> getTopo() {
+            return topo;
+        }
 
-        public List<Topo> getTopo(){return topo;}
-        public void setTopo(List<Topo> topo){this.topo=topo;}
+        public void setTopos(List<Topo> topo) {
+            this.topo=topo;
+        }
 
+        public String getRole() {
+            return role;
+        }
+
+        public void setRole(String role) {
+            this.role=role;
+        }
 
         public void scanName(Scanner sc){
             System.out.println("userName: ");
@@ -112,39 +143,42 @@ import java.util.*;
         }
 
 
-        @Override
+       /* @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             User user=(User) o;
-            return Objects.equals( Id, user.Id ) &&
+            return Objects.equals( id, user.id ) &&
                     Objects.equals( name, user.name ) &&
                     Objects.equals( email, user.email ) &&
                     Objects.equals( pseudo, user.pseudo ) &&
                     Objects.equals( password, user.password ) &&
+                    Objects.equals( role, user.role ) &&
+                    Objects.equals( reservationTopos, user.reservationTopos ) &&
                     Objects.equals( commentaire, user.commentaire ) &&
-                    Objects.equals( secteur, user.secteur )&&
-                    Objects.equals( spot, user.spot )&&
-                    Objects.equals( voie, user.voie )&&
+                    Objects.equals( spot, user.spot ) &&
                     Objects.equals( topo, user.topo );
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash( Id );
+            return Objects.hash( id, name, email, pseudo, password, role, reservationTopos, commentaire, spot, topo );
         }
 
         @Override
         public String toString() {
             return "User{" +
-                    "Id=" + Id +
+                    "id=" + id +
                     ", name='" + name + '\'' +
                     ", email='" + email + '\'' +
                     ", pseudo='" + pseudo + '\'' +
                     ", password='" + password + '\'' +
+                    ", role='" + role + '\'' +
+                    ", reservationTopos=" + reservationTopos +
+                    ", commentaire=" + commentaire +
+                    ", spot=" + spot +
+                    ", topo=" + topo +
                     '}';
-        }
-//  public void setCreateDate(Date date) {
-        // }
+        }*/
     }
 

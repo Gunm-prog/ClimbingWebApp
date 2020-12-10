@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 @Entity
 @Table(name="longueur")//spécification nom table forcé
-public class Longueur  {
+public class Longueur {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

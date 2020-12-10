@@ -1,8 +1,10 @@
 package com.emilie.ClimbingWebApp.controller;
 
 
+import com.emilie.ClimbingWebApp.domain.ReservationTopo;
 import com.emilie.ClimbingWebApp.domain.Topo;
 import com.emilie.ClimbingWebApp.domain.User;
+import com.emilie.ClimbingWebApp.repositories.ReservationTopoRepository;
 import com.emilie.ClimbingWebApp.repositories.SpotRepository;
 import com.emilie.ClimbingWebApp.repositories.TopoRepository;
 import com.emilie.ClimbingWebApp.repositories.UserRepository;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Controller
 public class TopoController {
@@ -26,6 +30,8 @@ public class TopoController {
     UserRepository userRepository;
     @Autowired
     SpotRepository spotRepository;
+    @Autowired
+    ReservationTopoRepository reservationTopoRepository;
 
 
     @GetMapping(path="/topo")
@@ -36,12 +42,45 @@ public class TopoController {
     @GetMapping(path="/topoDetails/{id}")
     public String getTopoDetails(@PathVariable("id") Long id, HttpSession httpSession, Model model){
         //grace a l'id dans le path, en recupere en bdd le spot par son id
-        Optional<Topo> topo = this.topoRepository.findById( id );
-        model.addAttribute( "topo", topo.get() );
+        if(httpSession.getAttribute( "email" ) != null){
+                User user= userRepository.findByEmail( (String)httpSession.getAttribute( "email" ) ).get();
+            System.out.println(user);
+                Optional<Topo> dataTopo = this.topoRepository.findById( id );
+                if(dataTopo.isPresent()){
+                    Topo theTopo= dataTopo.get();
+                    boolean isOwner=false;
+                    if(theTopo.getUser().getId() == user.getId()){ // si le proprietaire du topo == l'utilisateur connecté
+                        isOwner=true;
+                    }
+                    Set<ReservationTopo> reservationTopo= this.reservationTopoRepository.findByTopo(theTopo);
+                    boolean topoAvailabity=true;
+                    boolean userHasAlreadyLoaned=false;
+                    for (ReservationTopo value: reservationTopo){
+                        if (value.getReservationStatus() != null && value.getReservationStatus()){
+                            topoAvailabity=false;
+                        }
+                        if (value.getUser().getId() == user.getId()){ //si l'utilisateur connecté a déjà fait une demande de réservation
+                            userHasAlreadyLoaned = true;
+                        }
 
 
-        //on redirige ensuite vers la page qui doit afficher ce secteur
-        return "topoDetails";
+                    }
+
+                    System.out.println(theTopo);
+                    System.out.println(isOwner);
+                    System.out.println(userHasAlreadyLoaned);
+                    System.out.println(topoAvailabity);
+                    model.addAttribute( "topo", theTopo );
+                    model.addAttribute( "user", user );
+                    model.addAttribute( "isOwner", isOwner );
+                    model.addAttribute( "topoAvailability", topoAvailabity );
+                    model.addAttribute( "userHasAlreadyLoaned", userHasAlreadyLoaned );
+                   // model.addAttribute( "reservationTopo", reservationTopo );
+                }
+            return "topoDetails";
+        }else {
+            return "login";
+        }
     }
 
     @PostMapping("/topo")
@@ -64,9 +103,25 @@ public class TopoController {
         }
         return "login" ;//si pas connecté, redirection page de login
     }
+    @GetMapping(path="/topoList")
+    public String getHomeNotSignedIn( Model model) {
+        //grace a l'id dans le path, en recupere en bdd le spot par son id
+        List<Topo> topo=this.topoRepository.findAll();
+        System.out.println(topo);
+        //et on place ce spot dans la session
+        //httpSession.setAttribute( "spot", spot );
+        model.addAttribute( "topo",topo );
+
+        //on redirige ensuite vers la page qui doit afficher ce spot
+        return "/topoList";
+    }
 
 
-}
+
+
+    }
+
+
 
 
 
