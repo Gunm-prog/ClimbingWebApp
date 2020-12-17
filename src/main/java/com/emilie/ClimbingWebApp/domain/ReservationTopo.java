@@ -106,4 +106,13 @@ public class ReservationTopo {
                 ", user=" + user +
                 '}';
     }*/
+
+    @Override
+    public String toString() {
+        return "ReservationTopo{" +
+                "id=" + id +
+                ", dateReservation=" + dateReservation +
+                ", reservationStatus=" + reservationStatus +
+                '}';
+    }
 }

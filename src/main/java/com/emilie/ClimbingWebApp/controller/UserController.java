@@ -32,31 +32,12 @@ public class UserController {
 
     @GetMapping(path="/userAccount")
     public String getUserAccount(@PathVariable("id") Long id, Model model, HttpSession httpSession) {
-        //model.addAttribute( "user", user );
-        // String email=(String) httpSession.getAttribute( "email" );
-        //String name=(String) httpSession.getAttribute( "name" );
         User user=(User) httpSession.getAttribute( "user" );
 
         if (user.getEmail() != null) {
-            //   Optional<User> userConnected=this.userRepository.findByEmail( user.getEmail() );
-            //  if (userConnected.isPresent()){
-            //  User present=userConnected.get();//ajout if present
-            //  if (present.getPassword().equals( user.getPassword() )) {
-            //  this.userRepository.findByPassword( user.getPassword() );
-            //  httpSession.getAttribute( "email", email);// non
-            //  user.setName( name );
             model.addAttribute( "user", user );
-            //   model.addAttribute( "email", user.getEmail() );
-            //   model.addAttribute( "name", user.getName() );
-
-
-            //TODO ajout de tous les attributs de l'utilisateur pour les afficher
             return "userAccount";
         }
-        //  }
-        //  }
-
-        // return "redirect:/login";
         return "login";
     }
 
@@ -69,11 +50,14 @@ public class UserController {
         Recupération de la liste topos appartenant à l'utilisateur connecté.
         Puis on parcourt la liste our récupérer les listes de reservation de chaque topo
         * */
+
         List<Topo> topos=this.topoRepository.findByUser( user.get() );
-        for ( Topo value : topos ){
-            Set<ReservationTopo> reservationTopos = this.reservationTopoRepository.findByTopo( value); //value étant un objet Topo
-                value.setReservation( reservationTopos );
+        for ( Topo topo : topos ){ //pour un topo de la liste des topos
+            Set<ReservationTopo> reservationTopos = this.reservationTopoRepository.findByTopo(topo); //on va chercher la liste
+            //reservations dudit topo et on lui donne (dans son attribut resevation)
+                topo.setReservation( reservationTopos );
         }
+        System.out.println(topos);
 
         /*
         On instancie une list vide, topoRequestList, destinée à recevoir les topo que l'utilisateur connecté à réservé ou voulu réservé.
@@ -83,7 +67,7 @@ public class UserController {
          Puis on place ce topo dans la liste topoRequestList
          */
         List<Topo> topoRequestList = new ArrayList<>();
-        Set<ReservationTopo>reservationTopos=this.reservationTopoRepository.findByUser( user.get() );
+        Set<ReservationTopo>reservationTopos = this.reservationTopoRepository.findByUser( user.get() );
         for (ReservationTopo value: reservationTopos){
             Optional<Topo> dataTopo = this.topoRepository.findByReservation(value);
             if(dataTopo.isPresent()){

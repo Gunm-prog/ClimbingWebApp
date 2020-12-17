@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 
 @Entity
+@Table(name="commentaire")
 public class Commentaire {
 
     @Id//norme
@@ -18,11 +19,12 @@ public class Commentaire {
     private String content;
     @Column(name="date")
     private String date;
-    @ManyToOne()
-    @JoinColumn(name= "user_id", nullable=false)
+
+    @ManyToOne(targetEntity=User.class, fetch=FetchType.EAGER)
+    @JoinColumn(name= "user_id", referencedColumnName="id")
     private User user;
 
-    @ManyToOne()
+    @ManyToOne(targetEntity=Spot.class)
     @JoinColumn(name="spot_id")
     private Spot spot;
 

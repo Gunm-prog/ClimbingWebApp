@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 @Entity
 @Table(name="spot")//spécification nom table forcé
-public class Spot{
+public class Spot {
 
     @Id
     //norme
@@ -21,6 +21,8 @@ public class Spot{
     private String name;
     @Column(name="description_spot")
     private String description;
+    @Column (name="tag")
+    private boolean tag;
 
    /*@ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name= "user_id")//, nullable=false)
@@ -106,6 +108,14 @@ public class Spot{
     public Topo getTopo(){return topo;}
 
     public void setTopos(Topo topo){this.topo=topo; }
+
+    public boolean isTag() {
+        return tag;
+    }
+
+    public void setTag(boolean tag) {
+        this.tag=tag;
+    }
 
     public void scanName(Scanner sc){
         System.out.println ("spotName: ");

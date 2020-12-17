@@ -164,6 +164,7 @@ import java.util.*;
         public int hashCode() {
             return Objects.hash( id, name, email, pseudo, password, role, reservationTopos, commentaire, spot, topo );
         }
+*/
 
         @Override
         public String toString() {
@@ -174,11 +175,7 @@ import java.util.*;
                     ", pseudo='" + pseudo + '\'' +
                     ", password='" + password + '\'' +
                     ", role='" + role + '\'' +
-                    ", reservationTopos=" + reservationTopos +
-                    ", commentaire=" + commentaire +
-                    ", spot=" + spot +
-                    ", topo=" + topo +
                     '}';
-        }*/
+        }
     }
 

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,21 +44,71 @@ public class NewSpotController {
 
     @GetMapping(path="/spotDetails/{id}")
     public String getSpotDetails(@PathVariable("id") Long id, HttpSession httpSession, Model model) {
+
         //grace a l'id dans le path, en recupere en bdd le spot par son id
-        Optional<Spot> spot=this.spotRepository.findById( id );
-        List<Commentaire> commentaire=this.commentaireRepository.findBySpot( spot.get() );
-        System.out.println( commentaire );
-        List<Secteur>secteurs=this.secteurRepository.findBySpot(spot.get());
+        Optional<Spot> spotData = this.spotRepository.findById( id );
+        System.out.println("dans controller spotDetails");
+        System.out.println(spotData);
+        System.out.println("spotId :" + id);
+        Spot spot = new Spot();
+        if(spotData.isPresent()){
+            spot = spotData.get();
+            System.out.println("test");
+            System.out.println(spot);
+
+        }
+        List<Commentaire> commentaires=this.commentaireRepository.findBySpot( spot );
+        for(Commentaire commentaire : commentaires){
+            Optional<User> userData = this.userRepository.findByCommentaire( commentaire );
+            if(userData.isPresent()){
+                System.out.println(userData);
+                commentaire.setUser(userData.get());
+            }
+        }
+        System.out.println(commentaires);
+    //    System.out.println( commentaires );
+        /*for (Commentaire commentaire : commentaires){
+           Optional<User> userData=this.userRepository.findByCommentaire(commentaire);
+           if(userData.isPresent()){
+               User user= userData.get();
+               commentaire.setUser( user );
+               System.out.println(commentaire);
+               System.out.println(user);
+           }
+
+        }*/
+       /* Optional<Commentaire>commentaire=this.commentaireRepository.findById((long)1);
+        System.out.println(commentaire);*/
+        List<Secteur>secteurs=this.secteurRepository.findBySpot(spot);
+
         //et on place ce spot dans la session
         //httpSession.setAttribute( "spot", spot );
-        model.addAttribute( "spot", spot.get() );
-        model.addAttribute( "commentaire", commentaire);
+        model.addAttribute( "spot", spot );
+        model.addAttribute( "userId", httpSession.getAttribute( "currentUserId" ) );
+        model.addAttribute( "userRole", httpSession.getAttribute( "currentUserRole" ));
+        model.addAttribute( "commentaires", commentaires);
         model.addAttribute( "secteurs", secteurs);
         //on redirige ensuite vers la page qui doit afficher ce spot
         return "spot/spotDetails";
     }
 
-
+    @GetMapping(path="/spotDetails/spot/{id}/tag")
+    public String tagSpot( @PathVariable("id") Long id, HttpSession httpSession, Model model){
+       // System.out.println(spot);
+        Optional<Spot> spotData = this.spotRepository.findById( id );
+    //    System.out.println(spotData);
+        if(spotData.isPresent()) {
+            Spot spot= spotData.get();
+            if(spot.isTag() == false) { //si le spot n'est pas tag,
+                spot.setTag( true ); //on le passe à true pour le tag
+            } else { //sinon c'est qu'il est tag et donc on peut le detag
+                spot.setTag( false );
+            }
+            //System.out.println(spot);
+            this.spotRepository.save(spot);
+        }
+        return "redirect:/spotDetails/" + id;
+    }
 
 
     @GetMapping(path="/spot/{id}/add/secteur")
@@ -80,12 +132,22 @@ public class NewSpotController {
     }
 
     @PostMapping("/spot/{id}/add/commentaire")
-    public String saveCommentaire(@ModelAttribute("commentaire") Commentaire commentaire, @PathVariable("id") Long id, Spot spot, HttpSession httpSession, Model model){
-        Optional<Spot> spot1=this.spotRepository.findById( id );
-        commentaire.setSpot( spot1.get() );
+    public String saveCommentaire(@ModelAttribute("commentaire") Commentaire commentaire, Spot spot, HttpSession httpSession){
+
+        Commentaire newCom = new Commentaire();
+        newCom.setName( commentaire.getName() );
+        newCom.setContent( commentaire.getContent() );
+        newCom.setSpot( spot );
+
         User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
-        commentaire.setUser( user );
-        commentaire=this.commentaireRepository.save(commentaire);
+        newCom.setUser( user );
+
+        LocalDateTime date=LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String stringDate = date.format(formatter);
+        newCom.setDate( stringDate);
+
+        this.commentaireRepository.save(newCom);
         return "redirect:/spotDetails/" +spot.getId();
 
     }

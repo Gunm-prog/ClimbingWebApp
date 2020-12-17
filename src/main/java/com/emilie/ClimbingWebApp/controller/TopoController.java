@@ -55,17 +55,21 @@ public class TopoController {
                     Set<ReservationTopo> reservationTopo= this.reservationTopoRepository.findByTopo(theTopo);
                     boolean topoAvailabity=true;
                     boolean userHasAlreadyLoaned=false;
+                    boolean reservationAccepted = false;
                     for (ReservationTopo value: reservationTopo){
-                        if (value.getReservationStatus() != null && value.getReservationStatus()){
+                        if (value.getReservationStatus() != null && value.getReservationStatus() ){
                             topoAvailabity=false;
+                            if (value.getUser().getId() == user.getId()){
+                                reservationAccepted = true;
+                            }
                         }
                         if (value.getUser().getId() == user.getId()){ //si l'utilisateur connecté a déjà fait une demande de réservation
                             userHasAlreadyLoaned = true;
                         }
 
-
                     }
 
+                    System.out.println(reservationAccepted);
                     System.out.println(theTopo);
                     System.out.println(isOwner);
                     System.out.println(userHasAlreadyLoaned);
@@ -75,6 +79,7 @@ public class TopoController {
                     model.addAttribute( "isOwner", isOwner );
                     model.addAttribute( "topoAvailability", topoAvailabity );
                     model.addAttribute( "userHasAlreadyLoaned", userHasAlreadyLoaned );
+                    model.addAttribute( "reservationAccepted", reservationAccepted );
                    // model.addAttribute( "reservationTopo", reservationTopo );
                 }
             return "topoDetails";

@@ -39,9 +39,12 @@ ici ou dans le controlleur faire un tableau des ustilisateur ayant une rsv, afin
                                 <input type="submit" value="reserver ce topo"/>
                             </form>
                         </td>
-                        <td colspan="3" th:if="${isOwner == false and userHasAlreadyLoaned == true}">
+                        <td colspan="2" th:if="${isOwner == false and userHasAlreadyLoaned == true and reservationAccepted == false}">
                             Votre demande est en attente de validation
                         </td>
+                        <td colspan="3" th:if="${isOwner == false and reservationAccepted == true and userHasAlreadyLoaned == true}">
+                            <p> Demande acceptée. Infos de contact:</p>
+                            <p th:text="${topo.user.email}"></p></td>
                         <td colspan="3" th:if="${isOwner == true}" >Vous ne pouvez pas réserver votre propre topo</td>
                     </tr>
                 </table>

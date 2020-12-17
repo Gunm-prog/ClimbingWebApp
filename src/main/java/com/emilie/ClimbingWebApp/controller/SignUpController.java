@@ -61,6 +61,7 @@ public class SignUpController {
               //  model.addAttribute( "user", user );
                 httpSession.setAttribute( "email", user.getEmail());
                 httpSession.setAttribute( "currentUserId", present.getId() );
+                httpSession.setAttribute( "currentUserRole", present.getRole() );
                 return "userAccount";
             }
             return "login";

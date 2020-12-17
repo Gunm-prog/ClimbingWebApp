@@ -20,6 +20,8 @@ public class Topo {
     private String author;
     @Column(name="date_of_publishing")
     private String dateOfPublishing;
+    @Column(name="is_reserved")
+    private boolean isReserved;
 
 
 
@@ -113,6 +115,14 @@ public class Topo {
         this.user=user;
     }
 
+    public boolean isReserved() {
+        return isReserved;
+    }
+
+    public void setReserved(boolean reserved) {
+        isReserved=reserved;
+    }
+
     public void scanTitle(Scanner sc) {
         System.out.println( "topoTitle: " );
         String inputTitle=sc.nextLine();
@@ -146,6 +156,7 @@ public class Topo {
     }
 
 
+*/
 
     @Override
     public String toString() {
@@ -154,9 +165,10 @@ public class Topo {
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
                 ", dateOfPublishing='" + dateOfPublishing + '\'' +
+                ", isReserved=" + isReserved +
                 ", reservation=" + reservation +
                 ", spots=" + spots +
                 ", user=" + user +
                 '}';
-    }*/
+    }
 }

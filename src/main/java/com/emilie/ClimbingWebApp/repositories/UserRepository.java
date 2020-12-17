@@ -1,5 +1,6 @@
 package com.emilie.ClimbingWebApp.repositories;
 
+import com.emilie.ClimbingWebApp.domain.Commentaire;
 import com.emilie.ClimbingWebApp.domain.Topo;
 import com.emilie.ClimbingWebApp.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,6 +26,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
+
+
     Optional<User> findByPassword(String password);
 
     Optional<User> findByName(String name);
@@ -34,6 +37,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User>findByTopo(Topo topo);
 
 
-
+    Optional<User> findByCommentaire(Commentaire commentaire);
 }
 
