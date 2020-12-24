@@ -142,30 +142,6 @@ import java.util.*;
             this.setPassword(inputPassword);
         }
 
-
-       /* @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            User user=(User) o;
-            return Objects.equals( id, user.id ) &&
-                    Objects.equals( name, user.name ) &&
-                    Objects.equals( email, user.email ) &&
-                    Objects.equals( pseudo, user.pseudo ) &&
-                    Objects.equals( password, user.password ) &&
-                    Objects.equals( role, user.role ) &&
-                    Objects.equals( reservationTopos, user.reservationTopos ) &&
-                    Objects.equals( commentaire, user.commentaire ) &&
-                    Objects.equals( spot, user.spot ) &&
-                    Objects.equals( topo, user.topo );
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash( id, name, email, pseudo, password, role, reservationTopos, commentaire, spot, topo );
-        }
-*/
-
         @Override
         public String toString() {
             return "User{" +

@@ -75,7 +75,6 @@ public class NewSpotController {
                System.out.println(commentaire);
                System.out.println(user);
            }
-
         }*/
        /* Optional<Commentaire>commentaire=this.commentaireRepository.findById((long)1);
         System.out.println(commentaire);*/
@@ -115,13 +114,19 @@ public class NewSpotController {
     public String addSecteur(@PathVariable("id")Long id, HttpSession httpSession, Model model){
         return "secteur";
     }
+
+
     @PostMapping("/spot/{id}/add/secteur")
-    public String saveSecteur(@ModelAttribute("secteur") Secteur secteur, @PathVariable("id") Long id, Spot spot, HttpSession httpSession, Model model){
-    Optional<Spot> spot1=this.spotRepository.findById( id );
-    secteur.setSpot( spot1.get() );
-    User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
-    secteur.setUser(user);
-    secteur=this.secteurRepository.save(secteur);
+    public String saveSecteur(@ModelAttribute("secteur") Secteur secteur, @PathVariable("id") Long id, Spot spot, HttpSession httpSession){
+        Secteur newSecteur = new Secteur();
+        newSecteur.setName( secteur.getName());
+        newSecteur.setDescription( secteur.getDescription() );
+        newSecteur.setSpot( spot );
+        Optional<Spot> spot1=this.spotRepository.findById( id );
+        secteur.setSpot( spot1.get() );
+        User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
+        newSecteur.setUser(user);
+        secteur=this.secteurRepository.save(newSecteur);
         return "redirect:/secteurDetails/" +secteur.getId();
 
     }
@@ -155,8 +160,9 @@ public class NewSpotController {
     public String addTopo(@PathVariable("id") Long id, HttpSession httpSession, Model model){
         return "topo";
     }
+
     @PostMapping("/spot/{id}/add/topo")
-    public String saveTopo(@ModelAttribute("topo") Topo topo, @PathVariable("id")Long id, User user, HttpSession httpSession, Model model){
+    public String saveTopo(@ModelAttribute("topo") Topo topo, @PathVariable("id")Long id, User user, HttpSession httpSession){
         Optional<User> user1=this.userRepository.findById( id );
         topo.setUser( user1.get() );
         user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();

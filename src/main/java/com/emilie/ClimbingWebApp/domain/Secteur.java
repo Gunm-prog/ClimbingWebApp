@@ -6,7 +6,6 @@ package com.emilie.ClimbingWebApp.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Scanner;
 
 @Entity
@@ -99,23 +98,6 @@ public class Secteur {
         this.description=description;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Secteur secteur=(Secteur) o;
-        return Objects.equals( id, secteur.id ) &&
-                Objects.equals( name, secteur.name ) &&
-                Objects.equals( description, secteur.description ) &&
-                Objects.equals( user, secteur.user )&&
-                Objects.equals( spot, secteur.spot )&&
-                Objects.equals( voie, secteur.voie );
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash( id, name, description, user, spot, voie);
-    }
 
     @Override
     public String toString() {

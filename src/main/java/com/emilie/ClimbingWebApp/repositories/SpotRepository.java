@@ -30,4 +30,6 @@ public interface SpotRepository extends JpaRepository<Spot, Long> {
     List<Spot> findAllById(Long id);
 
     List<Spot> findByUser(User user);
+
+
 }

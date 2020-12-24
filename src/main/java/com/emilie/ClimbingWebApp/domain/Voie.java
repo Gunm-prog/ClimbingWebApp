@@ -2,7 +2,6 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.Scanner;
 
 @Entity
@@ -19,8 +18,8 @@ public class Voie {
     @Column(name="nombre")
     private int nombre;
 
-    @ManyToOne
-    @JoinColumn(name="secteur_id")
+    @ManyToOne(targetEntity=Secteur.class)
+    @JoinColumn(name="secteur_id", referencedColumnName="id")
     private Secteur secteur;
 
     @ManyToOne(targetEntity=User.class)
@@ -83,25 +82,6 @@ public class Voie {
     }
 
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Voie voie=(Voie) o;
-        return hauteur == voie.hauteur &&
-                nombre == voie.nombre &&
-                Objects.equals( id, voie.id ) &&
-                Objects.equals( name, voie.name ) &&
-                Objects.equals( secteur, voie.secteur )&&
-                Objects.equals( user, voie.user );
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash( id, name, hauteur, nombre, secteur, user );
-    }
-
     @Override
     public String toString() {
         return "Voie{" +
@@ -109,7 +89,6 @@ public class Voie {
                 ", name='" + name + '\'' +
                 ", hauteur=" + hauteur +
                 ", nombre=" + nombre +
-                ", secteur=" + secteur +
                 '}';
     }
 }
