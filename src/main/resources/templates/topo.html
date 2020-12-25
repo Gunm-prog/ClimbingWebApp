@@ -15,6 +15,7 @@
     <title>New Topo</title>
 </head>
 <body>
+<div th:replace="fragments/menu :: header"></div>
 <form action="#" th:action="@{/topo}" th:object="${Topo}"
       method="POST">
     <div class="text-center">
@@ -29,5 +30,8 @@
     </div>
 </form>
 <div class="text-center">Already have an account? <a href="#">Log In</a></div>
+<footer th:fragment="footer">
+    C'est mon pied!
+</footer>
 </body>
 </html>

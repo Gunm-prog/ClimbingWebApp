@@ -5,7 +5,11 @@
     <title>Signup Success</title>
 </head>
 <body>
+<div th:replace="fragments/menu :: header"></div>
     <p>Your Sign Up request success. Please check your email.</p>
     <p th:text="${user.email}"></p>
+<footer th:fragment="footer">
+    C'est mon pied!
+</footer>
 </body>
 </html>

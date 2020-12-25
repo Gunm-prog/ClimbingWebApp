@@ -6,6 +6,7 @@
     <title>User List Spring Boot web application - Thymeleaf</title>
 </head>
 <body>
+<div th:replace="fragments/menu :: header"></div>
 <h1 align="center">My user list</h1>
 <br/>
 <table border="1" cellpadding="10">
@@ -23,5 +24,8 @@
         <td th:text="${user.password}">Password</td>
     </tr>
 </table>
+<footer th:fragment="footer">
+    C'est mon pied!
+</footer>
 </body>
 </html>

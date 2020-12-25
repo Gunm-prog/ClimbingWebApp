@@ -212,14 +212,17 @@ public class NewSpotController {
     }
 
     @GetMapping(path="/spot/spotList")
-    public String getHomeNotSignedIn( Model model) {
-        //grace a l'id dans le path, en recupere en bdd le spot par son id
-        List<Spot> spot=this.spotRepository.findAll();
-        System.out.println( spot );
+    public String getHomeNotSignedIn(@ModelAttribute("keyword") String keyword, Model model) {
+        List<Spot>spotData = null;
+        if (keyword != null) {
+            spotData=this.spotRepository.searchSpot( keyword );
+        }else {
+            spotData=this.spotRepository.findAll();
+        }
         //et on place ce spot dans la session
         //httpSession.setAttribute( "spot", spot );
-        model.addAttribute( "spot", spot );
-
+        model.addAttribute( "spotList", spotData );
+        System.out.println(spotData);
         //on redirige ensuite vers la page qui doit afficher ce spot
         return "spot/spotList";
     }
@@ -234,6 +237,14 @@ public class NewSpotController {
         }
         return "redirect:/spotDetails/" + spot.getId();
     }
+
+   /* @PostMapping("/searchSpot/{keyword}")
+    public String searchSpot(@PathVariable("keyword") String keyword, Model model){
+        List<Spot> spotData = this.spotRepository.searchSpot( keyword );
+        model.addAttribute( "spotList", spotData );
+
+        return ""
+    }*/
 
 
 }

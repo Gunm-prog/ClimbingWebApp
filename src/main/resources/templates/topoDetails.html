@@ -6,6 +6,7 @@
     </head>
 
     <body>
+    <div th:replace="fragments/menu :: header"></div>
         <br>
         <h1>Topo in Details!</h1>
 
@@ -49,5 +50,8 @@ ici ou dans le controlleur faire un tableau des ustilisateur ayant une rsv, afin
                     </tr>
                 </table>
             </div>
+    <footer th:fragment="footer">
+        C'est mon pied!
+    </footer>
     </body>
 </html>

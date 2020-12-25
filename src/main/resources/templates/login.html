@@ -5,6 +5,7 @@
     <title>Login Page</title>
 </head>
 <body>
+<div th:replace="fragments/menu :: header"></div>
 <h1>Log In</h1>
 
 <form th:action="@{/login}" th:object="${User}" method="post">
@@ -16,6 +17,9 @@
       <br/>
     <input type="submit" value="Log In" />
 </form>
+<footer th:fragment="footer">
+    C'est mon pied!
+</footer>
 </body>
 
 </html>

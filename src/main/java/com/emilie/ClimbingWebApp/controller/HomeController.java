@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 class HomeController{
@@ -20,8 +19,8 @@ class HomeController{
     @Autowired
     SpotRepository spotRepository;
 
-    @RequestMapping(path="/homeNotSignedIn")
-    @GetMapping
+
+    @GetMapping(path="/homeNotSignedIn")
     String index(@ModelAttribute User user) {
 
         return "homeNotSignedIn";
