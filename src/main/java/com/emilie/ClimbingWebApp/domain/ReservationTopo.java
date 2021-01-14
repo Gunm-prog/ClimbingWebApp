@@ -33,18 +33,17 @@ public class ReservationTopo {
     private User user;
 
 
-
-
-
-
-
     public ReservationTopo() {
 
     }
 
-    public Long getId() { return id; }
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) { this.id=id; }
+    public void setId(Long id) {
+        this.id=id;
+    }
 
     public LocalDateTime getDateReservation() {
         return dateReservation;

@@ -23,19 +23,27 @@ public class SignUpController {
 
     //method to get signup form
     @GetMapping(path="/signup")
-    public String getSignUpForm(@ModelAttribute User user) {
-
+    public String getSignUpForm(@ModelAttribute User user, HttpSession httpSession, Model model) {
+        if(httpSession != null){
+            model.addAttribute( "message", httpSession.getAttribute("message") );
+            httpSession.removeAttribute( "message" );
+        }
         return "signup-form";
     }
 
     //method to get signupform details
     @PostMapping("/signup-submit")
-    public String submitSignUp(@ModelAttribute User user, Model model) {
+    public String submitSignUp(@ModelAttribute User user, HttpSession httpSession, Model model) {
 
-        String hashedPass = BCrypt.withDefaults().hashToString( 12, user.getPassword().toCharArray() );
+        String hashedPass=BCrypt.withDefaults().hashToString( 12, user.getPassword().toCharArray() );
         user.setPassword( hashedPass );
-        user.setRole( "member");
-        userRepository.save( user );
+        user.setRole( "member" );
+        try {
+            userRepository.save( user );
+        }catch (Exception  exception){
+           httpSession.setAttribute( "message", "This email already exists" );
+            return "redirect:/signup";
+        }
 
         model.addAttribute( "user", user );
         return "signup-success";
@@ -47,25 +55,26 @@ public class SignUpController {
     }
 
     @PostMapping(path="/login")
-    public String showUserAccount(@ModelAttribute User user, Model model, HttpSession httpSession){
+    public String showUserAccount(@ModelAttribute User user, Model model, HttpSession httpSession) {
         //model.addAttribute( "user", user );
-        Optional<User> dataFound = this.userRepository.findByEmail( user.getEmail() );
-        if(dataFound.isPresent()){
-            User userData = dataFound.get();
+        Optional<User> dataFound=this.userRepository.findByEmail( user.getEmail() );
+        if (dataFound.isPresent()) {
+            User userData=dataFound.get();
 
-            BCrypt.Result result = BCrypt.verifyer().verify(user.getPassword().toCharArray(), userData.getPassword());
+            BCrypt.Result result=BCrypt.verifyer().verify( user.getPassword().toCharArray(), userData.getPassword() );
 
 
-            if(result.verified){
-                user.setId(userData.getId());
-                user.setName( userData.getName() );
-                user.setEmail( userData.getEmail() );
-                user.setPseudo( userData.getPseudo() );
+            if (result.verified) {
+                //user.setId( userData.getId() );
+                //user.setName( userData.getName() );
+                //user.setEmail( userData.getEmail() );
+                //user.setPseudo( userData.getPseudo() );
                 //  model.addAttribute( "user", user );
-                httpSession.setAttribute( "email", user.getEmail());
+                httpSession.setAttribute( "email", userData.getEmail() );
+                httpSession.setAttribute( "pseudo", userData.getPseudo() );
                 httpSession.setAttribute( "currentUserId", userData.getId() );
                 httpSession.setAttribute( "currentUserRole", userData.getRole() );
-                return "userAccount";
+                return "redirect:/userAccount/" + userData.getId();
             }
             return "login";
         }
@@ -74,10 +83,9 @@ public class SignUpController {
     }
 
     @GetMapping(path="/logout")
-    public String showUserAccountLogOut(@ModelAttribute User user, HttpSession httpSession){
+    public String showUserAccountLogOut(@ModelAttribute User user, HttpSession httpSession) {
         httpSession.invalidate();
-        //httpSession.removeAttribute( "email" );
-        return "login";
+        return "index";
     }
 
 }

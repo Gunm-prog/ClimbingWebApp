@@ -17,11 +17,13 @@ public interface SecteurRepository extends JpaRepository<Secteur, Long> {
 
     @Query(value="SELECT s FROM Secteur s WHERE s.name LIKE '%' || :keyword || '%'"
             + "OR s.description LIKE '%' || :keyword || '%'")
-    public List<Secteur> searchSecteur(@Param( "keyword" ) String keyword);
+    public List<Secteur> searchSecteur(@Param("keyword") String keyword);
+
+    @Query(value="SELECT DISTINCT s FROM Spot s, Secteur sec, Voie v, Longueur l WHERE l.quotation LIKE :quotation")
+    public List<Spot> searchByQuotation(@Param("quotation") String quotation);
 
     @Override
     Optional<Secteur> findById(Long id);
-
 
     List<Secteur> findByUser(User user);
 

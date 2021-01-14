@@ -15,45 +15,39 @@ public class Spot {
     @Id
     //norme
     @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
-    @Column (name = "id")
+    @Column(name="id")
     private Long id;
-    @Column (name="Nom_spot")
+    @Column(name="Nom_spot")
     private String name;
     @Column(name="description_spot")
     private String description;
-    @Column (name="tag")
+    @Column(name="tag")
     private boolean tag;
 
-   /*@ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name= "user_id")//, nullable=false)
-    private User user;*/
 
-   @ManyToOne(targetEntity=User.class)
-    @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
+    @ManyToOne(targetEntity=User.class)
+    @JoinColumn(name="user_id",
+            referencedColumnName="id")
     private User user;
 
-    @OneToMany(targetEntity=Secteur.class, mappedBy="spot"/*, fetch=FetchType.EAGER*/)
-    private List<Secteur> secteur = new ArrayList<>();
+    @OneToMany(targetEntity=Secteur.class,
+            mappedBy="spot")
+    private List<Secteur> secteur=new ArrayList<>();
 
-   @ManyToOne(targetEntity=Topo.class)
-   @JoinColumn(name="topo_id", referencedColumnName="id")
-   private Topo topo;
+    @ManyToMany
+    //name = nom de la table d'association
+    @JoinTable(name="topo_has_spot",
+            joinColumns=@JoinColumn(name="spot_id"),
+            inverseJoinColumns=@JoinColumn(name="topo_id"))
+    private List<Topo> topos=new ArrayList<>();
 
-    @OneToMany(targetEntity=Commentaire.class, mappedBy="spot")
-    private List<Commentaire> commentaires = new ArrayList<>();
-    /*@OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name= "Commentaire")
-    private Commentaire commentaire;
-    private List<Commentaire> commentaires;*/
-
-   /* @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="commentaire_id")
-    private Commentaire commentaire;*/
-
+    @OneToMany(targetEntity=Commentaire.class,
+            mappedBy="spot")
+    private List<Commentaire> commentaires=new ArrayList<>();
 
     public Spot(Scanner sc) {
-        this.scanName(sc);
-        this.scanDescription(sc);
+        this.scanName( sc );
+        this.scanDescription( sc );
     }
 
 
@@ -77,11 +71,15 @@ public class Spot {
         this.name=name;
     }
 
-    public String getDescription(){return description;}
+    public String getDescription() {
+        return description;
+    }
 
-    public void setDescription(String description){this.description=description;}
+    public void setDescription(String description) {
+        this.description=description;
+    }
 
-    public List<Commentaire> getCommentaires() {
+    public List<Commentaire> getCommentaires() { //TODO why getCommentaires et setCommentaire sont en gris????
         return commentaires;
     }
 
@@ -105,9 +103,13 @@ public class Spot {
         this.secteur=secteur;
     }
 
-    public Topo getTopo(){return topo;}
+    public List<Topo> getTopos() {
+        return topos;
+    }
 
-    public void setTopos(Topo topo){this.topo=topo; }
+    public void setTopos(List<Topo> topos) {
+        this.topos=topos;
+    }
 
     public boolean isTag() {
         return tag;
@@ -117,15 +119,16 @@ public class Spot {
         this.tag=tag;
     }
 
-    public void scanName(Scanner sc){
-        System.out.println ("spotName: ");
-        String inputName = sc.nextLine();
-        this.setName(inputName );
+    public void scanName(Scanner sc) {
+        System.out.println( "spotName: " );
+        String inputName=sc.nextLine();
+        this.setName( inputName );
     }
-    public void scanDescription(Scanner sc){
-        System.out.println("spotDescription: ");
-        String inputDescription = sc.nextLine();
-        this.setDescription(inputDescription);
+
+    public void scanDescription(Scanner sc) {
+        System.out.println( "spotDescription: " );
+        String inputDescription=sc.nextLine();
+        this.setDescription( inputDescription );
     }
 
     @Override
@@ -133,18 +136,19 @@ public class Spot {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Spot spot=(Spot) o;
-        return Objects.equals( id, spot.id ) &&
+        return tag == spot.tag &&
+                Objects.equals( id, spot.id ) &&
                 Objects.equals( name, spot.name ) &&
                 Objects.equals( description, spot.description ) &&
                 Objects.equals( user, spot.user ) &&
                 Objects.equals( secteur, spot.secteur ) &&
-                Objects.equals( topo, spot.topo ) &&
+                Objects.equals( topos, spot.topos ) &&
                 Objects.equals( commentaires, spot.commentaires );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, name, description, user, secteur, topo, commentaires );
+        return Objects.hash( id, name, description, tag, user, secteur, topos, commentaires );
     }
 
     @Override

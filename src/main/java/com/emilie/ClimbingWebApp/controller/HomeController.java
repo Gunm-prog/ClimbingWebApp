@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
-class HomeController{
+class HomeController {
 
     @Autowired
     UserRepository userRepository;
@@ -20,21 +22,21 @@ class HomeController{
     SpotRepository spotRepository;
 
 
-    @GetMapping(path="/homeNotSignedIn")
-    String index(@ModelAttribute User user) {
-
-        return "homeNotSignedIn";
+    @GetMapping(path="/")
+    String index(HttpSession httpSession, Model model) {
+        if (httpSession.getAttribute( "email" ) != null) {
+            model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+            model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
+        }
+        return "index";
     }
 
 
-
-
-
     @PostMapping("/signup")
-    public String getSignUp(@ModelAttribute User user, Model model){
+    public String getSignUp(@ModelAttribute User user, Model model) {
 
         model.addAttribute( "user", user );
-        userRepository.save(user);
+        userRepository.save( user );
 
         return "signup";
     }

@@ -1,7 +1,6 @@
 package com.emilie.ClimbingWebApp.domain;
 
 
-
 import javax.persistence.*;
 import java.util.*;
 
@@ -24,13 +23,20 @@ public class Topo {
     private boolean isReserved;
 
 
-
     @OneToMany(targetEntity=ReservationTopo.class, mappedBy="topo", fetch=FetchType.EAGER)
     private Set<ReservationTopo> reservation;
 
 
+    @ManyToMany
+    //name = nom de la table d'association
+    @JoinTable( name = "topo_has_spot",
+            joinColumns = @JoinColumn( name = "topo_id" ),
+            inverseJoinColumns = @JoinColumn( name = "spot_id" ) )
+    private List<Spot> spots = new ArrayList<>();
+
+    /*//TODO ManyToMany
     @OneToMany(targetEntity=Spot.class, mappedBy="topo", fetch=FetchType.EAGER)
-    private List<Spot> spots=new ArrayList<>();
+    private List<Spot> spots=new ArrayList<>();*/
 
     @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
@@ -105,7 +111,10 @@ public class Topo {
     public void setSpots(List<Spot> spots) {
         this.spots=spots;
     }
-
+    //methode pour donner un spot qui sera ajouté à la liste de spots
+    public void setSpot(Spot spot){
+        this.spots.add(spot);
+    }
 
     public User getUser() {
         return user;

@@ -1,57 +1,57 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:>
-    <head>
-        <meta charset="UTF-8">
-        <title>Topo</title>
-    </head>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+<div th:replace="fragments/base :: head"></div>
+<title>Topo Details</title>
 
-    <body>
-    <div th:replace="fragments/menu :: header"></div>
-        <br>
-        <h1>Topo in Details!</h1>
+<body>
+<div th:replace="fragments/menu :: header"></div>
+<br>
+<h2>Topo in Details</h2>
 
-            <div class="text-center">
-                <h1 align="center">Topo</h1>
-                <br/>
-                <table border="1" cellpadding="10">
-                    <tr>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Date of Publishing</th>
-                    </tr>
-<!--
-ici ou dans le controlleur faire un tableau des ustilisateur ayant une rsv, afin de pouvoir les filtrer de l'affichage du buton de reservation .
--->
-                    <tr>
-                        <td th:text="${topo.title}">Title</td>
-                        <td th:text="${topo.user.pseudo}">Author</td>
-                        <td th:text="${topo.dateOfPublishing}">Date of Publishing</td>
-                    </tr>
-                    <tr>
-                        <th colspan="3">Reservation </th>
-                    </tr>
-                    <tr>
-                        <td colspan="3" th:if="${topoAvailability == true}"> Disponible</td>
-                        <td colspan="3" th:if="${topoAvailability == false}"> Non Disponible</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" th:if="${userHasAlreadyLoaned == false and isOwner == false}">
-                            <form action="#" th:action="@{'/add/reservation/{id}' (id=${topo.id})}" method="post">
-                                <input type="submit" value="reserver ce topo"/>
-                            </form>
-                        </td>
-                        <td colspan="2" th:if="${isOwner == false and userHasAlreadyLoaned == true and reservationAccepted == false}">
-                            Votre demande est en attente de validation
-                        </td>
-                        <td colspan="3" th:if="${isOwner == false and reservationAccepted == true and userHasAlreadyLoaned == true}">
-                            <p> Demande acceptée. Infos de contact:</p>
-                            <p th:text="${topo.user.email}"></p></td>
-                        <td colspan="3" th:if="${isOwner == true}" >Vous ne pouvez pas réserver votre propre topo</td>
-                    </tr>
-                </table>
-            </div>
-    <footer th:fragment="footer">
-        C'est mon pied!
-    </footer>
-    </body>
+<section>
+    <div class="text-center">
+        <h1 align="center">Topo</h1>
+        <br/>
+        <table border="1" cellpadding="10">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Date of Publishing</th>
+            </tr>
+            <!--
+            ici ou dans le controlleur faire un tableau des ustilisateur ayant une rsv, afin de pouvoir les filtrer de l'affichage du buton de reservation .
+            -->
+            <tr>
+                <td th:text="${topo.title}">Title</td>
+                <td th:text="${topo.user.pseudo}">Author</td>
+                <td th:text="${topo.dateOfPublishing}">Date of Publishing</td>
+            </tr>
+            <tr>
+                <th colspan="3">Reservation</th>
+            </tr>
+            <tr>
+                <td colspan="3" th:if="${topoAvailability == true}"> Disponible</td>
+                <td colspan="3" th:if="${topoAvailability == false}"> Non Disponible</td>
+            </tr>
+            <tr>
+                <td colspan="3" th:if="${userHasAlreadyLoaned == false and isOwner == false}">
+                    <form action="#" th:action="@{'/add/reservation/{id}' (id=${topo.id})}" method="post">
+                        <input type="submit" value="reserver ce topo"/>
+                    </form>
+                </td>
+                <td colspan="2"
+                    th:if="${isOwner == false and userHasAlreadyLoaned == true and reservationAccepted == false}">
+                    Votre demande est en attente de validation
+                </td>
+                <td colspan="3"
+                    th:if="${isOwner == false and reservationAccepted == true and userHasAlreadyLoaned == true}">
+                    <p> Demande acceptée. Infos de contact:</p>
+                    <p th:text="${topo.user.email}"></p></td>
+                <td colspan="3" th:if="${isOwner == true}">Vous ne pouvez pas réserver votre propre topo</td>
+            </tr>
+        </table>
+    </div>
+</section>
+</body>
 </html>

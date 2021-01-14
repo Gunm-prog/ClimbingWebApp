@@ -11,8 +11,13 @@ import java.util.Optional;
 @Repository
 public interface LongueurRepository extends JpaRepository<Longueur, Long> {
 
+    /* @Query
+     public List<Longueur> searchLongueur(@Param("keyword") String keyword);*/
     @Override
     Optional<Longueur> findById(Long id);
 
     List<Longueur> findByVoie(Voie voie);
+
+
 }
+

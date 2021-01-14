@@ -2,6 +2,8 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 @Entity
@@ -22,13 +24,18 @@ public class Voie {
     @JoinColumn(name="secteur_id", referencedColumnName="id")
     private Secteur secteur;
 
+    @OneToMany(targetEntity=Longueur.class, mappedBy="voie")
+    private List<Longueur> voie=new ArrayList<>();
+
     @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
     private User user;
 
-    public Voie(Scanner sc){this.scanName(sc);}
+    public Voie(Scanner sc) {
+        this.scanName( sc );
+    }
 
-    public Voie(){
+    public Voie() {
 
     }
 
@@ -72,12 +79,17 @@ public class Voie {
         this.secteur=secteur;
     }
 
-    public User getUser(){return user;}
-    public void setUser(User user){this.user=user;}
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user=user;
+    }
 
     private void scanName(Scanner sc) {
-        System.out.println("voieName: ");
-        String inputName= sc.nextLine();
+        System.out.println( "voieName: " );
+        String inputName=sc.nextLine();
         this.setName( inputName );
     }
 

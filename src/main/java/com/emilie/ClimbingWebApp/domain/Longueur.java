@@ -29,11 +29,13 @@ public class Longueur {
     private User user;
 
 
+    public Longueur(Scanner sc) {
+        this.scanId( sc );
+    }
 
-    public Longueur(Scanner sc){this.scanId(sc);}
 
-
-    public Longueur(){}
+    public Longueur() {
+    }
 
     public Long getId() {
         return id;
@@ -75,13 +77,18 @@ public class Longueur {
         this.voie=voie;
     }
 
-    public User getUser(){return user;}
-    public void setUser(User user){this.user=user;}
+    public User getUser() {
+        return user;
+    }
 
-  private void scanId(Scanner sc){
-        System.out.println("longueurId: ");
+    public void setUser(User user) {
+        this.user=user;
+    }
+
+    private void scanId(Scanner sc) {
+        System.out.println( "longueurId: " );
         Long inputId=Long.valueOf( sc.nextLine() );
-        this.setId(inputId);
+        this.setId( inputId );
     }
 
     @Override
@@ -93,13 +100,13 @@ public class Longueur {
                 Objects.equals( id, longueur.id ) &&
                 Objects.equals( points, longueur.points ) &&
                 Objects.equals( quotation, longueur.quotation ) &&
-                Objects.equals( voie, longueur.voie )&&
+                Objects.equals( voie, longueur.voie ) &&
                 Objects.equals( user, longueur.user );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, distance, points, quotation, voie, user);
+        return Objects.hash( id, distance, points, quotation, voie, user );
     }
 
     @Override

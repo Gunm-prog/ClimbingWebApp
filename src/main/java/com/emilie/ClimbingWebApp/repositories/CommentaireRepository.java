@@ -13,7 +13,9 @@ public interface CommentaireRepository extends JpaRepository<Commentaire, Long> 
 
     @Override
     Optional<Commentaire> findById(Long id);
+
     List<Commentaire> findAll();
+
     List<Commentaire> findBySpot(Spot spot);
 
 }

@@ -34,97 +34,100 @@ public class TopoController {
     ReservationTopoRepository reservationTopoRepository;
 
 
-    @GetMapping(path="/topo")
-    public String getTopo(){
+    @GetMapping(path="/topo") //TODO pas necessaire? check par rapport au @PostMapping en bas !!!
+    public String getTopo() {
         return "topo";
     }
 
     @GetMapping(path="/topoDetails/{id}")
-    public String getTopoDetails(@PathVariable("id") Long id, HttpSession httpSession, Model model){
+    public String getTopoDetails(@PathVariable("id") Long id, HttpSession httpSession, Model model) {
         //grace a l'id dans le path, en recupere en bdd le spot par son id
-        if(httpSession.getAttribute( "email" ) != null){
-                User user= userRepository.findByEmail( (String)httpSession.getAttribute( "email" ) ).get();
-            System.out.println(user);
-                Optional<Topo> dataTopo = this.topoRepository.findById( id );
-                if(dataTopo.isPresent()){
-                    Topo theTopo= dataTopo.get();
-                    boolean isOwner=false;
-                    if(theTopo.getUser().getId() == user.getId()){ // si le proprietaire du topo == l'utilisateur connecté
-                        isOwner=true;
-                    }
-                    Set<ReservationTopo> reservationTopo= this.reservationTopoRepository.findByTopo(theTopo);
-                    boolean topoAvailabity=true;
-                    boolean userHasAlreadyLoaned=false;
-                    boolean reservationAccepted = false;
-                    for (ReservationTopo value: reservationTopo){
-                        if (value.getReservationStatus() != null && value.getReservationStatus() ){
-                            topoAvailabity=false;
-                            if (value.getUser().getId() == user.getId()){
-                                reservationAccepted = true;
-                            }
-                        }
-                        if (value.getUser().getId() == user.getId()){ //si l'utilisateur connecté a déjà fait une demande de réservation
-                            userHasAlreadyLoaned = true;
-                        }
-
-                    }
-
-                    System.out.println(reservationAccepted);
-                    System.out.println(theTopo);
-                    System.out.println(isOwner);
-                    System.out.println(userHasAlreadyLoaned);
-                    System.out.println(topoAvailabity);
-                    model.addAttribute( "topo", theTopo );
-                    model.addAttribute( "user", user );
-                    model.addAttribute( "isOwner", isOwner );
-                    model.addAttribute( "topoAvailability", topoAvailabity );
-                    model.addAttribute( "userHasAlreadyLoaned", userHasAlreadyLoaned );
-                    model.addAttribute( "reservationAccepted", reservationAccepted );
-                   // model.addAttribute( "reservationTopo", reservationTopo );
+        if (httpSession.getAttribute( "email" ) != null) {
+            User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
+            System.out.println( user );
+            Optional<Topo> dataTopo=this.topoRepository.findById( id );
+            if (dataTopo.isPresent()) {
+                Topo theTopo=dataTopo.get();
+                boolean isOwner=false;
+                if (theTopo.getUser().getId() == user.getId()) { // si le proprietaire du topo == l'utilisateur connecté
+                    isOwner=true;
                 }
+                Set<ReservationTopo> reservationTopo=this.reservationTopoRepository.findByTopo( theTopo );
+                boolean topoAvailabity=true;
+                boolean userHasAlreadyLoaned=false;
+                boolean reservationAccepted=false;
+                for (ReservationTopo value : reservationTopo) {
+                    if (value.getReservationStatus() != null && value.getReservationStatus()) {
+                        topoAvailabity=false;
+                        if (value.getUser().getId() == user.getId()) {
+                            reservationAccepted=true;
+                        }
+                    }
+                    if (value.getUser().getId() == user.getId()) { //si l'utilisateur connecté a déjà fait une demande de réservation
+                        userHasAlreadyLoaned=true;
+                    }
+
+                }
+
+                System.out.println( reservationAccepted );
+                System.out.println( theTopo );
+                System.out.println( isOwner );
+                System.out.println( userHasAlreadyLoaned );
+                System.out.println( topoAvailabity );
+                model.addAttribute( "topo", theTopo );
+                model.addAttribute( "user", user );
+                model.addAttribute( "isOwner", isOwner );
+                model.addAttribute( "topoAvailability", topoAvailabity );
+                model.addAttribute( "userHasAlreadyLoaned", userHasAlreadyLoaned );
+                model.addAttribute( "reservationAccepted", reservationAccepted );
+                // model.addAttribute( "reservationTopo", reservationTopo );
+            }
             return "topoDetails";
-        }else {
+        } else {
             return "login";
         }
     }
 
     @PostMapping("/topo")
-    public String newTopo(@ModelAttribute("topo") Topo topo, HttpSession httpSession, Model model){
-        if(httpSession.getAttribute( "email" ) != null){
+    public String newTopo(@ModelAttribute("topo") Topo topo, HttpSession httpSession) {
+        if (httpSession.getAttribute( "email" ) != null) {
             // si user existe en session, il est connecté, ok!
-            if(topo != null){ //si spot existe, il vient du formulaire, on le persiste en bdd.
+            if (topo != null) { //si spot existe, il vient du formulaire, on le persiste en bdd.
                 //recup du user présent dans la session
 
-                User user= userRepository.findByEmail( (String)httpSession.getAttribute( "email" ) ).get();
-                topo.setUser(  user );//lie l'user au topo
-                System.out.println(topo);
-                this.topoRepository.save(topo);
+                User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
+                topo.setUser( user );//lie l'user au topo
+                System.out.println( topo );
+                this.topoRepository.save( topo );
                 return "redirect:/topoDetails/" + topo.getId(); //redirection qui fonctionne mais sans l'id à transmettre (il faut changer le path de la méthode GetMapping ci-dessus)
-            }
-            else{//si pas d'informations venant du formulaire newspot a traiter, direction formulaire de newspot
+            } else {//si pas d'informations venant du formulaire newspot a traiter, direction formulaire de newspot
                 return "topo";
             }
 
         }
-        return "login" ;//si pas connecté, redirection page de login
+        return "login";//si pas connecté, redirection page de login
     }
-    @GetMapping(path="/topoList")
-    public String getHomeNotSignedIn( Model model) {
-        //grace a l'id dans le path, en recupere en bdd le spot par son id
-        List<Topo> topo=this.topoRepository.findAll();
-        System.out.println(topo);
-        //et on place ce spot dans la session
-        //httpSession.setAttribute( "spot", spot );
-        model.addAttribute( "topo",topo );
 
-        //on redirige ensuite vers la page qui doit afficher ce spot
+    @GetMapping(path="/topoList")
+    public String getHomeNotSignedIn(@ModelAttribute("keyword") String keyword, Model model, HttpSession httpSession) {
+        List<Topo> topoData=null;
+        //grace a l'id dans le path, en recupere en bdd le spot par son id
+        if (keyword != null) {
+            topoData=this.topoRepository.searchTopo( keyword );
+        } else {
+            topoData=this.topoRepository.findAll();
+        }
+        model.addAttribute( "topoList", topoData );
+        model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+        model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
+        System.out.println( topoData );
+        //on redirige ensuite vers la page qui doit afficher ce topo
         return "/topoList";
     }
 
+}
 
 
-
-    }
 
 
 

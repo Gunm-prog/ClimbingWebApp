@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Repository
-public interface ReservationTopoRepository extends JpaRepository<ReservationTopo,Long>{
+public interface ReservationTopoRepository extends JpaRepository<ReservationTopo, Long> {
 
 
     @Override
@@ -20,12 +20,6 @@ public interface ReservationTopoRepository extends JpaRepository<ReservationTopo
 
     Set<ReservationTopo> findByTopo(Topo topo);
 
-    Optional<ReservationTopo> findByUser(String name);
-
-    Optional<ReservationTopo> findByUser(ReservationTopo reservationTopo);
-
     void deleteById(Long id);
 
-
-    // public List<ReservationTopo> findUserById(Long userId);
 }

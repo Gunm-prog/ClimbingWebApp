@@ -1,25 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-    <title>Login Page</title>
-</head>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/base :: base(~{::title},~{::h2}, ~{::section})">
+<div th:replace="fragments/base :: head"></div>
+<title>Login Page</title>
 <body>
 <div th:replace="fragments/menu :: header"></div>
-<h1>Log In</h1>
+<h2>Log In</h2>
+<section>
+    <div class="connect_box">
+        <form th:action="@{/login}" th:object="${User}" method="post">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" autofocus>
 
-<form th:action="@{/login}" th:object="${User}" method="post">
-      <label for="email">Email</label>
-      <input type="text" id="email" name="email" autofocus>
 
-      <label for="password">Password</label>
-      <input type="text" id="password" name="password" />
-      <br/>
-    <input type="submit" value="Log In" />
-</form>
-<footer th:fragment="footer">
-    C'est mon pied!
-</footer>
+            <p>
+                <label for="password">Your password</label>
+                <input type="password" name="password" placeholder="Enter Password" id="password">
+                <!-- <button class="unmask" type="button" title="Mask/Unmask password to check content">Unmask</button>-->
+            </p>
+            <br/>
+            <input type="submit" value="Log In"/>
+        </form>
+    </div>
+</section>
 </body>
-
 </html>
