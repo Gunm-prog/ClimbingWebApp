@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 
+
 @Entity
 @Table(name="spot")//spécification nom table forcé
 public class Spot {
