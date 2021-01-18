@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 @Entity
 @Table(name="commentaire")
-public class Commentaire {
+public class Comment {
 
     @Id//norme
     @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
@@ -28,14 +28,14 @@ public class Commentaire {
     @JoinColumn(name="spot_id")
     private Spot spot;
 
-    public Commentaire(Scanner sc, User user, Spot spot) {
+    public Comment(Scanner sc, User user, Spot spot) {
         this.user=user;//TODO à vérifier cet ajout de constructeur
         this.spot=spot;
         this.scanName( sc );
         this.scanContent( sc );
     }
 
-    public Commentaire() {
+    public Comment() {
 
     }
 

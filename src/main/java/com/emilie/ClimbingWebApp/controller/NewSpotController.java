@@ -24,9 +24,9 @@ public class NewSpotController {
     @Autowired
     UserRepository userRepository;
     @Autowired
-    SecteurRepository secteurRepository;
+    AreaRepository areaRepository;
     @Autowired
-    CommentaireRepository commentaireRepository;
+    CommentRepository commentRepository;
     @Autowired
     TopoRepository topoRepository;
 
@@ -56,25 +56,25 @@ public class NewSpotController {
             System.out.println( spot );
 
         }
-        List<Commentaire> commentaires=this.commentaireRepository.findBySpot( spot );
-        for (Commentaire commentaire : commentaires) {
-            Optional<User> userData=this.userRepository.findByCommentaire( commentaire );
+        List<Comment> comments=this.commentRepository.findBySpot( spot );
+        for (Comment comment : comments) {
+            Optional<User> userData=this.userRepository.findByComment( comment );
             if (userData.isPresent()) {
                 System.out.println( userData );
-                commentaire.setUser( userData.get() );
+                comment.setUser( userData.get() );
             }
         }
-        System.out.println( commentaires );
+        System.out.println( comments );
 
-        List<Secteur> secteurs=this.secteurRepository.findBySpot( spot );
+        List<Area> areas=this.areaRepository.findBySpot( spot );
 
         //et on place ce spot dans la session
         //httpSession.setAttribute( "spot", spot );
         model.addAttribute( "spot", spot );
         model.addAttribute( "userId", httpSession.getAttribute( "currentUserId" ) );
         model.addAttribute( "userRole", httpSession.getAttribute( "currentUserRole" ) );
-        model.addAttribute( "commentaires", commentaires );
-        model.addAttribute( "secteurs", secteurs );
+        model.addAttribute( "comments", comments );
+        model.addAttribute( "areas", areas );
         //on redirige ensuite vers la page qui doit afficher ce spot
         return "spot/spotDetails";
     }
@@ -104,67 +104,67 @@ public class NewSpotController {
     }
 
 
-    @GetMapping(path="/spot/{id}/add/secteur")              //TODO to check!!!!!
-    public String addSecteur(@ModelAttribute("secteur") Secteur secteur,
+    @GetMapping(path="/spot/{id}/add/area")              //TODO to check!!!!!
+    public String addSecteur(@ModelAttribute("area") Area area,
                              @PathVariable("id") Long id,   //TODO why id est en gris
                              HttpSession httpSession,
                              Model model) {
 
         if (httpSession.getAttribute( "email" ) != null) {
-            System.out.println( secteur );
-            model.addAttribute( "secteur", secteur );
-            return "secteur";
+            System.out.println( area );
+            model.addAttribute( "area", area );
+            return "area";
         } else {
             return "redirect:/login";
         }
     }
 
 
-    @PostMapping("/spot/{id}/add/secteur")
-    public String saveSecteur(@ModelAttribute("secteur") Secteur secteur,
+    @PostMapping("/spot/{id}/add/area")
+    public String saveSecteur(@ModelAttribute("area") Area area,
                               @PathVariable("id") Long id,
                               Spot spot,
                               HttpSession httpSession) {
         if (httpSession.getAttribute( "email" ) != null) {
-            Secteur newSecteur=new Secteur();
-            newSecteur.setName( secteur.getName() );
-            newSecteur.setDescription( secteur.getDescription() );
-            newSecteur.setSpot( spot );
+            Area newArea=new Area();
+            newArea.setName( area.getName() );
+            newArea.setDescription( area.getDescription() );
+            newArea.setSpot( spot );
             Optional<Spot> spot1=this.spotRepository.findById( id );
-            secteur.setSpot( spot1.get() );
+            area.setSpot( spot1.get() );
             User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
-            newSecteur.setUser( user );
-            secteur=this.secteurRepository.save( newSecteur );
-            return "redirect:/secteurDetails/" + secteur.getId();
+            newArea.setUser( user );
+            area=this.areaRepository.save( newArea );
+            return "redirect:/areaDetails/" + area.getId();
         } else {
             return "redirect:/login";
         }
     }
 
-    @GetMapping(path="/spot/{id}/add/commentaire")   //TODO To check!!!!!!!
-    public String addCommentaire(@ModelAttribute("commentaire") Commentaire commentaire,
+    @GetMapping(path="/spot/{id}/add/comment")   //TODO To check!!!!!!!
+    public String addComment(@ModelAttribute("comment") Comment comment,
                                  @PathVariable("id") Long id,
                                  HttpSession httpSession,
                                  Model model) {
 
         if (httpSession.getAttribute( "email" ) != null) {
-            System.out.println( commentaire );
-            model.addAttribute( "commentaire", commentaire );
-            return "commentaire";
+            System.out.println( comment );
+            model.addAttribute( "comment", comment );
+            return "comment";
         } else {
             return "redirect:/login";
         }
     }
 
-    @PostMapping("/spot/{id}/add/commentaire") //TODO To check!!!!!!
-    public String saveCommentaire(@ModelAttribute("commentaire") Commentaire commentaire,
+    @PostMapping("/spot/{id}/add/comment") //TODO To check!!!!!!
+    public String saveComment(@ModelAttribute("comment") Comment comment,
                                   Spot spot,
                                   HttpSession httpSession) { //TODO check!!!!!
 
         if (httpSession.getAttribute( "email" ) != null) {
-            Commentaire newCom=new Commentaire();
-            newCom.setName( commentaire.getName() );
-            newCom.setContent( commentaire.getContent() );
+            Comment newCom=new Comment();
+            newCom.setName( comment.getName() );
+            newCom.setContent( comment.getContent() );
             newCom.setSpot( spot );
 
             User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
@@ -175,7 +175,7 @@ public class NewSpotController {
             String stringDate=date.format( formatter );
             newCom.setDate( stringDate );
 
-            this.commentaireRepository.save( newCom );
+            this.commentRepository.save( newCom );
             return "redirect:/spotDetails/" + spot.getId();
         } else {
             return "redirect:/login";
@@ -262,7 +262,8 @@ public class NewSpotController {
     @GetMapping(path="/spot/spotList")
     public String getHomeNotSignedIn(@ModelAttribute("keyword") String keyword,
                                      @ModelAttribute("quotation") String quotation,
-                                     Model model) {
+                                     Model model,
+                                     HttpSession httpSession) {
 
         List<Spot> spotData=null;
         if (quotation.isEmpty() && keyword.isEmpty()) {
@@ -279,6 +280,8 @@ public class NewSpotController {
         //et on place ce spot dans la session
         //httpSession.setAttribute( "spot", spot );
         model.addAttribute( "spotList", spotData );
+        model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+        model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
         System.out.println( spotData );
         //on redirige ensuite vers la page qui doit afficher ce spot
         return "spot/spotList";

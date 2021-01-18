@@ -1,6 +1,6 @@
 package com.emilie.ClimbingWebApp.repositories;
 
-import com.emilie.ClimbingWebApp.domain.Commentaire;
+import com.emilie.ClimbingWebApp.domain.Comment;
 import com.emilie.ClimbingWebApp.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -22,8 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    Optional<User> findByCommentaire(Commentaire commentaire);
-
-
+    Optional<User> findByComment(Comment comment);
 }
 

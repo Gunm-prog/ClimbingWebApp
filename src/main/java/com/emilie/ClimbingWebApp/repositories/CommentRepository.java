@@ -1,6 +1,6 @@
 package com.emilie.ClimbingWebApp.repositories;
 
-import com.emilie.ClimbingWebApp.domain.Commentaire;
+import com.emilie.ClimbingWebApp.domain.Comment;
 import com.emilie.ClimbingWebApp.domain.Spot;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CommentaireRepository extends JpaRepository<Commentaire, Long> {
+public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     @Override
-    Optional<Commentaire> findById(Long id);
+    Optional<Comment> findById(Long id);
 
-    List<Commentaire> findAll();
+    List<Comment> findAll();
 
-    List<Commentaire> findBySpot(Spot spot);
+    List<Comment> findBySpot(Spot spot);
 
 }

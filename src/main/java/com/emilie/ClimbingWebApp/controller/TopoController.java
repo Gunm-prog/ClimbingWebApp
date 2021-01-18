@@ -109,7 +109,9 @@ public class TopoController {
     }
 
     @GetMapping(path="/topoList")
-    public String getHomeNotSignedIn(@ModelAttribute("keyword") String keyword, Model model, HttpSession httpSession) {
+    public String getHomeNotSignedIn(@ModelAttribute("keyword") String keyword,
+                                     Model model,
+                                     HttpSession httpSession) {
         List<Topo> topoData=null;
         //grace a l'id dans le path, en recupere en bdd le spot par son id
         if (keyword != null) {

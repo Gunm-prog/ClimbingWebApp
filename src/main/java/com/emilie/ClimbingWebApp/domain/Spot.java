@@ -30,9 +30,9 @@ public class Spot {
             referencedColumnName="id")
     private User user;
 
-    @OneToMany(targetEntity=Secteur.class,
+    @OneToMany(targetEntity=Area.class,
             mappedBy="spot")
-    private List<Secteur> secteur=new ArrayList<>();
+    private List<Area> area=new ArrayList<>();
 
     @ManyToMany
     //name = nom de la table d'association
@@ -41,9 +41,9 @@ public class Spot {
             inverseJoinColumns=@JoinColumn(name="topo_id"))
     private List<Topo> topos=new ArrayList<>();
 
-    @OneToMany(targetEntity=Commentaire.class,
+    @OneToMany(targetEntity=Comment.class,
             mappedBy="spot")
-    private List<Commentaire> commentaires=new ArrayList<>();
+    private List<Comment> comments=new ArrayList<>();
 
     public Spot(Scanner sc) {
         this.scanName( sc );
@@ -79,12 +79,12 @@ public class Spot {
         this.description=description;
     }
 
-    public List<Commentaire> getCommentaires() { //TODO why getCommentaires et setCommentaire sont en gris????
-        return commentaires;
+    public List<Comment> getCommentaires() { //TODO why getCommentaires et setCommentaire sont en gris????
+        return comments;
     }
 
-    public void setCommentaires(List<Commentaire> commentaires) {
-        this.commentaires=commentaires;
+    public void setCommentaires(List<Comment> comments) {
+        this.comments=comments;
     }
 
     public User getUser() {
@@ -95,12 +95,12 @@ public class Spot {
         this.user=user;
     }
 
-    public List<Secteur> getSecteur() {
-        return secteur;
+    public List<Area> getSecteur() {
+        return area;
     }
 
-    public void setSecteur(List<Secteur> secteur) {
-        this.secteur=secteur;
+    public void setSecteur(List<Area> area) {
+        this.area=area;
     }
 
     public List<Topo> getTopos() {
@@ -117,6 +117,14 @@ public class Spot {
 
     public void setTag(boolean tag) {
         this.tag=tag;
+    }
+
+    public List<Area> getArea() {
+        return area;
+    }
+
+    public void setArea(List<Area> area) {
+        this.area=area;
     }
 
     public void scanName(Scanner sc) {
@@ -141,14 +149,14 @@ public class Spot {
                 Objects.equals( name, spot.name ) &&
                 Objects.equals( description, spot.description ) &&
                 Objects.equals( user, spot.user ) &&
-                Objects.equals( secteur, spot.secteur ) &&
+                Objects.equals( area, spot.area ) &&
                 Objects.equals( topos, spot.topos ) &&
-                Objects.equals( commentaires, spot.commentaires );
+                Objects.equals( comments, spot.comments );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, name, description, tag, user, secteur, topos, commentaires );
+        return Objects.hash( id, name, description, tag, user, area, topos, comments );
     }
 
     @Override

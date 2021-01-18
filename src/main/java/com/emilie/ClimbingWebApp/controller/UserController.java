@@ -20,7 +20,7 @@ public class UserController {
     @Autowired
     private TopoRepository topoRepository;
     @Autowired
-    private SecteurRepository secteurRepository;
+    private AreaRepository areaRepository;
     @Autowired
     private SpotRepository spotRepository;
     @Autowired
@@ -71,12 +71,12 @@ public class UserController {
             }
 
             List<Spot> spots=this.spotRepository.findByUser( user.get() );
-            List<Secteur> secteurs=this.secteurRepository.findByUser( user.get() );
+            List<Area> areas=this.areaRepository.findByUser( user.get() );
             model.addAttribute( "user", user.get() );
             model.addAttribute( "topos", topos );
             model.addAttribute( "topoRequestList", topoRequestList );
             model.addAttribute( "spots", spots );
-            model.addAttribute( "secteurs", secteurs );
+            model.addAttribute( "areas", areas );
             model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
             model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
 

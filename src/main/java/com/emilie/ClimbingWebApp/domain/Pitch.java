@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 @Entity
 @Table(name="longueur")//spécification nom table forcé
-public class Longueur {
+public class Pitch {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -20,21 +20,21 @@ public class Longueur {
     @Column(name="quotation")
     private String quotation;
 
-    @ManyToOne(targetEntity=Voie.class)
+    @ManyToOne(targetEntity=Route.class)
     @JoinColumn(name="voie_id", referencedColumnName="id")
-    private Voie voie;
+    private Route route;
 
     @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="user_id", referencedColumnName="id")
     private User user;
 
 
-    public Longueur(Scanner sc) {
+    public Pitch(Scanner sc) {
         this.scanId( sc );
     }
 
 
-    public Longueur() {
+    public Pitch() {
     }
 
     public Long getId() {
@@ -69,12 +69,12 @@ public class Longueur {
         this.quotation=quotation;
     }
 
-    public Voie getVoie() {
-        return voie;
+    public Route getRoute() {
+        return route;
     }
 
-    public void setVoie(Voie voie) {
-        this.voie=voie;
+    public void setRoute(Route route) {
+        this.route=route;
     }
 
     public User getUser() {
@@ -86,7 +86,7 @@ public class Longueur {
     }
 
     private void scanId(Scanner sc) {
-        System.out.println( "longueurId: " );
+        System.out.println( "PitchId: " );
         Long inputId=Long.valueOf( sc.nextLine() );
         this.setId( inputId );
     }
@@ -95,28 +95,29 @@ public class Longueur {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Longueur longueur=(Longueur) o;
-        return distance == longueur.distance &&
-                Objects.equals( id, longueur.id ) &&
-                Objects.equals( points, longueur.points ) &&
-                Objects.equals( quotation, longueur.quotation ) &&
-                Objects.equals( voie, longueur.voie ) &&
-                Objects.equals( user, longueur.user );
+        Pitch pitch=(Pitch) o;
+        return distance == pitch.distance &&
+                Objects.equals( id, pitch.id ) &&
+                Objects.equals( points, pitch.points ) &&
+                Objects.equals( quotation, pitch.quotation ) &&
+                Objects.equals( route, pitch.route ) &&
+                Objects.equals( user, pitch.user );
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash( id, distance, points, quotation, voie, user );
+        return Objects.hash( id, distance, points, quotation, route, user );
     }
 
     @Override
     public String toString() {
-        return "Longueur{" +
+        return "Pitch{" +
                 "id=" + id +
                 ", distance=" + distance +
                 ", points='" + points + '\'' +
                 ", quotation='" + quotation + '\'' +
-                ", voie=" + voie +
+                ", route=" + route +
                 '}';
     }
+
 }

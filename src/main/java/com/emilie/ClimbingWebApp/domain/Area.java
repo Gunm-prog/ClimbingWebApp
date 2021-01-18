@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 @Entity
 @Table(name="secteur")//spécification nom table forcé
-public class Secteur {
+public class Area {
 
     @Id
     //norme
@@ -24,20 +24,20 @@ public class Secteur {
     @JoinColumn(name="spot_id", referencedColumnName="id"/*, insertable=false, updatable=false*/)
     private Spot spot;
 
-    @OneToMany(targetEntity=Voie.class, mappedBy="secteur")
-    private List<Voie> voie=new ArrayList<>();
+    @OneToMany(targetEntity=Route.class, mappedBy="area")
+    private List<Route> route=new ArrayList<>();
 
     @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
     private User user;
 
 
-    public Secteur(Scanner sc, String description) {
+    public Area(Scanner sc, String description) {
         this.description=description;
         this.scanName( sc );
     }
 
-    public Secteur() {
+    public Area() {
 
     }
 
@@ -65,12 +65,12 @@ public class Secteur {
         this.spot=spot;
     }
 
-    public List<Voie> getVoie() {
-        return voie;
+    public List<Route> getVoie() {
+        return route;
     }
 
-    public void setVoie(List<Voie> voie) {
-        this.voie=voie;
+    public void setVoie(List<Route> route) {
+        this.route=route;
     }
 
     public User getUser() {
@@ -99,7 +99,7 @@ public class Secteur {
 
     @Override
     public String toString() {
-        return "Secteur{" +
+        return "Area{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +

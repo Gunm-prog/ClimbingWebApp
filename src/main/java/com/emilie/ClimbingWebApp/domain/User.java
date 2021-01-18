@@ -28,17 +28,17 @@ public class User {
     @OneToMany(targetEntity=ReservationTopo.class, mappedBy="user")
     private List<ReservationTopo> reservationTopos=new ArrayList<>();
 
-    @OneToMany(targetEntity=Commentaire.class, mappedBy="user")
-    private Set<Commentaire> commentaire;
+    @OneToMany(targetEntity=Comment.class, mappedBy="user")
+    private Set<Comment> comment;
 
     @OneToMany(targetEntity=Spot.class, mappedBy="user")
     private List<Spot> spot=new ArrayList<>();
 
-      /*  @OneToMany(targetEntity=Secteur.class, mappedBy="user")
-        private List<Secteur> secteur= new ArrayList<>();
+      /*  @OneToMany(targetEntity=Area.class, mappedBy="user")
+        private List<Area> secteur= new ArrayList<>();
 
-        @OneToMany(targetEntity=Voie.class, mappedBy="user")
-        private List<Voie> voie = new ArrayList<>();
+        @OneToMany(targetEntity=Route.class, mappedBy="user")
+        private List<Route> voie = new ArrayList<>();
 
         @OneToMany(targetEntity=Longueur.class, mappedBy="user")
         private List<Longueur> longueur = new ArrayList<>();*/
@@ -122,12 +122,12 @@ public class User {
         this.spot=spot;
     }
 
-    public Set<Commentaire> getCommentaire() {
-        return commentaire;
+    public Set<Comment> getCommentaire() {
+        return comment;
     }
 
-    public void setCommentaire(Set<Commentaire> commentaire) {
-        this.commentaire=commentaire;
+    public void setCommentaire(Set<Comment> comment) {
+        this.comment=comment;
     }
 
     public List<Topo> getTopo() {

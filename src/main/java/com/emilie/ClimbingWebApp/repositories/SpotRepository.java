@@ -19,7 +19,7 @@ public interface SpotRepository extends JpaRepository<Spot, Long> {
             + "OR s.description LIKE '%' || :keyword || '%'")
     public List<Spot> searchSpot(@Param("keyword") String keyword);
 
-    @Query(value="SELECT DISTINCT s FROM Spot s JOIN Secteur sec ON s.id = sec.spot.id JOIN Voie v ON sec.id = v.secteur.id JOIN Longueur l ON v.id = l.voie.id WHERE l.quotation = :quotation")
+    @Query(value="SELECT DISTINCT s FROM Spot s JOIN Area area ON s.id = area.spot.id JOIN Route r ON area.id = r.area.id JOIN Pitch p ON r.id = p.route.id WHERE p.quotation = :quotation")
     public List<Spot> searchByQuotation(@Param("quotation") String quotation);
 
     @Override
@@ -32,10 +32,10 @@ public interface SpotRepository extends JpaRepository<Spot, Long> {
     List<Spot> findByUser(User user);
 
     @Query(value="SELECT DISTINCT s FROM Spot s " +
-            "JOIN Secteur sec ON s.id = sec.spot.id " +
-            "JOIN Voie v ON sec.id = v.secteur.id " +
-            "JOIN Longueur l ON v.id = l.voie.id " +
-            "WHERE l.quotation = :quotation " +
+            "JOIN Area area ON s.id = area.spot.id " +
+            "JOIN Route r ON area.id = r.area.id " +
+            "JOIN Pitch p ON r.id = p.route.id " +
+            "WHERE p.quotation = :quotation " +
             "AND " +
             " (s.name LIKE '%' || :keyword || '%' OR s.description LIKE '%' || :keyword || '%')")
     public List<Spot> searchByQuotationAndKeyword(@Param("quotation") String quotation, @Param("keyword") String keyword);

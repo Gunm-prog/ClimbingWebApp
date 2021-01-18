@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 @Entity
 @Table(name="voie")
-public class Voie {
+public class Route {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -20,22 +20,22 @@ public class Voie {
     @Column(name="nombre")
     private int nombre;
 
-    @ManyToOne(targetEntity=Secteur.class)
+    @ManyToOne(targetEntity=Area.class)
     @JoinColumn(name="secteur_id", referencedColumnName="id")
-    private Secteur secteur;
+    private Area area;
 
-    @OneToMany(targetEntity=Longueur.class, mappedBy="voie")
-    private List<Longueur> voie=new ArrayList<>();
+    @OneToMany(targetEntity=Pitch.class, mappedBy="route")
+    private List<Pitch> pitches=new ArrayList<>();
 
     @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
     private User user;
 
-    public Voie(Scanner sc) {
+    public Route(Scanner sc) {
         this.scanName( sc );
     }
 
-    public Voie() {
+    public Route() {
 
     }
 
@@ -71,12 +71,12 @@ public class Voie {
         this.nombre=nombre;
     }
 
-    public Secteur getSecteur() {
-        return secteur;
+    public Area getArea() {
+        return area;
     }
 
-    public void setSecteur(Secteur secteur) {
-        this.secteur=secteur;
+    public void setArea(Area area) {
+        this.area=area;
     }
 
     public User getUser() {
@@ -85,6 +85,14 @@ public class Voie {
 
     public void setUser(User user) {
         this.user=user;
+    }
+
+    public List<Pitch> getPitches() {
+        return pitches;
+    }
+
+    public void setPitches(List<Pitch> pitches) {
+        this.pitches=pitches;
     }
 
     private void scanName(Scanner sc) {
@@ -96,7 +104,7 @@ public class Voie {
 
     @Override
     public String toString() {
-        return "Voie{" +
+        return "Route{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", hauteur=" + hauteur +
