@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
+/**
+ * @author Emilie Balsen
+ */
 @Controller
 public class SignUpController {
 
@@ -21,9 +24,16 @@ public class SignUpController {
     UserRepository userRepository;
 
 
+    /**
+     * This method gets signup form
+     * @param user
+     * @param httpSession
+     * @param model
+     * @return signup form
+     */
     //method to get signup form
     @GetMapping(path="/signup")
-    public String getSignUpForm(@ModelAttribute User user, HttpSession httpSession, Model model) {
+    public String getSignUpForm(@ModelAttribute("user") User user, HttpSession httpSession, Model model) {
         if(httpSession != null){
             model.addAttribute( "message", httpSession.getAttribute("message") );
             httpSession.removeAttribute( "message" );
@@ -31,9 +41,17 @@ public class SignUpController {
         return "signup-form";
     }
 
+    /**
+     *
+     * @param user
+     * @param httpSession
+     * @param model
+     * @return signup success page with the email that has just been saved
+     * @return signup form is an exception is catched (if email already exists)
+     */
     //method to get signupform details
     @PostMapping("/signup-submit")
-    public String submitSignUp(@ModelAttribute User user, HttpSession httpSession, Model model) {
+    public String submitSignUp(@ModelAttribute("user") User user, HttpSession httpSession, Model model) {
 
         String hashedPass=BCrypt.withDefaults().hashToString( 12, user.getPassword().toCharArray() );
         user.setPassword( hashedPass );
@@ -49,13 +67,27 @@ public class SignUpController {
         return "signup-success";
     }
 
-    @GetMapping(path="/login")
+    /**
+     *
+     * @return login page
+     */
+    @GetMapping(path="/login") //TODO
     public String Login() {
         return "login";
     }
 
+    /**
+     *
+     * @param user
+     * @param model
+     * @param httpSession
+     * @return user account page with all her/his account information
+     * @return login page if login has not worked
+     */
     @PostMapping(path="/login")
-    public String showUserAccount(@ModelAttribute User user, Model model, HttpSession httpSession) {
+    public String showUserAccount(@ModelAttribute("user") User user,
+                                  Model model,
+                                  HttpSession httpSession) {
         //model.addAttribute( "user", user );
         Optional<User> dataFound=this.userRepository.findByEmail( user.getEmail() );
         if (dataFound.isPresent()) {
@@ -79,9 +111,15 @@ public class SignUpController {
             return "login";
         }
 
-        return "login";
+        return "login"; //TODO c'est bien à virer ça vu que c'est la même chose au-dessus??????????????????????
     }
 
+    /**
+     *
+     * @param user
+     * @param httpSession
+     * @return home page
+     */
     @GetMapping(path="/logout")
     public String showUserAccountLogOut(@ModelAttribute User user, HttpSession httpSession) {
         httpSession.invalidate();

@@ -3,6 +3,7 @@ package com.emilie.ClimbingWebApp.domain;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name="reservation_topo")
 public class ReservationTopo {
@@ -19,11 +20,6 @@ public class ReservationTopo {
     private Boolean reservationStatus;
 
 
-   /* @OneToMany (targetEntity=Topo.class, mappedBy="reservation_topo", fetch=FetchType.EAGER)
-   // @JoinColumn(name="topo_id", referencedColumnName="id")
-    private List<Topo>topo=new ArrayList<>();*/
-
-    //private List<User>user=new ArrayList<>();
     @ManyToOne(targetEntity=Topo.class)
     @JoinColumn(name="topo_id")
     private Topo topo;
@@ -77,34 +73,6 @@ public class ReservationTopo {
         this.topo=topo;
     }
 
-
-   /* @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ReservationTopo that=(ReservationTopo) o;
-        return Objects.equals( id, that.id ) &&
-                Objects.equals( dateReservation, that.dateReservation ) &&
-                Objects.equals( reservationStatus, that.reservationStatus ) &&
-                Objects.equals( topo, that.topo ) &&
-                Objects.equals( user, that.user );
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash( id, dateReservation, reservationStatus, topo, user );
-    }
-
-    @Override
-    public String toString() {
-        return "ReservationTopo{" +
-                "id=" + id +
-                ", dateReservation=" + dateReservation +
-                ", reservationStatus=" + reservationStatus +
-                ", topo=" + topo +
-                ", user=" + user +
-                '}';
-    }*/
 
     @Override
     public String toString() {

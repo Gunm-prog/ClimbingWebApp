@@ -1,15 +1,13 @@
 package com.emilie.ClimbingWebApp.repositories;
 
-import com.emilie.ClimbingWebApp.domain.Comment;
-import com.emilie.ClimbingWebApp.domain.User;
+import com.emilie.ClimbingWebApp.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.util.Optional;
 
+
 @Repository
-@Transactional
+/*@Transactional*/
 public interface UserRepository extends JpaRepository<User, Long> {
 
    /* @Query(value="SELECT u FROM User u WHERE u.name LIKE '%' || :keyword || '%'"

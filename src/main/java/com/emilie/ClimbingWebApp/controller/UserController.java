@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.servlet.http.HttpSession;
 import java.util.*;
 
+
+/**
+ * @author Emilie Balsen
+ */
 @Controller
 public class UserController {
 
@@ -27,6 +31,16 @@ public class UserController {
     private ReservationTopoRepository reservationTopoRepository;
 
 
+    /**
+     *
+     * @param id
+     * @param model
+     * @param httpSession
+     * @return user Account page containing all information about user:
+     * spots,areas, routes, pitches, topos she/he added and also the topos borrowed or those waiting for
+     * acceptance by the topo's owner
+     * @return login page if user is not connected
+     */
     @GetMapping(path="/userAccount/{id}")
     public String getUserAccount(@PathVariable("id") Long id, Model model, HttpSession httpSession) {
         //vérification utilisateur connecté avec son mail en session

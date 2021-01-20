@@ -16,6 +16,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * @author Emilie BALSEN
+ */
+
 @Controller
 public class NewSpotController {
 
@@ -30,14 +34,56 @@ public class NewSpotController {
     @Autowired
     TopoRepository topoRepository;
 
-
-    //TODO remettre les methodes dans l'ordre ex newspot il y en a une tout en bas!!!!!
-
-
+    /**
+     *
+     * @return
+     */
     @GetMapping(path="/newspot")
     public String addNewspot() {
         return "spot/newspot";
     }   //TODO
+
+    //todo methode qui va envoyer vers le formulaire de création de spot et traiter le formulaire
+    //todo cette methode ne doit ête utilisable que part un utilisateur connecté
+    //todo si utilisateur non connécté, en l'envoie vers la pager de login
+    //todo si la méthode ne recoit pas de formulaire à traiter elle doit renvoyer vers le formulaire de cration de spot
+    //todo si la methode recoit un formulaire à traiter, elle le traite (persistance en bdd), recupère l'id crée et renvoie vers l'affichage du spot avec son id.
+
+    /**
+     *
+     * @param spot
+     * @param httpSession
+     * @return
+     */
+    @PostMapping("/newspot")
+    public String newSpot(@ModelAttribute("spot") Spot spot,
+                          HttpSession httpSession) {
+
+        if (httpSession.getAttribute( "email" ) != null) {
+            // si user existe en session, il est connecté, ok!
+            if (spot != null) { //si spot existe, il vient du formulaire, on le persiste en bdd.
+                //recup du user présent dans la session
+                User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
+                // User user = (User)httpSession.getAttribute("user");
+                spot.setUser( user );//lie l'user au spot
+                System.out.println( spot );
+                //on fait la relation entre le user et le nouveau spot
+                // user.getSpot().add(spot); //retourne un spot lié à l'utilisateur
+                //on persist le spot en bdd
+                this.spotRepository.save( spot );
+                //todo recuperer id du nouveau
+                //todo redirige sur spotdetailavec id du spot
+                // le chemin de redirection ne fonctionne pas avec l'id du spot...
+                // mais je ne sais pas comment faire le lien entre le controler spotDetails et l'id du spot
+                // return "/spotDetails/"+ spot1.getId();
+                return "redirect:/spotDetails/" + spot.getId(); //redirection qui fonctionne mais sans l'id à transmettre (il faut changer le path de la méthode GetMapping ci-dessus)
+            } else {//si pas d'informations venant du formulaire newspot a traiter, direction formulaire de newspot
+                return "spot/newspot";
+            }
+
+        }
+        return "login";//si pas connecté, redirection page de login
+    }
 
     @GetMapping(path="/spotDetails/{id}")
     public String getSpotDetails(@PathVariable("id") Long id,   //TODO      ???
@@ -222,41 +268,6 @@ public class NewSpotController {
         } else {
             return "redirect:/login";
         }
-    }
-
-    //todo methode qui va envoyer vers le formulaire de création de spot et traiter le formulaire
-    //todo cette methode ne doit ête utilisable que part un utilisateur connecté
-    //todo si utilisateur non connécté, en l'envoie vers la pager de login
-    //todo si la méthode ne recoit pas de formulaire à traiter elle doit renvoyer vers le formulaire de cration de spot
-    //todo si la methode recoit un formulaire à traiter, elle le traite (persistance en bdd), recupère l'id crée et renvoie vers l'affichage du spot avec son id.
-    @PostMapping("/newspot")
-    public String newSpot(@ModelAttribute("spot") Spot spot,
-                          HttpSession httpSession) {
-
-        if (httpSession.getAttribute( "email" ) != null) {
-            // si user existe en session, il est connecté, ok!
-            if (spot != null) { //si spot existe, il vient du formulaire, on le persiste en bdd.
-                //recup du user présent dans la session
-                User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
-                // User user = (User)httpSession.getAttribute("user");
-                spot.setUser( user );//lie l'user au spot
-                System.out.println( spot );
-                //on fait la relation entre le user et le nouveau spot
-                // user.getSpot().add(spot); //retourne un spot lié à l'utilisateur
-                //on persist le spot en bdd
-                this.spotRepository.save( spot );
-                //todo recuperer id du nouveau
-                //todo redirige sur spotdetailavec id du spot
-                // le chemin de redirection ne fonctionne pas avec l'id du spot...
-                // mais je ne sais pas comment faire le lien entre le controler spotDetails et l'id du spot
-                // return "/spotDetails/"+ spot1.getId();
-                return "redirect:/spotDetails/" + spot.getId(); //redirection qui fonctionne mais sans l'id à transmettre (il faut changer le path de la méthode GetMapping ci-dessus)
-            } else {//si pas d'informations venant du formulaire newspot a traiter, direction formulaire de newspot
-                return "spot/newspot";
-            }
-
-        }
-        return "login";//si pas connecté, redirection page de login
     }
 
     @GetMapping(path="/spot/spotList")

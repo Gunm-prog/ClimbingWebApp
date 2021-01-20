@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+
+/**
+ * @author Emilie Balsen
+ */
 @Controller
 public class TopoController {
 
@@ -34,14 +38,55 @@ public class TopoController {
     ReservationTopoRepository reservationTopoRepository;
 
 
+    /**
+     *
+     * @return topo form to add a new topo
+     */
     @GetMapping(path="/topo") //TODO pas necessaire? check par rapport au @PostMapping en bas !!!
     public String getTopo() {
         return "topo";
     }
 
+    /**
+     *
+     * @param topo
+     * @param httpSession
+     * @return
+     */
+    @PostMapping("/topo")
+    public String saveNewTopo(@ModelAttribute("topo") Topo topo, HttpSession httpSession) {
+        if (httpSession.getAttribute( "email" ) != null) {
+            // si user existe en session, il est connecté, ok!
+            if (topo != null) { //si spot existe, il vient du formulaire, on le persiste en bdd.
+                //recup du user présent dans la session
+
+                User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
+                topo.setUser( user );//lie l'user au topo
+                System.out.println( topo );
+                this.topoRepository.save( topo );
+                return "redirect:/topoDetails/" + topo.getId(); //redirection qui fonctionne mais sans l'id à transmettre (il faut changer le path de la méthode GetMapping ci-dessus)
+            } else {//si pas d'informations venant du formulaire newspot a traiter, direction formulaire de newspot
+                return "topo"; //TODO ??????????????????????
+            }
+
+        }
+        return "login";//si pas connecté, redirection page de login
+    }
+
+
+    /**
+     * This method picks up a specific topo (thanks to its id) with its details
+     * also showing its status (available to be borrowed or not)
+     *
+     * @param id
+     * @param httpSession
+     * @param model
+     * @return topo details of one in particular (thanks to its id)
+     * @return login page if user is not connected or if connexion has been lost
+     */
     @GetMapping(path="/topoDetails/{id}")
     public String getTopoDetails(@PathVariable("id") Long id, HttpSession httpSession, Model model) {
-        //grace a l'id dans le path, en recupere en bdd le spot par son id
+        //grace a l'id dans le path, en recupere en bdd le topo par son id
         if (httpSession.getAttribute( "email" ) != null) {
             User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
             System.out.println( user );
@@ -88,26 +133,14 @@ public class TopoController {
         }
     }
 
-    @PostMapping("/topo")
-    public String newTopo(@ModelAttribute("topo") Topo topo, HttpSession httpSession) {
-        if (httpSession.getAttribute( "email" ) != null) {
-            // si user existe en session, il est connecté, ok!
-            if (topo != null) { //si spot existe, il vient du formulaire, on le persiste en bdd.
-                //recup du user présent dans la session
 
-                User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
-                topo.setUser( user );//lie l'user au topo
-                System.out.println( topo );
-                this.topoRepository.save( topo );
-                return "redirect:/topoDetails/" + topo.getId(); //redirection qui fonctionne mais sans l'id à transmettre (il faut changer le path de la méthode GetMapping ci-dessus)
-            } else {//si pas d'informations venant du formulaire newspot a traiter, direction formulaire de newspot
-                return "topo";
-            }
-
-        }
-        return "login";//si pas connecté, redirection page de login
-    }
-
+    /**
+     *
+     * @param keyword
+     * @param model
+     * @param httpSession
+     * @return topo list saved in database
+     */
     @GetMapping(path="/topoList")
     public String getHomeNotSignedIn(@ModelAttribute("keyword") String keyword,
                                      Model model,
@@ -132,41 +165,6 @@ public class TopoController {
 
 
 
-
-
-
-
-/*
-    @RequestMapping(path="topo/{id}")
-    @GetMapping
-    public String showTopoForm(@PathVariable("id") Long id, Model model){
-        Optional<Topo> topo= topoRepository.findById( id );
-        model.addAttribute( "topo", topo.get() );
-        return "topo";
-    }
-
-    @PostMapping("/topoDetails")
-    public String topodetails(@ModelAttribute Topo topo, Model model){
-        model.addAttribute( "topo", topo );
-        topoRepository.save(topo);
-        return "topoDetails";
-    }
-
-    @RequestMapping(path="/topo")
-    @GetMapping
-    public String saveNewTopo(@ModelAttribute Topo topo, Model model){
-        return "topo";
-    }
-
-
-    @PostMapping("/topo")
-    public String saveTopo(@ModelAttribute Topo topo, Model model){
-
-        model.addAttribute( "topo", topo );
-        topoRepository.save(topo);
-        return "topo";
-    }
-*/
 
 
 

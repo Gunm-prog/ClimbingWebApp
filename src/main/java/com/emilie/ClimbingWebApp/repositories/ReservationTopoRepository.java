@@ -1,13 +1,11 @@
 package com.emilie.ClimbingWebApp.repositories;
 
-import com.emilie.ClimbingWebApp.domain.ReservationTopo;
-import com.emilie.ClimbingWebApp.domain.Topo;
-import com.emilie.ClimbingWebApp.domain.User;
+import com.emilie.ClimbingWebApp.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 import java.util.Set;
+
 
 @Repository
 public interface ReservationTopoRepository extends JpaRepository<ReservationTopo, Long> {

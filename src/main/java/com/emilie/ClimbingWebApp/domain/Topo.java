@@ -26,7 +26,6 @@ public class Topo {
     @OneToMany(targetEntity=ReservationTopo.class, mappedBy="topo", fetch=FetchType.EAGER)
     private Set<ReservationTopo> reservation;
 
-
     @ManyToMany
     //name = nom de la table d'association
     @JoinTable( name = "topo_has_spot",
@@ -34,17 +33,10 @@ public class Topo {
             inverseJoinColumns = @JoinColumn( name = "spot_id" ) )
     private List<Spot> spots = new ArrayList<>();
 
-    /*//TODO ManyToMany
-    @OneToMany(targetEntity=Spot.class, mappedBy="topo", fetch=FetchType.EAGER)
-    private List<Spot> spots=new ArrayList<>();*/
-
     @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
     private User user;
 
-   /* @ManyToOne(targetEntity=User.class)
-    @JoinColumn(name="user_id", referencedColumnName="id")
-    private User user;*/
 
     public Topo(Scanner sc) {
         this.scanTitle( sc );
@@ -143,29 +135,7 @@ public class Topo {
         String inputDateOfPublishing=sc.nextLine();
         this.setDateOfPublishing( inputDateOfPublishing );
     }
-
-   /* public void scanAvailable(Scanner sc){
-        System.out.println("topoAvailability:");
-        Boolean inputAvailable =Boolean.valueOf( sc.nextLine() );
-        this.setAvailable( inputAvailable );
-    }*/
-
-  /*  @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Topo topo=(Topo) o;
-        return Objects.equals( id, topo.id ) &&
-                Objects.equals( title, topo.title ) &&
-                Objects.equals( author, topo.author ) &&
-                Objects.equals( dateOfPublishing, topo.dateOfPublishing ) &&
-                Objects.equals( reservation, topo.reservation ) &&
-                Objects.equals( spots, topo.spots ) &&
-                Objects.equals( user, topo.user );
-    }
-
-
-*/
+    
 
     @Override
     public String toString() {
