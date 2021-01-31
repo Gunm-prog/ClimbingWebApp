@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -42,8 +43,9 @@ public class TopoController {
      *
      * @return topo form to add a new topo
      */
-    @GetMapping(path="/topo") //TODO pas necessaire? check par rapport au @PostMapping en bas !!!
+    @GetMapping(path="/topo") //TODO doit afficher la page de formulaire
     public String getTopo() {
+
         return "topo";
     }
 
@@ -53,7 +55,7 @@ public class TopoController {
      * @param httpSession
      * @return
      */
-    @PostMapping("/topo")
+    @PostMapping("/topo") //TODO doit taiter le formulaire (ici il fait l'affichage ET le traitement, => à séparer)
     public String saveNewTopo(@ModelAttribute("topo") Topo topo, HttpSession httpSession) {
         if (httpSession.getAttribute( "email" ) != null) {
             // si user existe en session, il est connecté, ok!
@@ -65,10 +67,7 @@ public class TopoController {
                 System.out.println( topo );
                 this.topoRepository.save( topo );
                 return "redirect:/topoDetails/" + topo.getId(); //redirection qui fonctionne mais sans l'id à transmettre (il faut changer le path de la méthode GetMapping ci-dessus)
-            } else {//si pas d'informations venant du formulaire newspot a traiter, direction formulaire de newspot
-                return "topo"; //TODO ??????????????????????
             }
-
         }
         return "login";//si pas connecté, redirection page de login
     }
@@ -85,7 +84,10 @@ public class TopoController {
      * @return login page if user is not connected or if connexion has been lost
      */
     @GetMapping(path="/topoDetails/{id}")
-    public String getTopoDetails(@PathVariable("id") Long id, HttpSession httpSession, Model model) {
+    public String getTopoDetails(@ModelAttribute("topoDetails") Topo topo,
+                                 @PathVariable("id") Long id,
+                                 HttpSession httpSession,
+                                 Model model) {
         //grace a l'id dans le path, en recupere en bdd le topo par son id
         if (httpSession.getAttribute( "email" ) != null) {
             User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
@@ -114,17 +116,20 @@ public class TopoController {
 
                 }
 
-                System.out.println( reservationAccepted );
+                //todo retirer les sout pour la livraison ;)
+                /*System.out.println( reservationAccepted );
                 System.out.println( theTopo );
                 System.out.println( isOwner );
                 System.out.println( userHasAlreadyLoaned );
-                System.out.println( topoAvailabity );
+                System.out.println( topoAvailabity );*/
                 model.addAttribute( "topo", theTopo );
                 model.addAttribute( "user", user );
                 model.addAttribute( "isOwner", isOwner );
                 model.addAttribute( "topoAvailability", topoAvailabity );
                 model.addAttribute( "userHasAlreadyLoaned", userHasAlreadyLoaned );
                 model.addAttribute( "reservationAccepted", reservationAccepted );
+                model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+                model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
                 // model.addAttribute( "reservationTopo", reservationTopo );
             }
             return "topoDetails";
@@ -134,8 +139,9 @@ public class TopoController {
     }
 
 
+    //Todo n'oublies pas d'expliquer ce que font tes méthodes, ici renvoie une liste de Topo filtrée par un keyword, ou non.
     /**
-     *
+     * ICI PRCISER SE QUE FAIT TA METHODE
      * @param keyword
      * @param model
      * @param httpSession
@@ -145,17 +151,36 @@ public class TopoController {
     public String getHomeNotSignedIn(@ModelAttribute("keyword") String keyword,
                                      Model model,
                                      HttpSession httpSession) {
-        List<Topo> topoData=null;
-        //grace a l'id dans le path, en recupere en bdd le spot par son id
+        List<Topo> topoData = null;
         if (keyword != null) {
             topoData=this.topoRepository.searchTopo( keyword );
         } else {
             topoData=this.topoRepository.findAll();
         }
+
+        //traitement uniquement si utilisateur connecté
+        if(httpSession.getAttribute( "email" ) != null){
+            //Pour chaque topo va récupérer que la reservation qui conserne l'utilisateur connecté si elle existe.
+            for(Topo topo : topoData){
+                Set<ReservationTopo> rsvList = new HashSet<>();
+                for(ReservationTopo rsv : topo.getReservation()){
+                  //  System.out.println(rsv);
+                    if(rsv.getUser().getId().equals( (Long) httpSession.getAttribute( "currentUserId" ) )){
+                     //   System.out.println(rsv.getUser());
+                        rsvList.add(rsv);
+                    }
+                }
+                topo.setReservation( rsvList );
+            }
+           // System.out.println(rsvList);
+        }
+
+        System.out.println(topoData);
+//        topoData.clear();
         model.addAttribute( "topoList", topoData );
         model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
         model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
-        System.out.println( topoData );
+       // System.out.println( topoData );
         //on redirige ensuite vers la page qui doit afficher ce topo
         return "/topoList";
     }

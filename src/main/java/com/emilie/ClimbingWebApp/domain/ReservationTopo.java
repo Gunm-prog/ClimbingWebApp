@@ -76,10 +76,12 @@ public class ReservationTopo {
 
     @Override
     public String toString() {
-        return "ReservationTopo{" +
-                "id=" + id +
-                ", dateReservation=" + dateReservation +
-                ", reservationStatus=" + reservationStatus +
-                '}';
+        return "ReservationTopo{" + "\n" +
+                "id=" + id + "\n" +
+                ", dateReservation=" + dateReservation + "\n" +
+                ", reservationStatus=" + reservationStatus + "\n" +
+                ", user=" + user + "\n" +
+          //      ", topo=" + topo + "\n" +
+                '}' + "\n";
     }
 }

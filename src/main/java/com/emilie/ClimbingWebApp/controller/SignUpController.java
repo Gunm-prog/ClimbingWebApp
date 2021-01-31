@@ -26,14 +26,13 @@ public class SignUpController {
 
     /**
      * This method gets signup form
-     * @param user
      * @param httpSession
      * @param model
      * @return signup form
      */
     //method to get signup form
     @GetMapping(path="/signup")
-    public String getSignUpForm(@ModelAttribute("user") User user, HttpSession httpSession, Model model) {
+    public String getSignUpForm(HttpSession httpSession, Model model) {
         if(httpSession != null){
             model.addAttribute( "message", httpSession.getAttribute("message") );
             httpSession.removeAttribute( "message" );
@@ -71,9 +70,21 @@ public class SignUpController {
      *
      * @return login page
      */
-    @GetMapping(path="/login") //TODO
-    public String Login() {
-        return "login";
+    @GetMapping(path="/login")
+    public String Login(HttpSession httpSession, Model model) {
+        if (httpSession.getAttribute( "email" ) == null) {
+            model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+            model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
+
+            if(httpSession.getAttribute( "error" )!= ""){
+                model.addAttribute( "error", httpSession.getAttribute( "error" ) );
+            }else {
+                model.addAttribute( "error","");
+            }
+            return "login";
+        }
+        //si user déjà connecté redirection accueil
+        return "redirect:/";
     }
 
     /**
@@ -89,29 +100,33 @@ public class SignUpController {
                                   Model model,
                                   HttpSession httpSession) {
         //model.addAttribute( "user", user );
-        Optional<User> dataFound=this.userRepository.findByEmail( user.getEmail() );
-        if (dataFound.isPresent()) {
-            User userData=dataFound.get();
+        if (httpSession.getAttribute( "email" ) == null) {
+            Optional<User> dataFound=this.userRepository.findByEmail( user.getEmail() );
+            if (dataFound.isPresent()) {
+                User userData=dataFound.get();
 
-            BCrypt.Result result=BCrypt.verifyer().verify( user.getPassword().toCharArray(), userData.getPassword() );
+                BCrypt.Result result=BCrypt.verifyer().verify( user.getPassword().toCharArray(), userData.getPassword() );
 
-
-            if (result.verified) {
-                //user.setId( userData.getId() );
-                //user.setName( userData.getName() );
-                //user.setEmail( userData.getEmail() );
-                //user.setPseudo( userData.getPseudo() );
-                //  model.addAttribute( "user", user );
-                httpSession.setAttribute( "email", userData.getEmail() );
-                httpSession.setAttribute( "pseudo", userData.getPseudo() );
-                httpSession.setAttribute( "currentUserId", userData.getId() );
-                httpSession.setAttribute( "currentUserRole", userData.getRole() );
-                return "redirect:/userAccount/" + userData.getId();
+                if (result.verified) {
+                    httpSession.setAttribute( "email", userData.getEmail() );
+                    httpSession.setAttribute( "pseudo", userData.getPseudo() );
+                    httpSession.setAttribute( "currentUserId", userData.getId() );
+                    httpSession.setAttribute( "currentUserRole", userData.getRole() );
+                    return "redirect:/userAccount/" + userData.getId();
+                }
+                else {
+                    httpSession.setAttribute( "error", "mauvais password." );
+                    return "redirect:/login";
+                }
+            }// redirection login, email non trouvé en bdd
+            else {
+                httpSession.setAttribute( "error", "email non reconnu."  );
+                model.addAttribute( "error", "email non reconnu." );
+                return "redirect:/login";
             }
-            return "login";
         }
-
-        return "login"; //TODO c'est bien à virer ça vu que c'est la même chose au-dessus??????????????????????
+        //si user déjà connecté redirection accueil
+        return "redirect:/";
     }
 
     /**

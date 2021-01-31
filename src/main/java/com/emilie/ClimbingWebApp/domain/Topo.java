@@ -5,7 +5,7 @@ import javax.persistence.*;
 import java.util.*;
 
 
-@Entity
+ @Entity
 @Table(name="topo")
 public class Topo {
     @Id
@@ -17,8 +17,8 @@ public class Topo {
     private String title;
     @Column(name="auhor")
     private String author;
-    @Column(name="date_of_publishing")
-    private String dateOfPublishing;
+    @Column(name="publication_date")
+    private String publicationDate;
     @Column(name="is_reserved")
     private boolean isReserved;
 
@@ -40,7 +40,7 @@ public class Topo {
 
     public Topo(Scanner sc) {
         this.scanTitle( sc );
-        this.scanDateOfPublishing( sc );
+        this.scanPublicationDate( sc );
         // this.scanAvailable(sc);
     }
 
@@ -88,12 +88,12 @@ public class Topo {
         return spots;
     }
 
-    public String getDateOfPublishing() {
-        return dateOfPublishing;
+    public String getPublicationDate() {
+        return publicationDate;
     }
 
-    public void setDateOfPublishing(String dateOfPublishing) {
-        this.dateOfPublishing=dateOfPublishing;
+    public void setPublicationDate(String publicationDate) {
+        this.publicationDate=publicationDate;
     }
 
     public List<Spot> getSpot() {
@@ -130,10 +130,10 @@ public class Topo {
         this.setName( inputTitle );
     }
 
-    public void scanDateOfPublishing(Scanner sc) {
-        System.out.println( "topoDateOfPublishing: " );
-        String inputDateOfPublishing=sc.nextLine();
-        this.setDateOfPublishing( inputDateOfPublishing );
+    public void scanPublicationDate(Scanner sc) {
+        System.out.println( "topoPublicationDate: " );
+        String inputPublicationDate=sc.nextLine();
+        this.setPublicationDate( inputPublicationDate );
     }
     
 
@@ -143,9 +143,9 @@ public class Topo {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
-                ", dateOfPublishing='" + dateOfPublishing + '\'' +
+                ", publicationDate='" + publicationDate + '\'' +
                 ", isReserved=" + isReserved +
-                ", reservation=" + reservation +
+               ", reservation=" + reservation +
                 ", spots=" + spots +
                 ", user=" + user +
                 '}';

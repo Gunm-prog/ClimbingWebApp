@@ -79,11 +79,11 @@ public class Spot {
         this.description=description;
     }
 
-    public List<Comment> getCommentaires() { //TODO why getCommentaires et setCommentaire sont en gris????
+    public List<Comment> getComments() { //TODO why getComments et setCommentaire sont en gris????
         return comments;
     }
 
-    public void setCommentaires(List<Comment> comments) {
+    public void setComments(List<Comment> comments) {
         this.comments=comments;
     }
 
@@ -163,8 +163,9 @@ public class Spot {
     public String toString() {
         return "Spot{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", user=" + user;
+                ", name='" + name + '\n' +
+                ", description='" + description + '\n' +
+                ", user=" + user + '\n'
+                ;
     }
 }

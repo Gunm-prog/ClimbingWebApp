@@ -4,7 +4,6 @@ package com.emilie.ClimbingWebApp.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 @Entity
@@ -20,6 +19,8 @@ public class Area {
     private String name;
     @Column(name="description")
     private String description;
+    @Column(name="nombre_de_voies")
+    private String numberOfRoutes;
 
     @ManyToOne(targetEntity=Spot.class)
     @JoinColumn(name="spot_id", referencedColumnName="id"/*, insertable=false, updatable=false*/)
@@ -33,10 +34,10 @@ public class Area {
     private User user;
 
 
-    public Area(Scanner sc, String description) {
+   /* public Area(Scanner sc, String description) {
         this.description=description;
         this.scanName( sc );
-    }
+    }*/
 
     public Area() {
 
@@ -58,6 +59,14 @@ public class Area {
         this.name=name;
     }
 
+    public String getNumberOfRoutes() {
+        return numberOfRoutes;
+    }
+
+    public void setNumberOfRoutes(String numberOfRoutes) {
+        this.numberOfRoutes=numberOfRoutes;
+    }
+
     public Spot getSpot() {
         return spot;
     }
@@ -66,11 +75,11 @@ public class Area {
         this.spot=spot;
     }
 
-    public List<Route> getVoie() {
+    public List<Route> getRoute() {
         return route;
     }
 
-    public void setVoie(List<Route> route) {
+    public void setRoute(List<Route> route) {
         this.route=route;
     }
 
@@ -82,11 +91,11 @@ public class Area {
         this.user=user;
     }
 
-    public void scanName(Scanner sc) {
+/*    public void scanName(Scanner sc) {
         System.out.println( "secteurName: " );
         String inputName=sc.nextLine();
         this.setName( inputName );
-    }
+    }*/
 
 
     public String getDescription() {
@@ -104,6 +113,7 @@ public class Area {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", numberOfRoutes='" + numberOfRoutes + '\'' +
                 '}';
     }
 }

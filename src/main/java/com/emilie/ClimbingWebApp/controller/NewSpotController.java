@@ -34,13 +34,19 @@ public class NewSpotController {
     @Autowired
     TopoRepository topoRepository;
 
+
     /**
-     *
-     * @return
+     * @param httpSession instance de la session
      */
     @GetMapping(path="/newspot")
-    public String addNewspot() {
-        return "spot/newspot";
+    public String addNewspot(@ModelAttribute("newspot") Spot spot, HttpSession httpSession, Model model) {
+        if (httpSession.getAttribute( "email" ) != null) {
+            model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+            model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
+
+            return "spot/newspot";
+        }
+        return "redirect:/login";
     }   //TODO
 
     //todo methode qui va envoyer vers le formulaire de création de spot et traiter le formulaire
@@ -50,7 +56,6 @@ public class NewSpotController {
     //todo si la methode recoit un formulaire à traiter, elle le traite (persistance en bdd), recupère l'id crée et renvoie vers l'affichage du spot avec son id.
 
     /**
-     *
      * @param spot
      * @param httpSession
      * @return
@@ -71,11 +76,6 @@ public class NewSpotController {
                 // user.getSpot().add(spot); //retourne un spot lié à l'utilisateur
                 //on persist le spot en bdd
                 this.spotRepository.save( spot );
-                //todo recuperer id du nouveau
-                //todo redirige sur spotdetailavec id du spot
-                // le chemin de redirection ne fonctionne pas avec l'id du spot...
-                // mais je ne sais pas comment faire le lien entre le controler spotDetails et l'id du spot
-                // return "/spotDetails/"+ spot1.getId();
                 return "redirect:/spotDetails/" + spot.getId(); //redirection qui fonctionne mais sans l'id à transmettre (il faut changer le path de la méthode GetMapping ci-dessus)
             } else {//si pas d'informations venant du formulaire newspot a traiter, direction formulaire de newspot
                 return "spot/newspot";
@@ -92,42 +92,27 @@ public class NewSpotController {
 
         //grace a l'id dans le path, en recupere en bdd le spot par son id
         Optional<Spot> spotData=this.spotRepository.findById( id );
-        System.out.println( "dans controller spotDetails" );
-        System.out.println( spotData );
-        System.out.println( "spotId :" + id );
-        Spot spot=new Spot();
+        Spot spot= new Spot();
         if (spotData.isPresent()) {
             spot=spotData.get();
-            System.out.println( "test" );
-            System.out.println( spot );
-
         }
-        List<Comment> comments=this.commentRepository.findBySpot( spot );
-        for (Comment comment : comments) {
-            Optional<User> userData=this.userRepository.findByComment( comment );
-            if (userData.isPresent()) {
-                System.out.println( userData );
-                comment.setUser( userData.get() );
-            }
-        }
-        System.out.println( comments );
-
-        List<Area> areas=this.areaRepository.findBySpot( spot );
 
         //et on place ce spot dans la session
         //httpSession.setAttribute( "spot", spot );
         model.addAttribute( "spot", spot );
         model.addAttribute( "userId", httpSession.getAttribute( "currentUserId" ) );
         model.addAttribute( "userRole", httpSession.getAttribute( "currentUserRole" ) );
-        model.addAttribute( "comments", comments );
-        model.addAttribute( "areas", areas );
+   //     model.addAttribute( "comments", comments );
+     //   model.addAttribute( "areas", areas );
+        model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+        model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
         //on redirige ensuite vers la page qui doit afficher ce spot
         return "spot/spotDetails";
     }
 
     @GetMapping(path="/spotDetails/spot/{id}/tag")
     public String tagSpot(@PathVariable("id") Long id,
-                          HttpSession httpSession) {
+                          HttpSession httpSession, Model model) {
 
         if (httpSession.getAttribute( "email" ) != null) {
             // System.out.println(spot);
@@ -152,13 +137,15 @@ public class NewSpotController {
 
     @GetMapping(path="/spot/{id}/add/area")              //TODO to check!!!!!
     public String addSecteur(@ModelAttribute("area") Area area,
-                             @PathVariable("id") Long id,   //TODO why id est en gris
+                             @PathVariable("id") Long id,   //TODO why id est en gris path variable necessaire??????
                              HttpSession httpSession,
                              Model model) {
 
         if (httpSession.getAttribute( "email" ) != null) {
             System.out.println( area );
             model.addAttribute( "area", area );
+            model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+            model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
             return "area";
         } else {
             return "redirect:/login";
@@ -175,6 +162,7 @@ public class NewSpotController {
             Area newArea=new Area();
             newArea.setName( area.getName() );
             newArea.setDescription( area.getDescription() );
+            newArea.setNumberOfRoutes( area.getNumberOfRoutes() );
             newArea.setSpot( spot );
             Optional<Spot> spot1=this.spotRepository.findById( id );
             area.setSpot( spot1.get() );
@@ -188,14 +176,16 @@ public class NewSpotController {
     }
 
     @GetMapping(path="/spot/{id}/add/comment")   //TODO To check!!!!!!!
-    public String addComment(@ModelAttribute("comment") Comment comment,
-                                 @PathVariable("id") Long id,
-                                 HttpSession httpSession,
-                                 Model model) {
+    public String addComment(/*@ModelAttribute("comment") Comment comment,
+                             @PathVariable("id") Long id,*/
+                             HttpSession httpSession,
+                             Model model) {
 
         if (httpSession.getAttribute( "email" ) != null) {
-            System.out.println( comment );
-            model.addAttribute( "comment", comment );
+            /*System.out.println( comment );
+            model.addAttribute( "comment", comment );*/
+            model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+            model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
             return "comment";
         } else {
             return "redirect:/login";
@@ -204,8 +194,8 @@ public class NewSpotController {
 
     @PostMapping("/spot/{id}/add/comment") //TODO To check!!!!!!
     public String saveComment(@ModelAttribute("comment") Comment comment,
-                                  Spot spot,
-                                  HttpSession httpSession) { //TODO check!!!!!
+                              Spot spot,
+                              HttpSession httpSession) { //TODO check!!!!!
 
         if (httpSession.getAttribute( "email" ) != null) {
             Comment newCom=new Comment();
@@ -237,6 +227,8 @@ public class NewSpotController {
         if (httpSession.getAttribute( "email" ) != null) {
             System.out.println( spot );
             model.addAttribute( "spot", spot );
+            model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
+            model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
             return "topo";
         } else {
             return "redirect:/login";
@@ -253,7 +245,7 @@ public class NewSpotController {
             Topo newTopo=new Topo();
             newTopo.setTitle( topo.getTitle() );
             newTopo.setAuthor( topo.getAuthor() );
-            newTopo.setDateOfPublishing( topo.getDateOfPublishing() );
+            newTopo.setPublicationDate( topo.getPublicationDate() );
             Optional<Spot> spotData=this.spotRepository.findById( id );
             newTopo.setSpot( spotData.get() );
 
@@ -271,10 +263,10 @@ public class NewSpotController {
     }
 
     @GetMapping(path="/spot/spotList")
-    public String getHomeNotSignedIn(@ModelAttribute("keyword") String keyword,
-                                     @ModelAttribute("quotation") String quotation,
-                                     Model model,
-                                     HttpSession httpSession) {
+    public String getSpotList(@ModelAttribute("keyword") String keyword,
+                              @ModelAttribute("quotation") String quotation,
+                              Model model,
+                              HttpSession httpSession) {
 
         List<Spot> spotData=null;
         if (quotation.isEmpty() && keyword.isEmpty()) {
@@ -293,23 +285,10 @@ public class NewSpotController {
         model.addAttribute( "spotList", spotData );
         model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
         model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
-        System.out.println( spotData );
+      //  System.out.println( spotData );
         //on redirige ensuite vers la page qui doit afficher ce spot
         return "spot/spotList";
     }
-
-
-    @GetMapping("/updateForm")                 //TODO je pense pas que ça soit necessaire!!!!
-    public String showupdateSpotForm(@ModelAttribute("spot") Spot spot,
-                                     HttpSession httpSession) {
-        if (httpSession.getAttribute( "email" ) != null) {
-            if (spot != null) {
-                this.spotRepository.save( spot );
-            }
-        }
-        return "redirect:/spotDetails/" + spot.getId();
-    }
-
 
 }
 
