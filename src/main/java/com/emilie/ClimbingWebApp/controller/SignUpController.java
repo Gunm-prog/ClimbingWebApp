@@ -115,7 +115,7 @@ public class SignUpController {
                     return "redirect:/userAccount/" + userData.getId();
                 }
                 else {
-                    httpSession.setAttribute( "error", "mauvais password." );
+                    httpSession.setAttribute( "error", "bad password." );
                     return "redirect:/login";
                 }
             }// redirection login, email non trouvé en bdd

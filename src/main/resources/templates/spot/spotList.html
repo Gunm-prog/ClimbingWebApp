@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+<div th:replace="fragments/base :: head">
+    <h2>Spot List</h2>
+</div>
+<title>Spot List</title>
+<body>
+<section>
+    <form method="get" th:action="@{/spot/spotList}">
+        <input type="text" name="keyword" placeholder="search"/>
+        <select name="quotation">
+            <option value="">choisissez une cotation</option>
+            <optgroup label="easy">
+                <option value="1">1</option>
+            </optgroup>
+            <optgroup label="moderate">
+                <option value="2">2</option>
+            </optgroup>
+            <optgroup label="difficult">
+                <option value="3">3</option>
+            </optgroup>
+            <optgroup label="very difficult">
+                <option value="4">4</option>
+            </optgroup>
+            <optgroup label="severe">
+                <option value="5a">5a</option>
+                <option value="5b">5b</option>
+                <option value="5c">5c</option>
+            </optgroup>
+            <optgroup label="hard severe">
+                <option value="6a">6a</option>
+                <option value="6a+">6a+</option>
+                <option value="6b">6b</option>
+                <option value="6b+">6b+</option>
+                <option value="6c">6c</option>
+                <option value="6c+">6c+</option>
+            </optgroup>
+            <optgroup label="very severe">
+                <option value="7a">7a</option>
+                <option value="7a+">7a+</option>
+                <option value="7b">7b</option>
+                <option value="7b+">7b+</option>
+                <option value="7c">7c</option>
+                <option value="7c+">7c+</option>
+            </optgroup>
+            <optgroup label="hard very severe">
+                <option value="8a">8a</option>
+                <option value="8a+">8a+</option>
+                <option value="8b">8b</option>
+                <option value="8b+">8b+</option>
+                <option value="8c">8c</option>
+                <option value="8c+">8c+</option>
+            </optgroup>
+            <optgroup label="extremely severe">
+                <option value="9a">9a</option>
+                <option value="9a+">9a+</option>
+                <option value="9b">9b</option>
+                <option value="9b+">9b+</option>
+                <option value="9c">9c</option>
+            </optgroup>
+        </select>
+        <input type="submit" value="Search"/>
+    </form>
+
+    <div th:if="${#lists.size(spotList) == 0}">
+        <p>Aucun résultat</p>
+    </div>
+
+    <table th:if="${#lists.size(spotList) != 0}"
+           th:each="spot: ${spotList}" border="1" cellpadding="10">
+        <tr>
+            <td colspan="3">
+                <a class="btn btn-primary btn-lg btn-block" th:href="@{/spotDetails/{id} (id=${spot.id}) }" th:text="${spot.name}">Name</a>
+            </td>
+        </tr>
+
+        <tr>
+            <td th:text="${spot.description}" colspan="3">Description</td>
+        </tr>
+        <tr>
+            <td>
+                <form th:action="@{'/spot/{id}/add/comment' (id=${spot.id})}" method="get">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add Comment"/>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/spot/{id}/add/topo (id=${spot.id})}" method="get">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add a Topo"/>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/spot/{id}/add/area (id=${spot.id})}" method="get">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add an Area"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+
+    <!--<div class="text-center">Already have an account? <a href="#">Log In</a>
+    </div>-->
+</section>
+</body>
+</html>
+

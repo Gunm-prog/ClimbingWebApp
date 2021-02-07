@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Comment Details</title>
+</head>
+<body>
+<div th:replace="fragments/menu :: header"></div>
+
+<div class="text-center">
+    <h1 align="center">My Comment list</h1>
+    <br/>
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Name</th>
+            <th>Content</th>
+        </tr>
+
+        <tr th:each="commentDetails: ${comment}">
+            <td th:text="${comment.name}">Name</td>
+            <td th:text="${comment.content}">Content</td>
+        </tr>
+    </table>
+</div>
+<footer th:fragment="footer">
+    C'est mon pied!
+</footer>
+</body>
+</html>
+
+

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="base(title, h2, content)">
+    <head th:fragment="head">
+        <meta charset="UTF-8">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <link rel="stylesheet" href="../../static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}"/>
+        <link rel="stylesheet" href="../../static/css/style.css" th:href="@{/css/style.css}"/>
+        <link rel="stylesheet" href="../../static/css/userAccount.css" th:href="@{/css/userAccount.css}"/>
+
+        <title th:replace="${title}"></title>
+    </head>
+    <body>
+        <header th:replace="fragments/menu :: header"></header>
+        <main>
+            <div>
+                <h2 th:replace="${h2}">h2 title</h2>
+                <div id="main2">
+                    <section th:replace="${content}">
+                        <p>layout content</p>
+                    </section>
+                </div>
+            </div>
+        </main>
+        <div id="footer">
+            <div>
+                Contact: e.balsen@hotmail.com
+            </div>
+        </div>
+    </body>
+</html>

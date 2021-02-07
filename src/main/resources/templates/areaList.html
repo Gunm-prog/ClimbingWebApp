@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+<div th:replace="fragments/base :: head"></div>
+<title>Area List</title>
+
+<body>
+<div th:replace="fragments/menu :: header"></div>
+<br/>
+<h2 align="center"> Area list</h2>
+
+<section>
+    <form method="get" th:action="@{/areaList}">
+        <input type="text" name="keyword"/>
+        <input type="submit" value="Search"/>
+    </form>
+
+    <div th:if="${#lists.size(areaList) == 0}">
+        <p>Aucun résultat</p>
+    </div>
+
+    <!-- parcourt de la liste des spot, si elle n'est pas vide-->
+    <table th:if="${#lists.size(spotList) != 0}"
+           th:each="spot: ${spotList}" border="1" cellpadding="10">
+        <!-- affiche le nom du spot courant-->
+        <tr>
+            <th>
+                <a class="btn btn-primary btn-lg btn-block" th:href="@{/spotDetails/{id} (id=${spot.id})}" th:text="'In Spot : ' + ${spot.name}"> Spot </a>
+            </th>
+        </tr>
+        <!-- parcourt de la liste des area et on vérifie que l' area courante fait partie du spot courant-->
+        <tr th:each="areas: ${areaList}">
+            <td class="tdForTable" th:if="${areas.spot.id == spot.id}">
+                <table>
+                    <tr>
+                        <th>
+                            <a class="btn btn-primary btn-lg btn-block" th:href="@{/areaDetails/{id}(id=${areas.id})}"
+                               th:text="${areas.name}">Name</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td th:text="${areas.description}">Description</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form th:action="@{/{id}/add/route (id=${areas.id})}" method="get">
+                                <input class="btn btn-primary btn-sm" type="submit" value="Add a Route"/>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+  <!--  <div class="text-center">Already have an account? <a href="@{/login}">Log In</a>
+    </div>-->
+</section>
+</body>
+</html>

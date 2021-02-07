@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+    <div th:replace="fragments/base :: head"></div>
+    <title>Route Details</title>
+
+    <body>
+        <div th:replace="fragments/menu :: header"></div>
+        <h2>Route Details</h2>
+        <section>
+            <table>
+                <tr>
+                    <th colspan="2">
+                        <p class="btn btn-primary btn-lg btn-block" th:text="${route.name}">Name </p>
+                    </th>
+                </tr>
+                <tr>
+                    <th>Hauteur</th>
+                    <th>Nombre</th>
+                </tr>
+                <tr>
+                    <td th:text="${route.hauteur}">Hauteur</td>
+                    <td th:text="${route.nombre}">Nombre</td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td colspan="3">
+                        <h1>Longueurs des Voies</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <form action="#" th:action="@{'/{id}/add/pitch' (id=${route.id})}" th:object="${Route}"
+                              method="get">
+                            <input type="submit" value="Ajout Longueur"/>
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Distance</th>
+                    <th>Points</th>
+                    <th>Quotation</th>
+                </tr>
+                <tr th:each="longueurDetails: ${pitch}">
+                    <td th:text="${longueurDetails.distance}">Distance</td>
+                    <td th:text="${longueurDetails.points}">Points</td>
+                    <td th:text="${longueurDetails.quotation}">Quotation</td>
+                </tr>
+            </table>
+        </section>
+    </body>
+</html>
+
+

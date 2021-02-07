@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+<div th:replace="fragments/base :: head"></div>
+<title>Route List</title>
+
+<body>
+<div th:replace="fragments/menu :: header"></div>
+
+<br/>
+<h2 align="center">Route List</h2>
+
+<section>
+    <form method="get" th:action="@{/routeList}">
+        <input type="text" name="keyword"/>
+        <input type="submit" value="Search"/>
+    </form>
+    <div th:if="${#lists.size(routeList) == 0}">
+        <p>No result</p>
+    </div>
+    <table th:if="${#lists.size(routeList) != 0}"
+           th:each="route: ${routeList}" border="1" cellpadding="10">
+        <tr>
+            <th colspan="3">
+                <a class="btn btn-primary btn-lg btn-block" th:href="@{/routeDetails/{id} (id=${route.id})}"
+                   th:text="${route.name}">Name</a>
+            </th>
+        </tr>
+        <tr>
+            <th>Height</th>
+            <th>Number</th>
+            <th>Area</th>
+        </tr>
+        <tr>
+            <td th:text="${route.hauteur}">Height</td>
+            <td th:text="${route.nombre}">Number</td>
+            <td>
+                <a th:href="@{/areaDetails/{id} (id=${route.area.id})}" th:text="${route.area.name}">Area</a>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <form th:action="@{/{id}/add/pitch (id=${route.id})}" method="get">
+                    <input class="btn btn-primary btn-sm" type="submit" value="Add a Pitch"/>
+                </form>
+            </td>
+        </tr>
+    </table>
+</section>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+<div th:replace="fragments/base :: head"></div>
+<title>Profil</title>
+<body>
+<div th:replace="fragments/menu :: header"></div>
+<br>
+<h2>Glad to see you again climber!</h2>
+
+<section>
+    <table>
+        <tr>
+            <td>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="tab" href="#account">My account</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="tab" href="#mySpots">My spots</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="tab" href="#myTopos">My topos</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="tab" href="#myRsv">My reservations</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="tab" href="#myAreas">My areas</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="tab" href="#myRoutes">My routes</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" data-toggle="tab" href="#myPitches">My pitches</a>
+                    </li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade active show" id="account">
+                        <h3>My Account</h3>
+                        <div>
+                            <p th:text="${user.email}"></p>
+                            <p th:text="${user.name}"></p>
+                            <span th:text="${user.pseudo}"></span>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="mySpots">
+                        <h3>Mes Spots</h3>
+                        <table border="1" cellpadding="10" th:each="spot: ${spots}">
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+
+                            <tr th:each="spot: ${spots}">
+                                <td>
+                                    <form th:action="@{/spotDetails/{id} (id=${spot.id}) }" method="get">
+                                        <input type="submit" th:value="${spot.name}">
+                                    </form>
+                                </td>
+                                <td th:text="${spot.description}">Description</td>
+
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="myTopos">
+                        <h3>Mes Topos </h3>
+                        <table border="1" cellpadding="10" th:each="topo: ${topos}">
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Date Of Publishing</th>
+                            </tr>
+                            <tr>
+                                <td th:text="${topo.title}">Title</td>
+                                <td th:text="${topo.author}">Author</td>
+                                <td th:text="${topo.publicationDate}">Publication Date</td>
+                            </tr>
+                            <tr>
+                                <th colspan="3">Demande de Reservation</th>
+                            </tr>
+                            <tr th:if="${topo.reservation == null}">
+                                <td colspan="3">Aucune demande en cours</td>
+                            </tr>
+                            <tr th:each="rsv: ${topo.reservation}">
+                                <td th:text="${rsv.user.name} + ' ' + ${rsv.dateReservation}">User Name</td>
+                                <td th:if="${rsv.reservationStatus == null}">
+                                    <p>Demande en attente</p>
+                                </td>
+                                <td th:if="${rsv.reservationStatus == null and topo.isReserved() == false}">
+                                    <form action="#"
+                                          th:action="@{/reservationRequestValidation/{id}/{reservationStatus} (id=${rsv.id}, reservationStatus=true)}"
+                                          th:object="${rsv}"
+                                          method="POST"
+                                    >
+                                        <input type="submit" value="Accepter la demande de reservation">
+                                    </form>
+                                    <br>
+                                    <form action="#"
+                                          th:action="@{/reservationRequestValidation/{id}/{reservationStatus} (id=${rsv.id}, reservationStatus=false)}"
+                                          th:object="${rsv}"
+                                          method="POST"
+                                    >
+                                        <input type="submit" value="Refuser la demande de reservation">
+                                    </form>
+                                </td>
+                                <td th:if="${rsv.reservationStatus == null and topo.isReserved() == true}">
+                                    Veuillez rendre le topo disponible pour accepter ou refuser une demande en attente.
+                                </td>
+
+                                <td th:if="${rsv.reservationStatus == true}">
+                                    <p>Demande acceptée</p>
+                                    <p th:text="${rsv.user.email}">Coordonnées de contact</p>
+                                    <br>
+                                    <form action="#"
+                                          th:action="@{/delete/reservation/{id} (id=${rsv.id})}"
+                                          th:object="${rsv}"
+                                          method="get">
+                                        <input type="submit" value="Rendre le topo disponible">
+                                    </form>
+                                </td>
+                                <td th:if="${rsv.reservationStatus == false}">
+                                    <p>Demande refusée</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="myRsv">
+                        <h3>Mes demandes de réservations</h3>
+                        <table border="1" cellpadding="10" th:each="rsv: ${currentUserRsv}">
+                            <thead>
+                            <tr>
+                                <th>Topo</th>
+                                <th>Author</th>
+                                <th>Publication Date</th>
+                                <th>Owner</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="${rsv.topo.title}">Title</td>
+                                <td th:text="${rsv.topo.author}">Author</td>
+                                <td th:text="${rsv.topo.publicationDate}">Publication Date</td>
+                                <td th:text="${rsv.topo.user.name}"> name's owner</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" th:if="${rsv.reservationStatus == null}">
+                                    <p>Demande en attente</p>
+                                </td>
+                                <td colspan="4" th:if="${rsv.reservationStatus == true}">
+                                    <p>Demande acceptée</p>
+                                </td>
+                                <td colspan="4" th:if="${rsv.reservationStatus == false}">
+                                    <p>Demande refusée</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td th:if="${rsv.reservationStatus != true}" colspan="4">
+                                    <form action="#"
+                                          th:action="@{/delete/reservation/{id} (id=${rsv.id})}"
+                                          th:object="${rsv}"
+                                          method="get"
+                                    >
+                                        <input type="submit" value="mettre fin à la demande de reservation">
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="myAreas">
+                        <h3>My Areas</h3>
+                        <table border="1" cellpadding="10" th:each="area: ${areas}">
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+
+                            <tr th:each="area: ${areas}">
+                                <td th:text="${area.name}">Name</td>
+                                <td th:text="${area.description}">Description</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="tab-pane fade" id="myRoutes">
+                        <h3>My Routes</h3>
+                        <table border="1" cellpadding="10" th:each="route: ${route}">
+                            <tr>
+                                <th>Name</th>
+                                <th>Height</th>
+                                <th>Number</th>
+                            </tr>
+                            <tr th:each="route: ${route}">
+                                <td th:text="${route.name}">Name</td>
+                                <td th:text="${route.height}">Height</td>
+                                <td th:text="${route.number}">Number</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="tab-pane fade" id="myPitches">
+                        <h3>My Pitches</h3>
+                        <table border="1" cellpadding="10" th:each="pitches: ${pitch}">
+                            <tr>
+                                <th>Distance</th>
+                                <th>Points</th>
+                                <th>Quotation</th>
+                            </tr>
+
+                            <tr th:each="pitches: ${pitch}">
+                                <td th:text="${pitch.name}">Distance</td>
+                                <td th:text="${pitch.points}">Points</td>
+                                <td th:text="${pitch.quotation}">Quotation</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</section>
+</body>
+</html>

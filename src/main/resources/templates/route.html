@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+<div th:replace="fragments/base :: head"></div>
+<title>New Route</title>
+<body>
+<div th:replace="fragments/menu :: header"></div>
+<br>
+<h2>New Route</h2>
+
+<section>
+    <form th:object="${route}"
+          method="POST">
+        <div class="text-center">
+            <p>Add a new route!</p>
+            <p>Voie Name: <input type="text" name="name"/></p>
+            <p>Voie Hauteur: <input type="text" name="hauteur"/></p>
+            <p>Voie Nombre: <input type="text" name="nombre"/></p>
+            <p><input type="submit" value="Save"/></p>
+
+        </div>
+    </form>
+</section>
+</body>
+</html>

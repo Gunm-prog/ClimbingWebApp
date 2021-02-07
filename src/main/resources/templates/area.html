@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+    <div th:replace="fragments/base :: head"></div>
+    <title>New Area</title>
+
+    <body>
+        <div th:replace="fragments/menu :: header"></div>
+        <h2>New Area</h2>
+        <section>
+        <form th:object="${area}" method="POST">
+            <div class="text-center">
+                <p>Add a new Area!</p>
+                <p>Area Name: <input type="text" name="name"/></p>
+                <p>Area Description: <input type="text" name="description"/></p>
+                <p>Area's number of routes: <input type="text" name="numberOfRoutes"></p>
+                <!-- <p>Spot lié au area:    <input type="text" name="spot lié au area"></p> -->
+                <p><input type="submit" value="Save"/></p>
+            </div>
+        </form>
+        </section>
+    </body>
+</html>

@@ -10,8 +10,8 @@
 <h2>New Topo</h2>
 
 <section>
-    <form action="#" th:action="@{'/spot/{id}/add/topo' (id=${spot.id})} " th:object="${Topo}"
-          method="POST">
+    <form action="#" th:object="${area}" method="post"> <!--th:action="@{'/spot/{id}/add/topo' (id=${spot.id})} " th:object="${Topo}"-->
+
         <div class="text-center">
             <p>Add a new Topo!</p>
             <p>Topo Title: <input type="text" name="title"/></p>

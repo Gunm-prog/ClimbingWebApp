@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+<div th:replace="fragments/base :: head"></div>
+
+<title>Pitch List</title>
+
+<body>
+<div th:replace="fragments/menu :: header"></div>
+<br>
+<h2 >Pitch List</h2>
+
+<section>
+    <form method="get" th:action="@{/pitchList}">
+        <input type="text" name="keyword"/>
+        <input type="submit" value="Search"/>
+    </form>
+    <div th:if="${#lists.size(pitchList) == 0}">
+        <p>No result</p>
+    </div>
+    <table th:if="${#lists.size(pitchList) != 0}"
+           th:each="route: ${routeList}"
+           border="1" cellpadding="10">
+        <tr>
+            <th>
+                <a class="btn btn-primary btn-lg btn-block" th:href="@{/routeDetails/{id} (id=${route.id})}" th:text="${route.name}">Pitch of</a>
+            </th>
+        </tr>
+        <tr>
+            <td class="tdForTable">
+                <table>
+                    <tr>
+                        <th>Distance</th>
+                        <th>Points</th>
+                        <th>Quotation</th>
+                        <th>Route</th>
+                    </tr>
+                    <tr th:each="pitches: ${pitchList}" th:if="${route.id == pitches.route.id}">
+                        <td>
+                            <a th:href="@{/pitchDetails/{id} (id=${pitches.id})}"
+                               th:text="${pitches.distance}">Distance</a>
+                        </td>
+                        <td th:text="${pitches.points}">Points</td>
+                        <td th:text="${pitches.quotation}">Quotation</td>
+
+                        <td>
+                            <a th:href="@{/routeDetails/{id} (id=${pitches.route.id})}"
+                               th:text="${pitches.route.name}">Route</a>
+                        </td>
+
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</section>
+</body>
+</html>

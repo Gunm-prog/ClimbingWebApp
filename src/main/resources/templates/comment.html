@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+    <div th:replace="fragments/base :: head"></div>
+    <title>New Comment</title>
+
+    <body>
+        <h2>New Comment</h2>
+        <section>
+            <form th:object="${comment}"
+                  method="POST">
+                <div class="text-center">
+                    <p>Add a Comment!</p>
+                    <p>Comment Name: <input type="text" name="name"/></p>
+                    <p>Comment Content: <input type="text" name="content"/></p>
+
+
+                    <p><input type="submit" value="Save"/></p>
+
+                </div>
+            </form>
+
+            <div class="text-center">
+                Already have an account?
+                <a href="@{/login}">Log In</a>
+            </div>
+        </section>
+    </body>
+</html>
