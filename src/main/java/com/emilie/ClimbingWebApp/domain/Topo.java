@@ -5,44 +5,36 @@ import javax.persistence.*;
 import java.util.*;
 
 
- @Entity
+@Entity
 @Table(name="topo")
 public class Topo {
     @Id
-    //@javax.persistence.Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
     @Column(name="title")
     private String title;
-    @Column(name="auhor")
+    @Column(name="author")
     private String author;
     @Column(name="publication_date")
     private String publicationDate;
-    @Column(name="is_reserved")
-    private boolean isReserved;
+    @Column(name="is_booked")
+    private Boolean isBooked;
 
 
-    @OneToMany(targetEntity=ReservationTopo.class, mappedBy="topo", fetch=FetchType.EAGER)
-    private Set<ReservationTopo> reservation;
+    @OneToMany(targetEntity=TopoBooking.class, mappedBy="topo", fetch=FetchType.EAGER)
+    private Set<TopoBooking> booking;
 
     @ManyToMany
-    //name = nom de la table d'association
-    @JoinTable( name = "topo_has_spot",
-            joinColumns = @JoinColumn( name = "topo_id" ),
-            inverseJoinColumns = @JoinColumn( name = "spot_id" ) )
-    private List<Spot> spots = new ArrayList<>();
+    @JoinTable(name="topo_has_spot",
+            joinColumns=@JoinColumn(name="topo_id"),
+            inverseJoinColumns=@JoinColumn(name="spot_id"))
+    private List<Spot> spots=new ArrayList<>();
 
     @ManyToOne(targetEntity=User.class)
-    @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
+    @JoinColumn(name="user_id", referencedColumnName="id")
     private User user;
 
-
-    public Topo(Scanner sc) {
-        this.scanTitle( sc );
-        this.scanPublicationDate( sc );
-        // this.scanAvailable(sc);
-    }
 
     public Topo() {
     }
@@ -76,16 +68,12 @@ public class Topo {
         this.author=author;
     }
 
-    public Set<ReservationTopo> getReservation() {
-        return reservation;
+    public Set<TopoBooking> getBooking() {
+        return booking;
     }
 
-    public void setReservation(Set<ReservationTopo> reservation) {
-        this.reservation=reservation;
-    }
-
-    public List<Spot> getSpots() {
-        return spots;
+    public void setBooking(Set<TopoBooking> booking) {
+        this.booking=booking;
     }
 
     public String getPublicationDate() {
@@ -103,9 +91,10 @@ public class Topo {
     public void setSpots(List<Spot> spots) {
         this.spots=spots;
     }
+
     //methode pour donner un spot qui sera ajouté à la liste de spots
-    public void setSpot(Spot spot){
-        this.spots.add(spot);
+    public void setSpot(Spot spot) {
+        this.spots.add( spot );
     }
 
     public User getUser() {
@@ -116,38 +105,12 @@ public class Topo {
         this.user=user;
     }
 
-    public boolean isReserved() {
-        return isReserved;
+    public boolean isBooked() {
+        return isBooked;
     }
 
-    public void setReserved(boolean reserved) {
-        isReserved=reserved;
+    public void setIsBooked(boolean isBooked) {
+        isBooked=isBooked;
     }
 
-    public void scanTitle(Scanner sc) {
-        System.out.println( "topoTitle: " );
-        String inputTitle=sc.nextLine();
-        this.setName( inputTitle );
-    }
-
-    public void scanPublicationDate(Scanner sc) {
-        System.out.println( "topoPublicationDate: " );
-        String inputPublicationDate=sc.nextLine();
-        this.setPublicationDate( inputPublicationDate );
-    }
-    
-
-    @Override
-    public String toString() {
-        return "Topo{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", publicationDate='" + publicationDate + '\'' +
-                ", isReserved=" + isReserved +
-               ", reservation=" + reservation +
-                ", spots=" + spots +
-                ", user=" + user +
-                '}';
-    }
 }

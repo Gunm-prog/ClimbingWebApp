@@ -7,37 +7,31 @@ import java.util.List;
 
 
 @Entity
-@Table(name="secteur")//spécification nom table forcé
+@Table(name="area")
 public class Area {
 
     @Id
-    //norme
-    @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-    @Column(name="nom_secteur")
+    @Column(name="area_name")
     private String name;
     @Column(name="description")
     private String description;
-    @Column(name="nombre_de_voies")
+    @Column(name="number_of_routes")
     private String numberOfRoutes;
 
     @ManyToOne(targetEntity=Spot.class)
-    @JoinColumn(name="spot_id", referencedColumnName="id"/*, insertable=false, updatable=false*/)
+    @JoinColumn(name="spot_id", referencedColumnName="id")
     private Spot spot;
 
     @OneToMany(targetEntity=Route.class, mappedBy="area")
     private List<Route> route=new ArrayList<>();
 
     @ManyToOne(targetEntity=User.class)
-    @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
+    @JoinColumn(name="user_id", referencedColumnName="id")
     private User user;
 
-
-   /* public Area(Scanner sc, String description) {
-        this.description=description;
-        this.scanName( sc );
-    }*/
 
     public Area() {
 
@@ -90,12 +84,6 @@ public class Area {
     public void setUser(User user) {
         this.user=user;
     }
-
-/*    public void scanName(Scanner sc) {
-        System.out.println( "secteurName: " );
-        String inputName=sc.nextLine();
-        this.setName( inputName );
-    }*/
 
 
     public String getDescription() {

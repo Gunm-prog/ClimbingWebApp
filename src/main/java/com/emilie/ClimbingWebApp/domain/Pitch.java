@@ -6,7 +6,7 @@ import java.util.Objects;
 import java.util.Scanner;
 
 @Entity
-@Table(name="longueur")//spécification nom table forcé
+@Table(name="pitch")
 public class Pitch {
 
     @Id

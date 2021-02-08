@@ -8,7 +8,7 @@
 <body>
 <div th:replace="fragments/menu :: header"></div>
 <br>
-<h2 >Pitch List</h2>
+<h2>Pitch List</h2>
 
 <section>
     <form method="get" th:action="@{/pitchList}">
@@ -23,7 +23,8 @@
            border="1" cellpadding="10">
         <tr>
             <th>
-                <a class="btn btn-primary btn-lg btn-block" th:href="@{/routeDetails/{id} (id=${route.id})}" th:text="${route.name}">Pitch of</a>
+                <a class="btn btn-primary btn-lg btn-block" th:href="@{/routeDetails/{id} (id=${route.id})}"
+                   th:text="${route.name}">Pitch of</a>
             </th>
         </tr>
         <tr>

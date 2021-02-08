@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
 <div th:replace="fragments/base :: head"></div>
-<title>Update Commentaire</title>
+<title>Update Comment</title>
 
 <body>
 <div th:replace="fragments/menu :: header"></div>
@@ -11,7 +11,8 @@
 
 <section>
     <p th:if="${error != null}" th:text="${error}">error</p>
-    <form th:if="${error == null}" th:action="@{'/spot/{spotId}/updateComment/{comId}/success' (spotId=${comment.spot.id}, comId=${comment.id})}"
+    <form th:if="${error == null}"
+          th:action="@{'/spot/{spotId}/updateComment/{comId}/success' (spotId=${comment.spot.id}, comId=${comment.id})}"
           th:object="${comment}"
           method="POST">
         <div class="text-center">

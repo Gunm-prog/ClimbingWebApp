@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
-/**
- * @author Emilie Balsen
- */
+
 @Controller
 public class SignUpController {
 
@@ -24,41 +22,28 @@ public class SignUpController {
     UserRepository userRepository;
 
 
-    /**
-     * This method gets signup form
-     * @param httpSession
-     * @param model
-     * @return signup form
-     */
-    //method to get signup form
     @GetMapping(path="/signup")
     public String getSignUpForm(HttpSession httpSession, Model model) {
-        if(httpSession != null){
-            model.addAttribute( "message", httpSession.getAttribute("message") );
+        if (httpSession != null) {
+            model.addAttribute( "message", httpSession.getAttribute( "message" ) );
             httpSession.removeAttribute( "message" );
         }
         return "signup-form";
     }
 
-    /**
-     *
-     * @param user
-     * @param httpSession
-     * @param model
-     * @return signup success page with the email that has just been saved
-     * @return signup form is an exception is catched (if email already exists)
-     */
-    //method to get signupform details
+
     @PostMapping("/signup-submit")
-    public String submitSignUp(@ModelAttribute("user") User user, HttpSession httpSession, Model model) {
+    public String submitSignUp(@ModelAttribute("user") User user,
+                               HttpSession httpSession,
+                               Model model) {
 
         String hashedPass=BCrypt.withDefaults().hashToString( 12, user.getPassword().toCharArray() );
         user.setPassword( hashedPass );
         user.setRole( "member" );
         try {
             userRepository.save( user );
-        }catch (Exception  exception){
-           httpSession.setAttribute( "message", "This email already exists" );
+        } catch (Exception exception) {
+            httpSession.setAttribute( "message", "This email already exists" );
             return "redirect:/signup";
         }
 
@@ -67,7 +52,6 @@ public class SignUpController {
     }
 
     /**
-     *
      * @return login page
      */
     @GetMapping(path="/login")
@@ -76,10 +60,10 @@ public class SignUpController {
             model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
             model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
 
-            if(httpSession.getAttribute( "error" )!= ""){
+            if (httpSession.getAttribute( "error" ) != "") {
                 model.addAttribute( "error", httpSession.getAttribute( "error" ) );
-            }else {
-                model.addAttribute( "error","");
+            } else {
+                model.addAttribute( "error", "" );
             }
             return "login";
         }
@@ -88,11 +72,9 @@ public class SignUpController {
     }
 
     /**
-     *
      * @param user
      * @param model
      * @param httpSession
-     * @return user account page with all her/his account information
      * @return login page if login has not worked
      */
     @PostMapping(path="/login")
@@ -113,14 +95,13 @@ public class SignUpController {
                     httpSession.setAttribute( "currentUserId", userData.getId() );
                     httpSession.setAttribute( "currentUserRole", userData.getRole() );
                     return "redirect:/userAccount/" + userData.getId();
-                }
-                else {
+                } else {
                     httpSession.setAttribute( "error", "bad password." );
                     return "redirect:/login";
                 }
             }// redirection login, email non trouvé en bdd
             else {
-                httpSession.setAttribute( "error", "email non reconnu."  );
+                httpSession.setAttribute( "error", "email non reconnu." );
                 model.addAttribute( "error", "email non reconnu." );
                 return "redirect:/login";
             }
@@ -130,7 +111,6 @@ public class SignUpController {
     }
 
     /**
-     *
      * @param user
      * @param httpSession
      * @return home page

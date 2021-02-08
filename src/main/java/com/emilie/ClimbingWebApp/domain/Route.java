@@ -4,11 +4,10 @@ package com.emilie.ClimbingWebApp.domain;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 
 @Entity
-@Table(name="voie")
+@Table(name="route")
 public class Route {
 
     @Id
@@ -17,25 +16,22 @@ public class Route {
     private Long id;
     @Column(name="name")
     private String name;
-    @Column(name="hauteur")
-    private int hauteur;
-    @Column(name="nombre")
-    private int nombre;
+    @Column(name="height")
+    private int height;
+    @Column(name="number")
+    private int number;
 
     @ManyToOne(targetEntity=Area.class)
-    @JoinColumn(name="secteur_id", referencedColumnName="id")
+    @JoinColumn(name="area_id", referencedColumnName="id")
     private Area area;
 
     @OneToMany(targetEntity=Pitch.class, mappedBy="route")
     private List<Pitch> pitches=new ArrayList<>();
 
     @ManyToOne(targetEntity=User.class)
-    @JoinColumn(name="user_id", referencedColumnName="id")//*, insertable=false, updatable=false*//*)
+    @JoinColumn(name="user_id", referencedColumnName="id")
     private User user;
 
-    public Route(Scanner sc) {
-        this.scanName( sc );
-    }
 
     public Route() {
 
@@ -57,20 +53,20 @@ public class Route {
         this.name=name;
     }
 
-    public int getHauteur() {
-        return hauteur;
+    public int getHeight() {
+        return height;
     }
 
-    public void setHauteur(int hauteur) {
-        this.hauteur=hauteur;
+    public void setHeight(int height) {
+        this.height=height;
     }
 
-    public int getNombre() {
-        return nombre;
+    public int getNumber() {
+        return number;
     }
 
-    public void setNombre(int nombre) {
-        this.nombre=nombre;
+    public void setNumber(int number) {
+        this.number=number;
     }
 
     public Area getArea() {
@@ -97,20 +93,14 @@ public class Route {
         this.pitches=pitches;
     }
 
-    private void scanName(Scanner sc) {
-        System.out.println( "voieName: " );
-        String inputName=sc.nextLine();
-        this.setName( inputName );
-    }
-
 
     @Override
     public String toString() {
         return "Route{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", hauteur=" + hauteur +
-                ", nombre=" + nombre +
+                ", height=" + height +
+                ", number=" + number +
                 '}';
     }
 }

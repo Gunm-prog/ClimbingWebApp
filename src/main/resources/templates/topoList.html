@@ -15,21 +15,21 @@
         <input type="submit" value="Search"/>
     </form>
     <div th:if="${#lists.size(topoList) == 0}">
-        <p>Aucun résultat</p>
+        <p>No result</p>
     </div>
     <table
             border="1"
             cellpadding="10"
             th:if="${#lists.size(topoList) != 0}"
-            th:each="topo: ${topoList}"
-    >
+            th:each="topo: ${topoList}">
+
         <tr>
             <th colspan="2">
                 <a class="btn btn-primary btn-lg btn-block"
                    th:href="@{/topoDetails/{id} (id=${topo.id})}"
-                   th:text="${topo.title}"
-                >
-                        Title
+                   th:text="${topo.title}">
+
+                    Title
                 </a>
             </th>
         </tr>
@@ -42,25 +42,18 @@
             <td th:text="${topo.publicationDate}">Publication Date</td>
         </tr>
         <tr>
-            <!--//todo faire un formulaire html, look at the login.html-->
-            <!--//todo utiliser le statut isReserved de chaque topo pour savoir si il est reservable ou non -->
-            <!--th:if="${currentUserId and topo.reservation.user.id != currentUserId) and (currentUserId and topo.user.id != currentUserId)}"
-            topo.reservation.user.id != currentUserId
-            -->
             <td colspan="2">
                 <form
-                        th:if="${currentUserId == null or (#lists.size(topo.reservation) == 0 && topo.user.id != currentUserId ) or (#lists.size(topo.reservation) != 0 and topo.user.id != currentUserId and topo.reservation[0].user.id != currentUserId)}"
+                        th:if="${currentUserId == null or (#lists.size(topo.booking) == 0 && topo.user.id != currentUserId ) or (#lists.size(topo.booking) != 0 and topo.user.id != currentUserId and topo.booking[0].user.id != currentUserId)}"
 
                         th:action="@{'/topoDetails/{id}' (id=${topo.id})}"
-                        method="get"
-                >
+                        method="get">
+
                     <input class="btn btn-secondary" type="submit" value="Borrow Topo"/>
                 </form>
             </td>
         </tr>
     </table>
-    <div class="text-center">Already have an account? <a th:href="@{/login}">Log In</a>
-    </div>
 </section>
 </body>
 </html>

@@ -16,10 +16,8 @@
             <p>
                 <label for="password">Your password</label>
                 <input type="password" name="password" placeholder="Enter Password" id="password">
-                <!-- <button class="unmask" type="button" title="Mask/Unmask password to check content">Unmask</button>-->
             </p>
             <br/>
-            <!--<tr th:if="${#lists.size(topoList) != 0}"-->
             <p th:text="${error}">error_message</p>
             <input type="submit" value="Log In"/>
         </form>

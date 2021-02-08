@@ -1,142 +1,149 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
       th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
-    <div th:replace="fragments/base :: head"></div>
-    <title>NewSpot</title>
+<div th:replace="fragments/base :: head"></div>
+<title>NewSpot</title>
 
-    <body>
-        <div th:replace="fragments/menu :: header"></div>
-        <h2>Spot details</h2>
-        <section>
-            <!--<title>Spot Details</title>-->
-            <table>
-                <tr>
-                    <th class="btn btn-primary btn-lg btn-block" th:text="${spot.name}">Name</th>
-                </tr>
-                <tr>
-                    <td th:if="${spot.tag == true}" ><span class="badge badge-pill badge-info">Official Spot</span></td>
-                </tr>
-                <tr>
-                    <td>
-                        <form th:if="${userRole == 'admin'}" th:action="@{'spot/{id}/tag' (id=${spot.id})}"
-                              th:object="${Spot}"
-                              method="get">
-                            <p><input th:if="${spot.tag == true}" type="submit" value="Detaguer ce spot "></p>
-                            <p><input th:if="${spot.tag == false}" type="submit" value="Taguer ce spot comme Officiel!">
-                            </p>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <td th:text="${spot.description}">Description</td>
-                </tr>
-                <tr>
-                    <td>
-                        <ul class="nav nav-tabs">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Areas</a>
-                                <div class="dropdown-menu">
-                                    <a class="nav-link" data-toggle="tab" href="#areas">Areas List</a>
-                                    <form action="#" th:action="@{'/spot/{id}/add/area' (id=${spot.id})}" th:object="${Spot}"
-                                          method="GET">
-                                        <input class="btn btn-primary btn-sm" type="submit" value="Add Area"/>
-                                    </form>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Topos</a>
-                                <div class="dropdown-menu">
-                                    <a class="nav-link" data-toggle="tab" href="#topos">Topos List</a>
-                                    <form action="#" th:action="@{'/spot/{id}/add/topo' (id=${spot.id})}" th:object="${Spot}"
-                                          method="GET">
-                                        <input class="btn btn-primary btn-sm" type="submit" value="Add Topo">
-                                    </form>
-                                </div>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#comments">Comments</a>
-                            </li>
-                        </ul>
-
-                        <div id="myTabContent" class="tab-content">
-                            <div class="tab-pane fade active show" id="areas">
-                                <form action="#" th:action="@{'/spot/{id}/add/area' (id=${spot.id})}" th:object="${Spot}"
-                                           method="GET">
-                                    <p><input class="btn btn-primary btn-sm" type="submit" value="Add Area"></p>
-                                </form>
-                                <table th:if="${#lists.size(spot.area) != 0}" th:each="areaDetails: ${spot.area}" class="tdForTableAreaTable">
-                                    <tr>
-                                        <td class="tdForTable column">
-                                            <table th:each="areaDetails: ${spot.area}" border="1" cellpadding="10">
-                                                <tr>
-                                                    <td th:text="${areaDetails.name}">Name</td>
-                                                </tr>
-                                                <tr>
-                                                    <td th:text="${areaDetails.description}">Description</td>
-                                                </tr>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class="tab-pane fade" id="topos">
-                                <form action="#" th:action="@{'/spot/{id}/add/topo' (id=${spot.id})}" th:object="${Spot}"
-                                      method="GET">
-                                    <p><input class="btn btn-primary btn-sm" type="submit" value="Add Topo"></p>
-                                </form>
-                                <table th:if="${#lists.size(spot.topos) != 0}" th:each="topoDetails: ${spot.topos}" class="tdForTableTopoTable" border="1" cellpadding="10">
-                                    <tr>
-                                        <th>Title</th>
-                                        <th>Author</th>
-                                        <th>Publication Date</th>
-                                    </tr>
-                                    <tr th:each="topoDetails: ${spot.topos}">
-                                        <td th:text="${topoDetails.title}">Title</td>
-                                        <td th:text="${topoDetails.author}">Author</td>
-                                        <td th:text="${topoDetails.publicationDate}">Publication Date</td>
-                                    </tr>
-                                </table>
-                            </div>
-
-                            <div class="tab-pane fade" id="comments">
-                                <form action="#" th:action="@{'/spot/{id}/add/comment' (id=${spot.id})}" th:object="${Spot}"
-                                      method="GET">
-                                    <p><input class="btn btn-primary btn-sm" type="submit" value="Add Comment"></p>
-                                </form>
-
-                                <table th:if="${#lists.size(spot.comments) != 0}" th:each="commentDetails: ${spot.comments}" class="tdForTable comTable" border="1" cellpadding="10">
-                                    <tr>
-                                        <th th:text="${commentDetails.user.name}">User Name</th>
-                                        <td th:text="${commentDetails.date}">Date</td>
-                                    </tr>
-                                    <tr>
-                                        <th th:text="${commentDetails.name}" colspan="2">Name</th>
-                                    </tr>
-                                    <tr>
-                                        <td th:text="${commentDetails.content}" colspan="2">Content</td>
-                                    </tr>
-                                    <tr th:if="${userRole == 'admin' OR userId == commentDetails.user.id}">
-                                        <td>
-                                            <a th:href="@{'/spot/{spotId}/comment/{id}/updateComment' (spotId=${spot.id}, id=${commentDetails.id})}" class="btn btn-primary btn-sm">Update Comment</a>
-                                        </td>
-                                        <td>
-                                            <form action="#" th:action="@{'/spot/{spotId}/deleteComment-success/{id}' (id=${commentDetails.id}, spotId=${spot.id})}" th:object="${commentDetails}" method="post">
-                                                <input class="btn btn-primary btn-sm" type="submit" value="delete">
-                                            </form>
-                                        </td>
-                                    </tr>
-                                </table>
-                               <!-- <div th:if="${#lists.size(spot.comments) == 0}">
-                                    <p>no result</p>
-                                </div>-->
-                            </div>
+<body>
+<div th:replace="fragments/menu :: header"></div>
+<h2>Spot details</h2>
+<section>
+    <table>
+        <tr>
+            <th class="btn btn-primary btn-lg btn-block" th:text="${spot.name}">Name</th>
+        </tr>
+        <tr>
+            <td th:if="${spot.tag == true}"><span class="badge badge-pill badge-info">Official Spot</span></td>
+        </tr>
+        <tr>
+            <td>
+                <form th:if="${userRole == 'admin'}" th:action="@{'spot/{id}/tag' (id=${spot.id})}"
+                      th:object="${Spot}"
+                      method="get">
+                    <p><input th:if="${spot.tag == true}" type="submit" value="Detaguer ce spot "></p>
+                    <p><input th:if="${spot.tag == false}" type="submit" value="Taguer ce spot comme Officiel!">
+                    </p>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td th:text="${spot.description}">Description</td>
+        </tr>
+        <tr>
+            <td>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Areas</a>
+                        <div class="dropdown-menu">
+                            <a class="nav-link" data-toggle="tab" href="#areas">Areas List</a>
+                            <form action="#" th:action="@{'/spot/{id}/add/area' (id=${spot.id})}" th:object="${Spot}"
+                                  method="GET">
+                                <input class="btn btn-primary btn-sm" type="submit" value="Add Area"/>
+                            </form>
                         </div>
-                    </td>
-                </tr>
-            </table>
-        </section>
-    </body>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">Topos</a>
+                        <div class="dropdown-menu">
+                            <a class="nav-link" data-toggle="tab" href="#topos">Topos List</a>
+                            <form action="#" th:action="@{'/spot/{id}/add/topo' (id=${spot.id})}" th:object="${Spot}"
+                                  method="GET">
+                                <input class="btn btn-primary btn-sm" type="submit" value="Add Topo">
+                            </form>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#comments">Comments</a>
+                    </li>
+                </ul>
+
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade active show" id="areas">
+                        <form action="#" th:action="@{'/spot/{id}/add/area' (id=${spot.id})}" th:object="${Spot}"
+                              method="GET">
+                            <p><input class="btn btn-primary btn-sm" type="submit" value="Add Area"></p>
+                        </form>
+                        <table th:if="${#lists.size(spot.area) != 0}" th:each="areaDetails: ${spot.area}"
+                               class="tdForTableAreaTable">
+                            <tr>
+                                <td class="tdForTable column">
+                                    <table th:each="areaDetails: ${spot.area}" border="1" cellpadding="10">
+                                        <tr>
+                                            <td th:text="${areaDetails.name}">Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td th:text="${areaDetails.description}">Description</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane fade" id="topos">
+                        <form action="#" th:action="@{'/spot/{id}/add/topo' (id=${spot.id})}" th:object="${Spot}"
+                              method="GET">
+                            <p><input class="btn btn-primary btn-sm" type="submit" value="Add Topo"></p>
+                        </form>
+                        <table th:if="${#lists.size(spot.topos) != 0}" th:each="topoDetails: ${spot.topos}"
+                               class="tdForTableTopoTable" border="1" cellpadding="10">
+                            <tr>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Publication Date</th>
+                            </tr>
+                            <tr th:each="topoDetails: ${spot.topos}">
+                                <td th:text="${topoDetails.title}">Title</td>
+                                <td th:text="${topoDetails.author}">Author</td>
+                                <td th:text="${topoDetails.publicationDate}">Publication Date</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane fade" id="comments">
+                        <form action="#" th:action="@{'/spot/{id}/add/comment' (id=${spot.id})}" th:object="${Spot}"
+                              method="GET">
+                            <p><input class="btn btn-primary btn-sm" type="submit" value="Add Comment"></p>
+                        </form>
+
+                        <table th:if="${#lists.size(spot.comments) != 0}" th:each="commentDetails: ${spot.comments}"
+                               class="tdForTable comTable" border="1" cellpadding="10">
+                            <tr>
+                                <th th:text="${commentDetails.user.name}">User Name</th>
+                                <td th:text="${commentDetails.date}">Date</td>
+                            </tr>
+                            <tr>
+                                <th th:text="${commentDetails.name}" colspan="2">Name</th>
+                            </tr>
+                            <tr>
+                                <td th:text="${commentDetails.content}" colspan="2">Content</td>
+                            </tr>
+                            <tr th:if="${userRole == 'admin' OR userId == commentDetails.user.id}">
+                                <td>
+                                    <a th:href="@{'/spot/{spotId}/comment/{id}/updateComment' (spotId=${spot.id}, id=${commentDetails.id})}"
+                                       class="btn btn-primary btn-sm">Update Comment</a>
+                                </td>
+                                <td>
+                                    <form action="#"
+                                          th:action="@{'/spot/{spotId}/deleteComment-success/{id}' (id=${commentDetails.id}, spotId=${spot.id})}"
+                                          th:object="${commentDetails}" method="post">
+                                        <input class="btn btn-primary btn-sm" type="submit" value="delete">
+                                    </form>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- <div th:if="${#lists.size(spot.comments) == 0}">
+                             <p>no result</p>
+                         </div>-->
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</section>
+</body>
 </html>
 
 

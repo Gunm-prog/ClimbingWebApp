@@ -1,55 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
-    <div th:replace="fragments/base :: head"></div>
-    <title>Topo Details</title>
+<div th:replace="fragments/base :: head"></div>
+<title>Topo Details</title>
 
-    <body>
-        <div th:replace="fragments/menu :: header"></div>
-        <br>
-        <h2>Topo in Details</h2>
+<body>
+<div th:replace="fragments/menu :: header"></div>
+<br>
+<h2>Topo in Details</h2>
 
-        <section>
-                <h1 align="center">Topo</h1>
-                <br/>
-                <table class="visibleTab" border="1" cellpadding="10">
-                    <tr>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Publication Date</th>
-                    </tr>
-                    <!--
-                    ici ou dans le controlleur faire un tableau des ustilisateur ayant une rsv, afin de pouvoir les filtrer de l'affichage du buton de reservation .
-                    -->
-                    <tr>
-                        <td th:text="${topo.title}">Title</td>
-                        <td th:text="${topo.author}">Author</td>
-                        <td th:text="${topo.publicationDate}">publication Date</td>
-                    </tr>
-                    <tr>
-                        <th colspan="3">Reservation</th>
-                    </tr>
-                    <tr>
-                        <td colspan="3" th:if="${topoAvailability == true}"> Disponible</td>
-                        <td colspan="3" th:if="${topoAvailability == false}"> Non Disponible</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" th:if="${userHasAlreadyLoaned == false and isOwner == false}">
-                            <form action="#" th:action="@{'/add/reservation/{id}' (id=${topo.id})}" method="post">
-                                <input type="submit" value="reserver ce topo"/>
-                            </form>
-                        </td>
-                        <td colspan="2"
-                            th:if="${isOwner == false and userHasAlreadyLoaned == true and reservationAccepted == false}">
-                            Votre demande est en attente de validation
-                        </td>
-                        <td colspan="3"
-                            th:if="${isOwner == false and reservationAccepted == true and userHasAlreadyLoaned == true}">
-                            <p> Demande acceptée. Infos de contact:</p>
-                            <p th:text="${topo.user.email}"></p></td>
-                        <td colspan="3" th:if="${isOwner == true}">Vous ne pouvez pas réserver votre propre topo</td>
-                    </tr>
-                </table>
-        </section>
-    </body>
+<section>
+    <h1 align="center">Topo</h1>
+    <br/>
+    <table class="visibleTab" border="1" cellpadding="10">
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publication Date</th>
+        </tr>
+        <tr>
+            <td th:text="${topo.title}">Title</td>
+            <td th:text="${topo.author}">Author</td>
+            <td th:text="${topo.publicationDate}">publication Date</td>
+        </tr>
+        <tr>
+            <th colspan="3">Booking</th>
+        </tr>
+        <tr>
+            <td colspan="3" th:if="${topoAvailability == true}"> Available</td>
+            <td colspan="3" th:if="${topoAvailability == false}"> Unavailable</td>
+        </tr>
+        <tr>
+            <td colspan="3" th:if="${userHasAlreadyLoaned == false and isOwner == false}">
+                <form action="#" th:action="@{'/add/booking/{id}' (id=${topo.id})}" method="post">
+                    <input type="submit" value="Book this Topo"/>
+                </form>
+            </td>
+            <td colspan="2"
+                th:if="${isOwner == false and userHasAlreadyLoaned == true and bookingAccepted == false}">
+                Votre demande est en attente de validation
+            </td>
+            <td colspan="3"
+                th:if="${isOwner == false and bookingAccepted == true and userHasAlreadyLoaned == true}">
+                <p> Request accepted. Contact information:</p>
+                <p th:text="${topo.user.email}"></p></td>
+            <td colspan="3" th:if="${isOwner == true}">You cannot book your own topo</td>
+        </tr>
+    </table>
+</section>
+</body>
 </html>

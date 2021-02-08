@@ -4,18 +4,17 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-@Table(name="User")//spécification nom table forcé
+@Table(name="User")
 public class User {
 
 
-    @javax.persistence.Id//norme
-    @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
-    //  private static final long serialVersionUID=1L;
+    @javax.persistence.Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
     @Column(name="name")
     private String name;
-    @Column(unique=true, name="email") //todo à vérifier
+    @Column(unique=true, name="email")
     private String email;
     @Column(name="pseudo")
     private String pseudo;
@@ -25,23 +24,14 @@ public class User {
     private String role;
 
 
-    @OneToMany(targetEntity=ReservationTopo.class, mappedBy="user")
-    private List<ReservationTopo> reservationTopos=new ArrayList<>();
+    @OneToMany(targetEntity=TopoBooking.class, mappedBy="user")
+    private List<TopoBooking> TopoBookings=new ArrayList<>();
 
     @OneToMany(targetEntity=Comment.class, mappedBy="user")
     private Set<Comment> comment;
 
     @OneToMany(targetEntity=Spot.class, mappedBy="user")
     private List<Spot> spot=new ArrayList<>();
-
-      /*  @OneToMany(targetEntity=Area.class, mappedBy="user")
-        private List<Area> secteur= new ArrayList<>();
-
-        @OneToMany(targetEntity=Route.class, mappedBy="user")
-        private List<Route> voie = new ArrayList<>();
-
-        @OneToMany(targetEntity=Longueur.class, mappedBy="user")
-        private List<Longueur> longueur = new ArrayList<>();*/
 
     @OneToMany(targetEntity=Topo.class, mappedBy="user")
     private List<Topo> topo=new ArrayList<>();
@@ -51,23 +41,16 @@ public class User {
         super();
     }
 
-    public User(Scanner sc) {
-        this.scanName( sc );
-        this.scanEmail( sc );
-        this.scanPseudo( sc );
-        this.scanPassword( sc );
-    }
-
 
     public User(String name, String email, String pseudo, String password) {
     }
 
-    public List<ReservationTopo> getReservationTopos() {
-        return reservationTopos;
+    public List<TopoBooking> getTopoBookings() {
+        return TopoBookings;
     }
 
-    public void setReservationTopos(List<ReservationTopo> reservationTopos) {
-        this.reservationTopos=reservationTopos;
+    public void setTopoBookings(List<TopoBooking> reservationTopos) {
+        this.TopoBookings=TopoBookings;
     }
 
     public void setTopo(List<Topo> topo) {
@@ -146,31 +129,6 @@ public class User {
         this.role=role;
     }
 
-    public void scanName(Scanner sc) {
-        System.out.println( "userName: " );
-        String inputName=sc.nextLine();
-        this.setName( inputName );
-        System.out.println( "Vous avez saisi: " + inputName + "" );
-    }
-
-    public void scanEmail(Scanner sc) {
-        System.out.println( "Email: " );
-        String inputEmail=sc.nextLine();
-        this.setEmail( inputEmail );
-        System.out.println( "vous avez saisi: " + inputEmail + "email" );
-    }
-
-    public void scanPseudo(Scanner sc) {
-        System.out.println( "Pseudo: " );
-        String inputPseudo=sc.nextLine();
-        this.setPseudo( inputPseudo );
-    }
-
-    public void scanPassword(Scanner sc) {
-        System.out.println( "Password: " );
-        String inputPassword=sc.nextLine();
-        this.setPassword( inputPassword );
-    }
 
     @Override
     public String toString() {

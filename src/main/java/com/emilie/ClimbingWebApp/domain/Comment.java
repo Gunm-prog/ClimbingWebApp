@@ -2,11 +2,10 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
-import java.util.Scanner;
 
 
 @Entity
-@Table(name="commentaire")
+@Table(name="comment")
 public class Comment {
 
     @Id//norme
@@ -28,12 +27,6 @@ public class Comment {
     @JoinColumn(name="spot_id")
     private Spot spot;
 
-    public Comment(Scanner sc, User user, Spot spot) {
-        this.user=user;//TODO à vérifier cet ajout de constructeur
-        this.spot=spot;
-        this.scanName( sc );
-        this.scanContent( sc );
-    }
 
     public Comment() {
 
@@ -89,28 +82,9 @@ public class Comment {
     }
 
 
-    public void scanName(Scanner sc) {
-        System.out.println( "Title: " );
-        String inputName=sc.nextLine();
-        this.setName( inputName );
-    }
-
-    public void scanContent(Scanner sc) {
-        System.out.println( "Content: " );
-        String inputContent=sc.nextLine();
-        this.setContent( inputContent );
-    }
-
-    public void scanDate(Scanner sc) {
-        System.out.println( "Date: " );
-        String inputDate=sc.nextLine();
-        this.setDate( inputDate );
-    }
-
-
     @Override
     public String toString() {
-        return "Commentaire{" +
+        return "Comment{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", content='" + content + '\'' +

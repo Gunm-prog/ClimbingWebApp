@@ -1,51 +1,51 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
-    <div th:replace="fragments/base :: head"></div>
-    <title>Area Details</title>
+<div th:replace="fragments/base :: head"></div>
+<title>Area Details</title>
 
-    <body>
-        <div th:replace="fragments/menu :: header"></div>
-        <h2>Area Details</h2>
-        <section>
-            <table>
-                <tr>
-                    <th class="btn btn-primary btn-lg btn-block" th:text="${area.name}">Name</th>
-                </tr>
-                <tr>
-                    <td th:text="${area.description}">Description</td>
-                </tr>
-                <tr>
-                    <td th:text="${area.numberOfRoutes}">Area's number of routes</td>
-                </tr>
-                <tr>
-                    <td colspan="4">
-                        <form th:action="@{'/{id}/add/route' (id=${area.id})}" th:object="${Area}"
-                              method="GET">
-                            <p><input type="submit" value="Add Route"/></p>
-                        </form>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        Area's route
-                    </th>
-                </tr>
-            </table>
-            <table th:each="route: ${area.route}">
-                <tr>
-                    <th>Name</th>
-                    <th>Hauteur</th>
-                    <th>Nombre</th>
-                </tr>
-                <tr>
-                    <td th:text="${route.name}">Name</td>
-                    <td th:text="${route.hauteur}">Hauteur</td>
-                    <td th:text="${route.nombre}">Nombre</td>
-                </tr>
-            </table>
-        </section>
-    </body>
+<body>
+<div th:replace="fragments/menu :: header"></div>
+<h2>Area Details</h2>
+<section>
+    <table>
+        <tr>
+            <th class="btn btn-primary btn-lg btn-block" th:text="${area.name}">Name</th>
+        </tr>
+        <tr>
+            <td th:text="${area.description}">Description</td>
+        </tr>
+        <tr>
+            <td th:text="${area.numberOfRoutes}">Area's number of routes</td>
+        </tr>
+        <tr>
+            <td colspan="4">
+                <form th:action="@{'/{id}/add/route' (id=${area.id})}" th:object="${Area}"
+                      method="GET">
+                    <p><input type="submit" value="Add Route"/></p>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Area's route
+            </th>
+        </tr>
+    </table>
+    <table th:each="route: ${area.route}">
+        <tr>
+            <th>Name</th>
+            <th>Height</th>
+            <th>Number</th>
+        </tr>
+        <tr>
+            <td th:text="${route.name}">Name</td>
+            <td th:text="${route.height}">Height</td>
+            <td th:text="${route.number}">Number</td>
+        </tr>
+    </table>
+</section>
+</body>
 </html>
 
 

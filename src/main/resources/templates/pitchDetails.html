@@ -1,38 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
-    <div th:replace="fragments/base :: head">
-        <h2>Pitch Details</h2>
-    </div>
-    <title>Pitch Details</title>
+<div th:replace="fragments/base :: head">
+    <h2>Pitch Details</h2>
+</div>
+<title>Pitch Details</title>
 
-    <body>
-        <div th:replace="fragments/menu :: header"></div>
-        <section>
-            <form action="#" th:action="@{/pitchDetails}" th:object="${Pitch}"
-                  method="POST">
+<body>
+<div th:replace="fragments/menu :: header"></div>
+<section>
+    <form action="#" th:action="@{/pitchDetails}" th:object="${Pitch}"
+          method="POST">
 
-                <div class="text-center">
-                    <h1 align="center">My Pitch list</h1>
-                    <br/>
-                    <table border="1" cellpadding="10">
-                        <tr>
-                            <th>Distance</th>
-                            <th>Points</th>
-                            <th>Quotation</th>
-                        </tr>
+        <div class="text-center">
+            <h1 align="center">My Pitch list</h1>
+            <br/>
+            <table border="1" cellpadding="10">
+                <tr>
+                    <th>Distance</th>
+                    <th>Points</th>
+                    <th>Quotation</th>
+                </tr>
 
-                        <tr th:each="pitchDetails: ${pitch}">
-                            <td th:text="${pitch.distance}">Distance</td>
-                            <td th:text="${pitch.points}">Points</td>
-                            <td th:text="${pitch.quotation}">Quotation</td>
-                        </tr>
-                    </table>
-                    <!--<p><input type="submit" value="Update"/></p>-->
-                </div>
-            </form>
-        </section>
-    </body>
+                <tr th:each="pitchDetails: ${pitch}">
+                    <td th:text="${pitch.distance}">Distance</td>
+                    <td th:text="${pitch.points}">Points</td>
+                    <td th:text="${pitch.quotation}">Quotation</td>
+                </tr>
+            </table>
+        </div>
+    </form>
+</section>
+</body>
 </html>
 
 

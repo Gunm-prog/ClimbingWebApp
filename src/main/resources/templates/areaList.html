@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
 <div th:replace="fragments/base :: head"></div>
 <title>Area List</title>
 
@@ -16,19 +16,18 @@ th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
     </form>
 
     <div th:if="${#lists.size(areaList) == 0}">
-        <p>Aucun résultat</p>
+        <p>No result</p>
     </div>
 
-    <!-- parcourt de la liste des spot, si elle n'est pas vide-->
+
     <table th:if="${#lists.size(spotList) != 0}"
            th:each="spot: ${spotList}" border="1" cellpadding="10">
-        <!-- affiche le nom du spot courant-->
         <tr>
             <th>
-                <a class="btn btn-primary btn-lg btn-block" th:href="@{/spotDetails/{id} (id=${spot.id})}" th:text="'In Spot : ' + ${spot.name}"> Spot </a>
+                <a class="btn btn-primary btn-lg btn-block" th:href="@{/spotDetails/{id} (id=${spot.id})}"
+                   th:text="'In Spot : ' + ${spot.name}"> Spot </a>
             </th>
         </tr>
-        <!-- parcourt de la liste des area et on vérifie que l' area courante fait partie du spot courant-->
         <tr th:each="areas: ${areaList}">
             <td class="tdForTable" th:if="${areas.spot.id == spot.id}">
                 <table>
@@ -52,8 +51,6 @@ th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
             </td>
         </tr>
     </table>
-  <!--  <div class="text-center">Already have an account? <a href="@{/login}">Log In</a>
-    </div>-->
 </section>
 </body>
 </html>

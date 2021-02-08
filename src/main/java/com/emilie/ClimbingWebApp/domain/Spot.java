@@ -5,21 +5,19 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Scanner;
 
 
 @Entity
-@Table(name="spot")//spécification nom table forcé
+@Table(name="spot")
 public class Spot {
 
     @Id
-    //norme
-    @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
-    @Column(name="Nom_spot")
+    @Column(name="spot_name")
     private String name;
-    @Column(name="description_spot")
+    @Column(name="spot_description")
     private String description;
     @Column(name="tag")
     private boolean tag;
@@ -44,11 +42,6 @@ public class Spot {
     @OneToMany(targetEntity=Comment.class,
             mappedBy="spot")
     private List<Comment> comments=new ArrayList<>();
-
-    public Spot(Scanner sc) {
-        this.scanName( sc );
-        this.scanDescription( sc );
-    }
 
 
     public Spot() {
@@ -127,17 +120,6 @@ public class Spot {
         this.area=area;
     }
 
-    public void scanName(Scanner sc) {
-        System.out.println( "spotName: " );
-        String inputName=sc.nextLine();
-        this.setName( inputName );
-    }
-
-    public void scanDescription(Scanner sc) {
-        System.out.println( "spotDescription: " );
-        String inputDescription=sc.nextLine();
-        this.setDescription( inputDescription );
-    }
 
     @Override
     public boolean equals(Object o) {

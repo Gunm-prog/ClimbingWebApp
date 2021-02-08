@@ -9,24 +9,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
 import javax.servlet.http.HttpSession;
 
-/**
- * @author Emilie BALSEN
- */
-
 @Controller
-class HomeController{
+class HomeController {
 
     @Autowired
     UserRepository userRepository;
 
-    /**
-     *
-     * @param httpSession
-     * @param model
-     * @return
-     */
+
     @GetMapping(path="/")
     String index(HttpSession httpSession, Model model) {
         if (httpSession.getAttribute( "email" ) != null) {
@@ -37,13 +29,7 @@ class HomeController{
     }
 
 
-    /**
-     *
-     * @param user
-     * @param model
-     * @return signup form
-     */
-    @PostMapping("/signup" )
+    @PostMapping("/signup")
     public String getSignUp(@ModelAttribute("user") User user, Model model) {
 
         model.addAttribute( "user", user );

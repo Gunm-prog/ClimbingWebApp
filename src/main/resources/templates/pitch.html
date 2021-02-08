@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
+      th:replace="fragments/base :: base(~{::title},~{::h2},~{::section})">
 <div th:replace="fragments/base :: head"></div>
-    <title>New Pitch</title>
+<title>New Pitch</title>
 <body>
 <div th:replace="fragments/menu :: header"></div>
 <h2>New Pitch</h2>
 <section>
-<form th:object="${pitch}"
-      method="POST">
-    <div class="text-center">
-        <p>Add a new Pitch!</p>
-        <p>Pitch Distance: <input type="text" name="Distance"/></p>
-        <p>Pitch Points: <input type="text" name="Points"/></p>
-        <p>Pitch Quotation: <input type="text" name="Quotation"></p>
-        <p><input type="submit" value="Save"/></p>
-    </div>
-</form>
+    <form th:object="${pitch}"
+          method="POST">
+        <div class="text-center">
+            <p>Add a new Pitch!</p>
+            <p>Pitch Distance: <input type="text" name="Distance"/></p>
+            <p>Pitch Points: <input type="text" name="Points"/></p>
+            <p>Pitch Quotation: <input type="text" name="Quotation"></p>
+            <p><input type="submit" value="Save"/></p>
+        </div>
+    </form>
 </section>
 </body>
 </html>

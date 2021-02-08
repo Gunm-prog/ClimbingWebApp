@@ -71,7 +71,8 @@
            th:each="spot: ${spotList}" border="1" cellpadding="10">
         <tr>
             <td colspan="3">
-                <a class="btn btn-primary btn-lg btn-block" th:href="@{/spotDetails/{id} (id=${spot.id}) }" th:text="${spot.name}">Name</a>
+                <a class="btn btn-primary btn-lg btn-block" th:href="@{/spotDetails/{id} (id=${spot.id}) }"
+                   th:text="${spot.name}">Name</a>
             </td>
         </tr>
 
@@ -96,10 +97,6 @@
             </td>
         </tr>
     </table>
-
-
-    <!--<div class="text-center">Already have an account? <a href="#">Log In</a>
-    </div>-->
 </section>
 </body>
 </html>
