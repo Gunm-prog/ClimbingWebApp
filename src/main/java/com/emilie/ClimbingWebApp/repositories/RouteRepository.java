@@ -23,5 +23,7 @@ public interface RouteRepository extends JpaRepository<Route, Long> {
 
     List<Route> findByArea(Area area);
 
+    List<Route> findByUser(User user);
+
 
 }

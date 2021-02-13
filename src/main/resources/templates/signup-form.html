@@ -21,7 +21,7 @@
             <p>Pseudo <input type="text" name="pseudo"/></p>
             <p>Password <input type="password" name="password"/></p>
             <div class="form-group">
-                <label class="form-check-label"><input type="checkbox" required="required"> I accept the <a href="#">Terms
+                <label class="form-check-label"><input type="checkbox" required="required"> <a href="#">I accept the Terms
                     of Use</a> &amp; <a href="#">Privacy Policy</a></label>
             </div>
             <p><input type="submit" value="Submit"/></p>
@@ -29,7 +29,7 @@
     </form>
     <div class="text-center">
         Already have an account?
-        <a href="@{/login}">Log In</a>
+        <a th:href="@{/login}">Log In</a>
     </div>
 </section>
 </body>

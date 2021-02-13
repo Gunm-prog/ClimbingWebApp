@@ -20,8 +20,8 @@
                 <form th:if="${userRole == 'admin'}" th:action="@{'spot/{id}/tag' (id=${spot.id})}"
                       th:object="${Spot}"
                       method="get">
-                    <p><input th:if="${spot.tag == true}" type="submit" value="Detaguer ce spot "></p>
-                    <p><input th:if="${spot.tag == false}" type="submit" value="Taguer ce spot comme Officiel!">
+                    <p><input th:if="${spot.tag == true}" type="submit" value="Untag this spot"></p>
+                    <p><input th:if="${spot.tag == false}" type="submit" value="Tag this spot as Official!">
                     </p>
                 </form>
             </td>
@@ -134,9 +134,9 @@
                                 </td>
                             </tr>
                         </table>
-                        <!-- <div th:if="${#lists.size(spot.comments) == 0}">
+                         <div th:if="${#lists.size(spot.comments) == 0}">
                              <p>no result</p>
-                         </div>-->
+                         </div>
                     </div>
                 </div>
             </td>

@@ -84,7 +84,7 @@ public class TopoController {
                             bookingAccepted=true;
                         }
                     }
-                    if (value.getUser().getId() == user.getId()) {
+                     if (value.getUser().getId() == user.getId()) {
                         userHasAlreadyLoaned=true;
                     }
 

@@ -21,7 +21,7 @@ public class Pitch {
     private String quotation;
 
     @ManyToOne(targetEntity=Route.class)
-    @JoinColumn(name="voie_id", referencedColumnName="id")
+    @JoinColumn(name="route_id", referencedColumnName="id")
     private Route route;
 
     @ManyToOne(targetEntity=User.class)

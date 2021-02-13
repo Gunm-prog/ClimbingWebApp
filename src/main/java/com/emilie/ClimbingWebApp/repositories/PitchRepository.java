@@ -23,6 +23,6 @@ public interface PitchRepository extends JpaRepository<Pitch, Long> {
 
     List<Pitch> findByRoute(Route route);
 
-
+    List<Pitch> findByUser(User user);
 }
 

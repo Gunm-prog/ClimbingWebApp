@@ -46,10 +46,10 @@ public class PitchController {
         if (httpSession.getAttribute( "email" ) != null) {
             if (pitch != null) {
                 User user=userRepository.findByEmail( (String) httpSession.getAttribute( "email" ) ).get();
-                pitch.setUser( user );//lie l'user à la longueur
+                pitch.setUser( user );
                 this.pitchRepository.save( pitch );
 
-                return "redirect:/pitchDetails/" + pitch.getId(); //redirection qui fonctionne mais sans l'id à transmettre (il faut changer le path de la méthode GetMapping ci-dessus)
+                return "redirect:/pitchDetails/" + pitch.getId();
             }
         }
         return "login";

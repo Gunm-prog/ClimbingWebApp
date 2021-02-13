@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="mySpots">
-                        <h3>Mes Spots</h3>
+                        <h3>My Spots</h3>
                         <table border="1" cellpadding="10" th:each="spot: ${spots}">
                             <tr>
                                 <th>Name</th>
@@ -64,7 +64,7 @@
                         </table>
                     </div>
                     <div class="tab-pane fade" id="myTopos">
-                        <h3>Mes Topos </h3>
+                        <h3>My Topos </h3>
                         <table border="1" cellpadding="10" th:each="topo: ${topos}">
                             <tr>
                                 <th>Title</th>
@@ -182,6 +182,7 @@
                             </tr>
                         </table>
                     </div>
+
                     <div class="tab-pane fade" id="myRoutes">
                         <h3>My Routes</h3>
                         <table border="1" cellpadding="10" th:each="route: ${route}">
@@ -196,11 +197,10 @@
                                 <td th:text="${route.number}">Number</td>
                             </tr>
                         </table>
-
                     </div>
                     <div class="tab-pane fade" id="myPitches">
                         <h3>My Pitches</h3>
-                        <table border="1" cellpadding="10" th:each="pitches: ${pitch}">
+                        <table border="1" cellpadding="10" th:each="pitch: ${pitch}">
                             <tr>
                                 <th>Distance</th>
                                 <th>Points</th>
@@ -208,7 +208,7 @@
                             </tr>
 
                             <tr th:each="pitches: ${pitch}">
-                                <td th:text="${pitch.name}">Distance</td>
+                                <td th:text="${pitch.distance}">Distance</td>
                                 <td th:text="${pitch.points}">Points</td>
                                 <td th:text="${pitch.quotation}">Quotation</td>
                             </tr>

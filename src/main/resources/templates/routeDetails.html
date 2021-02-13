@@ -19,7 +19,7 @@
             <th>Number</th>
         </tr>
         <tr>
-            <td th:text="${route.height}">Hauteur</td>
+            <td th:text="${route.height}">Height</td>
             <td th:text="${route.number}">Number</td>
         </tr>
     </table>
@@ -42,10 +42,10 @@
             <th>Points</th>
             <th>Quotation</th>
         </tr>
-        <tr th:each="longueurDetails: ${pitch}">
-            <td th:text="${longueurDetails.distance}">Distance</td>
-            <td th:text="${longueurDetails.points}">Points</td>
-            <td th:text="${longueurDetails.quotation}">Quotation</td>
+        <tr th:each="pitchDetails: ${pitch}">
+            <td th:text="${pitchDetails.distance}">Distance</td>
+            <td th:text="${pitchDetails.points}">Points</td>
+            <td th:text="${pitchDetails.quotation}">Quotation</td>
         </tr>
     </table>
 </section>
