@@ -15,7 +15,8 @@ public interface AreaRepository extends JpaRepository<Area, Long> {
 
 
     @Query(value="SELECT area FROM Area area WHERE area.name LIKE '%' || :keyword || '%'"
-            + "OR area.description LIKE '%' || :keyword || '%'")
+            + "OR area.description LIKE '%' || :keyword || '%'"
+            + "OR area.numberOfRoutes LIKE '%' || :keyword || '%'")
     public List<Area> searchArea(@Param("keyword") String keyword);
 
     @Query(value="SELECT DISTINCT s FROM Spot s, Area area, Route r, Pitch p WHERE p.quotation LIKE :quotation")

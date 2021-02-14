@@ -36,6 +36,7 @@ public class NewSpotController {
     public String addNewspot(@ModelAttribute("newspot") Spot spot,
                              HttpSession httpSession,
                              Model model) {
+
         if (httpSession.getAttribute( "email" ) != null) {
             model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
             model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
@@ -47,7 +48,7 @@ public class NewSpotController {
 
 
     @PostMapping("/newspot")
-    public String newSpot(@ModelAttribute("spot") Spot spot,
+    public String newSpot(@ModelAttribute("newspot") Spot spot,
                           HttpSession httpSession) {
 
         if (httpSession.getAttribute( "email" ) != null) {
@@ -108,10 +109,10 @@ public class NewSpotController {
 
 
     @GetMapping(path="/spot/{id}/add/area")
-    public String addSecteur(@ModelAttribute("area") Area area,
-                             @PathVariable("id") Long id,
-                             HttpSession httpSession,
-                             Model model) {
+    public String addArea(@ModelAttribute("area") Area area,
+                          @PathVariable("id") Long id,
+                          HttpSession httpSession,
+                          Model model) {
 
         if (httpSession.getAttribute( "email" ) != null) {
             model.addAttribute( "area", area );
@@ -125,10 +126,10 @@ public class NewSpotController {
 
 
     @PostMapping("/spot/{id}/add/area")
-    public String saveSecteur(@ModelAttribute("area") Area area,
-                              @PathVariable("id") Long id,
-                              Spot spot,
-                              HttpSession httpSession) {
+    public String saveArea(@ModelAttribute("area") Area area,
+                           @PathVariable("id") Long id,
+                           Spot spot,
+                           HttpSession httpSession) {
 
         if (httpSession.getAttribute( "email" ) != null) {
             Area newArea=new Area();

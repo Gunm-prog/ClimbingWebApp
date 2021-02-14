@@ -25,7 +25,7 @@ public class CommentController {
     SpotRepository spotRepository;
 
 
-    @GetMapping(path="/spot/{spotId}/comment/{id}/updateComment") //todo reitrer les sout pour livraison
+    @GetMapping(path="/spot/{spotId}/comment/{id}/updateComment")
     public String updateComment(@PathVariable("id") Long id,
                                 @PathVariable("spotId") Long spotId,
                                 HttpSession httpSession,
@@ -73,7 +73,7 @@ public class CommentController {
     }
 
 
-    @PostMapping(path="/spot/{spotId}/deleteComment-success/{id}") //todo retirer les sout pour livraison
+    @PostMapping(path="/spot/{spotId}/deleteComment-success/{id}")
     public String submitDeleteComment(@ModelAttribute("comment") Comment comment,
                                       @PathVariable("spotId") Long spotId,
                                       @PathVariable("id") Long id,
@@ -86,6 +86,4 @@ public class CommentController {
             return "redirect:/login";
         }
     }
-
-
 }

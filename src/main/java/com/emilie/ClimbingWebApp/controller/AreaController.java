@@ -46,6 +46,7 @@ public class AreaController {
     @PostMapping("/area")
     public String newArea(@ModelAttribute("area") Area area,
                           HttpSession httpSession) {
+
         if (httpSession.getAttribute( "email" ) != null) {
             if (area != null) {
 
@@ -100,7 +101,7 @@ public class AreaController {
     }
 
     @PostMapping("/{id}/add/route")
-    public String saveNewVoie(@ModelAttribute("route") Route route,
+    public String saveNewRoute(@ModelAttribute("route") Route route,
                               @PathVariable("id") Long id,
                               HttpSession httpSession) {
 

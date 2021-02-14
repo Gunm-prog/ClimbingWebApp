@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+
 @Controller
 public class BookingController {
 
@@ -36,13 +37,11 @@ public class BookingController {
 
 
     @GetMapping(path="/add/booking/{id}")
-    public String addBooking(@PathVariable("id") Long id,
-                             HttpSession httpSession,
-                             Model model) {
+    public String addBooking(@PathVariable("id") Long id) {
         return "booking";
     }
 
-    @PostMapping(path="/add/booking/{id}") //todo reitrer les sout pour livraison
+    @PostMapping(path="/add/booking/{id}")
     public String booking(@PathVariable("id") Long id,
                           HttpSession httpSession) {
         if (httpSession.getAttribute( "email" ) != null) {
@@ -70,10 +69,11 @@ public class BookingController {
     }
 
 
-    @PostMapping(path="/bookingRequestValidation/{id}/{bookingStatus}") //todo reitrer les sout pour livraison
+    @PostMapping(path="/bookingRequestValidation/{id}/{bookingStatus}")
     public String bookingRequestValidation(@PathVariable("id") Long id,
                                            @PathVariable("bookingStatus") Boolean bookingStatus,
                                            HttpSession httpSession) {
+
         Optional<TopoBooking> topoBooking=this.topoBookingRepository.findById( id );
         if (topoBooking.isPresent()) {
             TopoBooking rsv=topoBooking.get();
@@ -90,6 +90,7 @@ public class BookingController {
     @GetMapping(path="/delete/booking/{id}")
     public String deleteBooking(@PathVariable("id") Long id,
                                 HttpSession httpSession) {
+
         Optional<TopoBooking> rsvData=this.topoBookingRepository.findById( id );
         if (rsvData.isPresent()) {
             TopoBooking rsv=rsvData.get();
@@ -106,6 +107,7 @@ public class BookingController {
 
     @GetMapping(path="/bookingList")
     public String getBookingList(Model model) {
+
         List<TopoBooking> topoBookings=this.topoBookingRepository.findAll();
         System.out.println( topoBookings );
         model.addAttribute( "topoBookings", topoBookings );

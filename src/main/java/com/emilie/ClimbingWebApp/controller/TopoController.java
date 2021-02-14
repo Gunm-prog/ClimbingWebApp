@@ -84,12 +84,11 @@ public class TopoController {
                             bookingAccepted=true;
                         }
                     }
-                     if (value.getUser().getId() == user.getId()) {
+                    if (value.getUser().getId() == user.getId()) {
                         userHasAlreadyLoaned=true;
                     }
 
                 }
-
 
                 model.addAttribute( "topo", theTopo );
                 model.addAttribute( "user", user );
@@ -107,7 +106,6 @@ public class TopoController {
     }
 
 
-    //Todo n'oublies pas d'expliquer ce que font tes méthodes, ici renvoie une liste de Topo filtrée par un keyword, ou non.
     @GetMapping(path="/topoList")
     public String getTopoList(@ModelAttribute("keyword") String keyword,
                               Model model,
@@ -119,30 +117,24 @@ public class TopoController {
             topoData=this.topoRepository.findAll();
         }
 
-        //traitement uniquement si utilisateur connecté
+
         if (httpSession.getAttribute( "email" ) != null) {
-            //Pour chaque topo va récupérer que la reservation qui conserne l'utilisateur connecté si elle existe.
             for (Topo topo : topoData) {
                 Set<TopoBooking> rsvList=new HashSet<>();
                 for (TopoBooking rsv : topo.getBooking()) {
-                    //  System.out.println(rsv);
                     if (rsv.getUser().getId().equals( (Long) httpSession.getAttribute( "currentUserId" ) )) {
-                        //   System.out.println(rsv.getUser());
                         rsvList.add( rsv );
                     }
                 }
                 topo.setBooking( rsvList );
             }
-            // System.out.println(rsvList);
         }
 
         System.out.println( topoData );
-//        topoData.clear();
         model.addAttribute( "topoList", topoData );
         model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
         model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
-        // System.out.println( topoData );
-        //on redirige ensuite vers la page qui doit afficher ce topo
+
         return "/topoList";
     }
 

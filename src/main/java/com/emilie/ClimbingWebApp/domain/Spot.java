@@ -33,7 +33,6 @@ public class Spot {
     private List<Area> area=new ArrayList<>();
 
     @ManyToMany
-    //name = nom de la table d'association
     @JoinTable(name="topo_has_spot",
             joinColumns=@JoinColumn(name="spot_id"),
             inverseJoinColumns=@JoinColumn(name="topo_id"))

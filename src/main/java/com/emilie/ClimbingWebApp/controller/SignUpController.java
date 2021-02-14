@@ -23,7 +23,9 @@ public class SignUpController {
 
 
     @GetMapping(path="/signup")
-    public String getSignUpForm(HttpSession httpSession, Model model) {
+    public String getSignUpForm(HttpSession httpSession,
+                                Model model) {
+
         if (httpSession != null) {
             model.addAttribute( "message", httpSession.getAttribute( "message" ) );
             httpSession.removeAttribute( "message" );
@@ -51,9 +53,6 @@ public class SignUpController {
         return "signup-success";
     }
 
-    /**
-     * @return login page
-     */
     @GetMapping(path="/login")
     public String Login(HttpSession httpSession, Model model) {
         if (httpSession.getAttribute( "email" ) == null) {
@@ -67,16 +66,10 @@ public class SignUpController {
             }
             return "login";
         }
-        //si user déjà connecté redirection accueil
         return "redirect:/";
     }
 
-    /**
-     * @param user
-     * @param model
-     * @param httpSession
-     * @return login page if login has not worked
-     */
+
     @PostMapping(path="/login")
     public String showUserAccount(@ModelAttribute("user") User user,
                                   Model model,
@@ -99,24 +92,19 @@ public class SignUpController {
                     httpSession.setAttribute( "error", "bad password." );
                     return "redirect:/login";
                 }
-            }// redirection login, email non trouvé en bdd
-            else {
+            } else {
                 httpSession.setAttribute( "error", "email non reconnu." );
                 model.addAttribute( "error", "email non reconnu." );
                 return "redirect:/login";
             }
         }
-        //si user déjà connecté redirection accueil
         return "redirect:/";
     }
 
-    /**
-     * @param user
-     * @param httpSession
-     * @return home page
-     */
+
     @GetMapping(path="/logout")
     public String showUserAccountLogOut(@ModelAttribute User user, HttpSession httpSession) {
+
         httpSession.invalidate();
         return "index";
     }

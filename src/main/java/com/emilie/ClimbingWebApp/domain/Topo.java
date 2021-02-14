@@ -19,7 +19,7 @@ public class Topo {
     @Column(name="publication_date")
     private String publicationDate;
     @Column(name="is_booked")
-    private Boolean isBooked;
+    private boolean isBooked;
 
 
     @OneToMany(targetEntity=TopoBooking.class, mappedBy="topo", fetch=FetchType.EAGER)
@@ -92,7 +92,6 @@ public class Topo {
         this.spots=spots;
     }
 
-    //methode pour donner un spot qui sera ajouté à la liste de spots
     public void setSpot(Spot spot) {
         this.spots.add( spot );
     }
@@ -110,7 +109,7 @@ public class Topo {
     }
 
     public void setIsBooked(boolean isBooked) {
-        isBooked=isBooked;
+        this.isBooked=isBooked;
     }
 
 }

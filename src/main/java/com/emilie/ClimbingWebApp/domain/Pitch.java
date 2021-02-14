@@ -2,8 +2,6 @@ package com.emilie.ClimbingWebApp.domain;
 
 
 import javax.persistence.*;
-import java.util.Objects;
-import java.util.Scanner;
 
 @Entity
 @Table(name="pitch")
@@ -27,11 +25,6 @@ public class Pitch {
     @ManyToOne(targetEntity=User.class)
     @JoinColumn(name="user_id", referencedColumnName="id")
     private User user;
-
-
-    public Pitch(Scanner sc) {
-        this.scanId( sc );
-    }
 
 
     public Pitch() {
@@ -85,39 +78,5 @@ public class Pitch {
         this.user=user;
     }
 
-    private void scanId(Scanner sc) {
-        System.out.println( "PitchId: " );
-        Long inputId=Long.valueOf( sc.nextLine() );
-        this.setId( inputId );
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Pitch pitch=(Pitch) o;
-        return distance == pitch.distance &&
-                Objects.equals( id, pitch.id ) &&
-                Objects.equals( points, pitch.points ) &&
-                Objects.equals( quotation, pitch.quotation ) &&
-                Objects.equals( route, pitch.route ) &&
-                Objects.equals( user, pitch.user );
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash( id, distance, points, quotation, route, user );
-    }
-
-    @Override
-    public String toString() {
-        return "Pitch{" +
-                "id=" + id +
-                ", distance=" + distance +
-                ", points='" + points + '\'' +
-                ", quotation='" + quotation + '\'' +
-                ", route=" + route +
-                '}';
-    }
 
 }

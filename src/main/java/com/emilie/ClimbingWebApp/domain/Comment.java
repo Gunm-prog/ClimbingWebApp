@@ -8,8 +8,8 @@ import javax.persistence.*;
 @Table(name="comment")
 public class Comment {
 
-    @Id//norme
-    @GeneratedValue(strategy=GenerationType.IDENTITY)//se charge de mettre à jour l'id dans bdd
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="id")
     private Long id;
     @Column(name="name")

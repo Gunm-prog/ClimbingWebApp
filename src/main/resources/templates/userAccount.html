@@ -80,7 +80,7 @@
                                 <th colspan="3">Booking request</th>
                             </tr>
                             <tr th:if="${topo.booking == null}">
-                                <td colspan="3">Aucune demande en cours</td>
+                                <td colspan="3">No pending request</td>
                             </tr>
                             <tr th:each="rsv: ${topo.booking}">
                                 <td th:text="${rsv.user.name} + ' ' + ${rsv.bookingDate}">User Name</td>
@@ -91,21 +91,21 @@
                                     <form action="#"
                                           th:action="@{/bookingRequestValidation/{id}/{bookingStatus} (id=${rsv.id}, bookingStatus=true)}"
                                           th:object="${rsv}"
-                                          method="POST"
-                                    >
-                                        <input type="submit" value="Accepter la demande de reservation">
+                                          method="POST">
+
+                                        <input type="submit" value="Accept the booking request">
                                     </form>
                                     <br>
                                     <form action="#"
                                           th:action="@{/bookingRequestValidation/{id}/{bookingStatus} (id=${rsv.id}, bookingStatus=false)}"
                                           th:object="${rsv}"
-                                          method="POST"
-                                    >
+                                          method="POST">
+
                                         <input type="submit" value="Refuser la demande de reservation">
                                     </form>
                                 </td>
                                 <td th:if="${rsv.bookingStatus == null and topo.isBooked() == true}">
-                                    Veuillez rendre le topo disponible pour accepter ou refuser une demande en attente.
+                                    Make the topo available in order to accept or refuse a pending request.
                                 </td>
 
                                 <td th:if="${rsv.bookingStatus == true}">
@@ -116,7 +116,7 @@
                                           th:action="@{/delete/booking/{id} (id=${rsv.id})}"
                                           th:object="${rsv}"
                                           method="get">
-                                        <input type="submit" value="Rendre le topo disponible">
+                                        <input type="submit" value="Make the topo available">
                                     </form>
                                 </td>
                                 <td th:if="${rsv.bookingStatus == false}">
@@ -126,7 +126,7 @@
                         </table>
                     </div>
                     <div class="tab-pane fade" id="myRsv">
-                        <h3>Mes demandes de réservations</h3>
+                        <h3>My topo booking requests</h3>
                         <table border="1" cellpadding="10" th:each="rsv: ${currentUserRsv}">
                             <thead>
                             <tr>
@@ -161,13 +161,15 @@
                                           th:object="${rsv}"
                                           method="get"
                                     >
-                                        <input type="submit" value="mettre fin à la demande de reservation">
+                                        <input type="submit" value="End the booking request">
                                     </form>
                                 </td>
                             </tr>
                             </tbody>
                         </table>
                     </div>
+
+
                     <div class="tab-pane fade" id="myAreas">
                         <h3>My Areas</h3>
                         <table border="1" cellpadding="10" th:each="area: ${areas}">
@@ -177,7 +179,11 @@
                             </tr>
 
                             <tr th:each="area: ${areas}">
-                                <td th:text="${area.name}">Name</td>
+                                <td>
+                                    <form th:action="@{/areaDetails/{id} (id=${area.id})}" method="get">
+                                        <input type="submit" th:value="${area.name}">
+                                    </form>
+                                </td>
                                 <td th:text="${area.description}">Description</td>
                             </tr>
                         </table>
@@ -198,6 +204,7 @@
                             </tr>
                         </table>
                     </div>
+
                     <div class="tab-pane fade" id="myPitches">
                         <h3>My Pitches</h3>
                         <table border="1" cellpadding="10" th:each="pitch: ${pitch}">

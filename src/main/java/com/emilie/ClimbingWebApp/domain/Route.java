@@ -94,15 +94,6 @@ public class Route {
     }
 
 
-    @Override
-    public String toString() {
-        return "Route{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", height=" + height +
-                ", number=" + number +
-                '}';
-    }
 }
 
 

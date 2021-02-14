@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 @Controller
@@ -126,6 +128,14 @@ public class RouteController {
             routeData=this.routeRepository.findAll();
         }
 
+        Set<Area> areaList=new HashSet<>();
+        for (Route r : routeData) {
+            if (!areaList.contains( r.getArea() )) {
+                areaList.add( r.getArea() );
+            }
+        }
+
+        model.addAttribute( "areaList", areaList );
         model.addAttribute( "routeList", routeData );
         model.addAttribute( "userPseudo", httpSession.getAttribute( "pseudo" ) );
         model.addAttribute( "currentUserId", httpSession.getAttribute( "currentUserId" ) );
