@@ -38,6 +38,15 @@ Technologies:
 
 
 Installation:
+ 
+
+Réalisez un git clone du répertoire ClimbingWebApp (disponible sur: https://github.com/GunmProg/ClimbingWebApp)
+
+dans votre repertoire de travail. 
+
+Importez-le dans Intellij Idea.
+
+Allez dans le fichier application.properties , dans la ligne "spring.jpa.hibernate.ddl-auto=update" , passez la configuration en mode "create".
 
 Créez une bdd via un editeur SQL (j'ai utilisé MySQLWorkbench), utilisez le jeu de données dans le dossier dump fourni,
 
@@ -47,15 +56,12 @@ votre BDD "spring.datasource.username=" Votre username "spring.datasource.passwo
 
 Remettez la configuration "spring.jpa.hibernate.ddl-auto= create" en mode "update" dans le fichier application.properties.
 
-Dans le terminal, réalisez un gitclone du projet dans votre repertoire de travail. 
-
-Importez-le dans IntelliJ Idea.
 
 Dans le terminal saisissez les commandes suivantes:
 
 mvn clean package spring-boot: repackage, puis java -jar target\ClimbingWebApp-0.0.1-SNAPSHOT.jar
 
-Allez dans le fichier application.properties , dans la ligne "spring.jpa.hibernate.ddl-auto=update" , passez la configuration en mode "create".
+
 
 Pour visulaliser ce que faire l'admin et l'utilisateur connecté, voici les identifiants et mots de passe nécessaires lors du login:
 
