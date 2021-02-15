@@ -56,6 +56,15 @@ mvn clean package spring-boot: repackage, puis java -jar target\ClimbingWebApp-0
 
 Allez dans le fichier application.properties , dans la ligne "spring.jpa.hibernate.ddl-auto=update" , passez la configuration en mode "create".
 
+Pour visulaliser ce que faire l'admin et l'utilisateur connecté, voici les identifiants et mots de passe nécessaires lors du login:
+
+- admin: emi@hotmail.com  mot de passe: dkdk;
+- utilisateurs connectés: 
+aa@hotmail.com, mot de passe: goodwin
+chris@hotmail.com, mot de passe: tine
+tom@hotmail.com, mot de passe: 8282
+zak@hotmail.com, mot de passe: bagans
+
 
 Lancement :
 
