@@ -4,6 +4,7 @@ P6:Réalisation d'un site communautaire autour de l'escalade
 Climbing Webapp  . Lien vers le github du projet : https://github.com/GunmProg/ClimbingWebApp
 
 Développement :
+
 Cette application a été développée avec IntelliJ IDEA Community Edition et la Java JDK 12 (12.0.2).
 C'est une architecture Maven mono-module. J'ai utilisé les framework SpringBoot (Spring-core pour l'inversion de contrôle et l'injection de dépendance, Spring-data pour l'accées aux données et Spring-webmvc pour la gestion des parties vues et controller) et Hibernate pour la partie persistence des entités.
 
